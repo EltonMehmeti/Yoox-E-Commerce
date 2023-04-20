@@ -1,10 +1,10 @@
-import React from "react";
-
+import React, { useState } from "react";
+import logo from "../img/logo1.png";
 const Header = () => {
   let [count, setCount] = useState(0);
   return (
     <div className="flex flex-col items-center justify-center w-full h-[100vh]">
-      <img src={logo} width={"400px"} />
+      <img src={logo} width={"200px"} className="rounded-full" />
       <br />
       <h1 className="mb-3 text-lg text-gray-500 md:text-xl dark:text-gray-400">
         Hello Ekipa ma e fort qetu i thirrni komponentat qe duhet!

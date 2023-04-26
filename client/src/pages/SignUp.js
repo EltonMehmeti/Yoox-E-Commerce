@@ -21,7 +21,7 @@ const SignUp = () => {
       </div>
       <div className='flex flex-col py-2 mb-2'>
         <label className='text-xs '>Password</label>
-        <input name='password' className= 'text-xs border py-2 border relative bg-orange-100 rounded-md  border border-transparent shadow-lg shadow-gray-300 'type="password" placeholder="********"/>
+        <input name='password' className= 'text-xs border border-transparent rounded-md shadow-lg shadow-gray-300  bg-orange-100 border p-2 border relative bg-red-50  rounded shadow-gray-300 'type="password" placeholder="********"/>
       </div>
       <div className='flex flex-col py-2 mb-2'>
         <label className='text-xs '>Address</label>

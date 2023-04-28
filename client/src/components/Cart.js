@@ -37,7 +37,7 @@ const Cart = () => {
   return (
     <div className="">
       <div className="absolute top-4 right-20" onClick={handleClick}>
-        <SlBasket size={"35px"} />
+        <SlBasket size={"25px"} />
       </div>
       {showCart && (
         <div

@@ -1,6 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { SlBasket } from "react-icons/sl";
+import Header from "../components/Header";
+import axios from "axios";
 const Home = () => {
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    axios.get("http://localhost:3001/api/loginStatus").then((response) => {
+      if (response.data.loggedIn === true) {
+        setUsername(response.data.user[0].Name);
+      }
+    });
+  }, []);
   const data = [
     {
       id: 1,
@@ -30,7 +40,8 @@ const Home = () => {
   console.log(data);
   return (
     <div>
-      <div className="flex flex-wrap flex-row   bg-[#201f20]">
+      <Header username={username} />
+      <div className="flex flex-wrap flex-row bg-orange-500  bg-[#201f20] ">
         <div id="left" className="w-2/3 overflow-hidden p-40">
           <h1 className="text-[#bebcbe] text-[89px]">Mackbook 14 Pro</h1>
           <p className="text-clip text-[#bebcbe] text-xl">

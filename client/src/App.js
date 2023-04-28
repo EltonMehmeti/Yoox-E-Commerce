@@ -6,6 +6,8 @@ import SignIn from "./pages/SignIn";
 import Header from "./components/Header";
 import Cart from "./components/Cart";
 import Home from "./pages/Home";
+import Footer from "./components/Footer";
+
 function App() {
   return (
     <>
@@ -17,6 +19,8 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
         </Routes>
       </Router>
+      <Footer/>
+
     </>
   );
 }

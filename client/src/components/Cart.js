@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import { SlBasket } from "react-icons/sl";
 import { BsFillTrash3Fill } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
+import toast, { Toaster } from "react-hot-toast";
+import Swal from "sweetalert2";
+import axios from "axios";
+
 const Cart = () => {
+  const navigate = useNavigate();
+  const Swal = require("sweetalert2");
   const data = [
     {
       id: 1,
@@ -31,11 +38,25 @@ const Cart = () => {
   const [showCart, setShowCart] = useState(false);
 
   const handleClick = () => {
-    setShowCart(!showCart);
+    axios.get("http://localhost:3001/api/loginStatus").then((response) => {
+      if (response.data.loggedIn === true) {
+        setShowCart(!showCart);
+      } else {
+        Swal.fire({
+          position: "top",
+          icon: "Error",
+          title: "You need to Login first!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/signin");
+      }
+    });
   };
 
   return (
     <div className="">
+      <Toaster />
       <div className="absolute top-4 right-20" onClick={handleClick}>
         <SlBasket size={"25px"} />
       </div>

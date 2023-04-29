@@ -4,11 +4,10 @@ import Cart from "./Cart";
 import Logo from "../img/logo2.png";
 import { AiOutlineLogin } from "react-icons/ai";
 const Header = (props) => {
-  let [count, setCount] = useState(0);
   return (
     <nav class="bg-orange-500 bg-[#201f20] border-gray-200 dark:bg-gray-900 sticky z-50">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="https://flowbite.com/" class="flex items-center">
+        <a href="#" class="flex items-center">
           <img src={Logo} class="h-8 mr-3" alt="Flowbite Logo" />
           <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black text-white">
             YOoX

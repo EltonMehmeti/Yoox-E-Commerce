@@ -7,10 +7,12 @@ const Home = () => {
   useEffect(() => {
     axios.get("http://localhost:3001/api/loginStatus").then((response) => {
       if (response.data.loggedIn === true) {
+        console.log(response.data.user[0].Name);
         setUsername(response.data.user[0].Name);
       }
     });
   }, []);
+
   const data = [
     {
       id: 1,
@@ -37,11 +39,11 @@ const Home = () => {
       desc: "Vivamus eu dolor ut orci posuere tincidunt vel nec lacus. Praesent in velit quis risus porttitor lobortis a vitae odio. Sed quis tellus ut velit volutpat maximus.",
     },
   ];
-  console.log(data);
+
   return (
     <div>
       <Header username={username} />
-      <div className="flex flex-wrap flex-row bg-orange-500  bg-[#201f20] ">
+      <div className="flex flex-wrap flex-row bg-orange-500   ">
         <div id="left" className="w-2/3 overflow-hidden p-40">
           <h1 className="text-[#bebcbe] text-[89px]">Mackbook 14 Pro</h1>
           <p className="text-clip text-[#bebcbe] text-xl">

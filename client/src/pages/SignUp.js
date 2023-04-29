@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import logo2 from "../img/logo2.png";
 import logoFigure from "../img/loginFigure.png";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   const [name, setName] = useState("");
@@ -12,7 +13,7 @@ const SignUp = () => {
   const [phone, setPhone] = useState("");
 
   const navigate = useNavigate();
-
+  const Swal = require("sweetalert2");
   const submitUser = (e) => {
     e.preventDefault();
     axios
@@ -25,7 +26,13 @@ const SignUp = () => {
         phone: phone,
       })
       .then(() => {
-        alert("Successful insert!");
+        Swal.fire({
+          position: "top",
+          icon: "success",
+          title: "Register Succesfully!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
         navigate("/signin");
       });
   };

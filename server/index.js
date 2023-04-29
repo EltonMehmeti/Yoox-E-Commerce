@@ -117,6 +117,40 @@ app.get("/admin/users", (req, res) => {
     res.send(result);
   });
 });
+// Create
+app.post("/api/insert", async (req, res) => {
+  try {
+    const { name, email, password, address, city, phone, userType } = req.body;
+
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) {
+        console.log(err);
+      }
+
+      const sqlInsert = `
+        INSERT INTO Users (Name, Email, Password, Address, City, Phone,User_Type)
+        VALUES (?, ?, ?, ?, ?, ?,?)
+      `;
+
+      const result = db.query(sqlInsert, [
+        name,
+        email,
+        hash,
+        address,
+        city,
+        phone,
+        userType,
+      ]);
+
+      console.log(result);
+
+      res.sendStatus(200);
+    });
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
 // Delete
 app.delete("/api/delete/:id", (req, res) => {
   const id = Number(req.params.id);

@@ -187,6 +187,16 @@ app.put("/api/update/:id", (req, res) => {
     );
   });
 });
+// \fetch postman's
+app.get("/admin/postman", (req, res) => {
+  db.query("SELECT * FROM postman", (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    }
+    console.log(result);
+    res.send(result);
+  });
+});
 
 app.listen(3001, () => {
   console.log("Running server");

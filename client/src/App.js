@@ -7,12 +7,14 @@ import Header from "./components/Header";
 import Cart from "./components/Cart";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
+import Postman from "./components/Postman";
 function App() {
   return (
     <>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
+          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/postman" element={<Postman />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />

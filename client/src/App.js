@@ -10,12 +10,14 @@ import Admin from "./pages/Admin";
 import Postman from "./components/Postman";
 import Category from "./components/Category";
 import Products from "./components/Products";
+import Users from "./components/Users";
 function App() {
   return (
     <>
       <Router>
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/users" element={<Users />} />
           <Route path="/postman" element={<Postman />} />
           <Route path="/products" element={<Products />} />
           <Route path="/category" element={<Category />} />

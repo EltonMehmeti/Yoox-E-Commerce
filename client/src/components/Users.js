@@ -1,60 +1,53 @@
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useModal } from "react-hooks-use-modal";
+import { useNavigate } from "react-router-dom";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
 import { AiFillCloseCircle } from "react-icons/ai";
-import { useModal } from "react-hooks-use-modal";
-import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
-
-const Products = () => {
-  const [productsTable, setProductsTable] = useState([]);
+import Sidebar from "./Sidebar";
+const Users = () => {
+  const [usersTable, setUsersTable] = useState([]);
   axios.defaults.withCredentials = true;
-  const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/admin/products")
+      .get("http://localhost:3001/admin/users")
       .then((response) => {
-        setProductsTable(response.data);
+        setUsersTable(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   }, []);
-  // delete product function
-  const deleteProduct = (id) => {
-    axios
-      .delete(`http://localhost:3001/api/deleteProduct/${id}`)
-      .then((response) => {
-        setProductsTable(productsTable.filter((val) => val.id !== id));
-        window.location.reload();
-      });
+  // delete user function
+  const deleteUser = (id) => {
+    axios.delete(`http://localhost:3001/api/delete/${id}`).then((response) => {
+      setUsersTable(usersTable.filter((val) => val.id !== id));
+      window.location.reload();
+    });
   };
 
   //
   const [name, setName] = useState("");
-  const [desc, setDesc] = useState("");
-  const [img1, setImg1] = useState("");
-  const [img2, setImg2] = useState("");
-  const [img3, setImg3] = useState("");
-  const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
-  const [category, setCategory] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [phone, setPhone] = useState("");
+  const [userType, setuserType] = useState("");
 
-  // insert product function
-  const insertProduct = () => {
+  //
+  const insertUser = () => {
     axios
-      .post(`http://localhost:3001/api/insertProduct`, {
+      .post(`http://localhost:3001/api/insert`, {
         name: name,
-        desc: desc,
-        img1: img1,
-        img2: img2,
-        img3: img3,
-        price: price,
-        stock: stock,
-        category: category,
+        email: email,
+        password: password,
+        address: address,
+        city: city,
+        phone: phone,
+        userType: userType,
       })
       .then(() => {
         Swal.fire({
@@ -68,27 +61,25 @@ const Products = () => {
       });
   };
 
-  // update product function
-  const [nameU, setNameUpdated] = useState("");
-  const [descU, setDescU] = useState("");
-  const [img1U, setImg1U] = useState("");
-  const [img2U, setImg2U] = useState("");
-  const [img3U, setImg3U] = useState("");
-  const [priceU, setPriceU] = useState("");
-  const [stockU, setStockU] = useState("");
-  const [categoryU, setCategoryU] = useState("");
+  // update user function
+  const [nameUpdated, setNameUpdated] = useState("");
+  const [emailUpdated, setEmailUpdated] = useState("");
+  const [passwordUpdated, setPasswordUpdated] = useState("");
+  const [addressUpdated, setAddressUpdated] = useState("");
+  const [cityUpdated, setCityUpdated] = useState("");
+  const [phoneUpdated, setPhoneUpdated] = useState("");
+  const [usertTypeUpdated, setUsertTypeUpdated] = useState("");
   const Swal = require("sweetalert2");
-  const updateProduct = (id) => {
+  const updateUser = (id) => {
     axios
-      .put(`http://localhost:3001/api/updateProduct/${id}`, {
-        nameU: nameU,
-        descU: descU,
-        img1U: img1U,
-        img2U: img2U,
-        img3U: img3U,
-        priceU: priceU,
-        stockU: stockU,
-        categoryU: categoryU,
+      .put(`http://localhost:3001/api/update/${id}`, {
+        nameU: nameUpdated,
+        emailU: emailUpdated,
+        passwordU: passwordUpdated,
+        addressU: addressUpdated,
+        cityU: cityUpdated,
+        phoneU: phoneUpdated,
+        usertypeU: usertTypeUpdated,
       })
       .then(() => {
         Swal.fire({
@@ -101,9 +92,8 @@ const Products = () => {
         window.location.reload();
       });
   };
-  let [productId, setProductId] = useState(null);
+  let [userId, setUserId] = useState(null);
   // update modal
-
   const [Modal, open, close, isOpen] = useModal("root", {
     preventScroll: true,
     closeOnOverlayClick: false,
@@ -113,16 +103,16 @@ const Products = () => {
     closeOnOverlayClick: false,
   });
   return (
-    <div className="flex items-center justify-start h-screen">
+    <div className="flex ">
       <Sidebar />
-      <div className="relative overflow-x-auto ml-20 w-[75%] h-2/3 shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto mt-10 ml-20 w-[75%] h-[70%] p-4 shadow-md sm:rounded-lg">
         <button
           className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
           onClick={() => {
             open2();
           }}
         >
-          Create Product
+          Create User
         </button>
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-800">
           <Modal2>
@@ -177,17 +167,17 @@ const Products = () => {
                         for="email"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Description
+                        Email
                       </label>
                       <input
                         type="text"
-                        name="desc"
+                        name="email"
                         id="last-name"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Description"
+                        placeholder="Email"
                         required=""
                         onChange={(e) => {
-                          setDesc(e.target.value);
+                          setEmail(e.target.value);
                         }}
                       />
                     </div>
@@ -196,17 +186,17 @@ const Products = () => {
                         for="email"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Img1
+                        Password
                       </label>
                       <input
-                        type="file"
-                        name="img1"
+                        type="text"
+                        name="password"
                         id="email"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Password"
                         required=""
                         onChange={(e) => {
-                          setImg1(e.target.value);
+                          setPassword(e.target.value);
                         }}
                       />
                     </div>
@@ -215,17 +205,17 @@ const Products = () => {
                         for="position"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Img2
+                        Address
                       </label>
                       <input
-                        type="file"
-                        name="img2"
+                        type="text"
+                        name="address"
                         id="position"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="Address"
                         required=""
                         onChange={(e) => {
-                          setImg2(e.target.value);
+                          setAddress(e.target.value);
                         }}
                       />
                     </div>
@@ -234,17 +224,17 @@ const Products = () => {
                         for="biography"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        img3
+                        City
                       </label>
                       <input
-                        type="file"
-                        name="img3"
+                        type="text"
+                        name="city"
                         id="position"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         placeholder="City"
                         required=""
                         onChange={(e) => {
-                          setImg3(e.target.value);
+                          setCity(e.target.value);
                         }}
                       />
                     </div>
@@ -253,17 +243,17 @@ const Products = () => {
                         for="position"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Price
+                        Phone
                       </label>
                       <input
                         type="number"
-                        name="price"
+                        name="phone"
                         id="position"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Price"
+                        placeholder="Phone"
                         required=""
                         onChange={(e) => {
-                          setPrice(e.target.value);
+                          setPhone(e.target.value);
                         }}
                       />
                     </div>
@@ -272,36 +262,17 @@ const Products = () => {
                         for="position"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        Stock
+                        User Type
                       </label>
                       <input
-                        type="number"
-                        name="stock"
+                        type="text"
+                        name="userType"
                         id="position"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Stock"
+                        placeholder="Address"
                         required=""
                         onChange={(e) => {
-                          setStock(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <div class="col-span-6 sm:col-span-3">
-                      <label
-                        for="position"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Category
-                      </label>
-                      <input
-                        type="number"
-                        name="category"
-                        id="position"
-                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Category"
-                        required=""
-                        onChange={(e) => {
-                          setCategory(e.target.value);
+                          setuserType(e.target.value);
                         }}
                       />
                     </div>
@@ -313,41 +284,38 @@ const Products = () => {
                 <button
                   className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                   onClick={() => {
-                    insertProduct();
+                    insertUser();
                   }}
                 >
-                  Create Product
+                  Create User
                 </button>
               </div>
             </div>
           </Modal2>
         </div>
-        <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 h-auto">
+        <table className="w-[45%] h-[200px] text-sm text-left overflow-y-scroll text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
                 Name
               </th>
               <th scope="col" className="px-6 py-3">
-                Desc
+                Email
               </th>
               <th scope="col" className="px-6 py-3">
-                Img1
+                Password
               </th>
               <th scope="col" className="px-6 py-3">
-                Img2
+                Address
               </th>
               <th scope="col" className="px-6 py-3">
-                Img3
+                City
               </th>
               <th scope="col" className="px-6 py-3">
-                Price
+                Phone
               </th>
               <th scope="col" className="px-6 py-3">
-                Stock
-              </th>
-              <th scope="col" className="px-6 py-3">
-                Category
+                User Type
               </th>
               <th scope="col" className="px-6 py-3">
                 <span className="sr-only">Edit</span>
@@ -355,50 +323,31 @@ const Products = () => {
             </tr>
           </thead>
           <tbody>
-            {productsTable.map((product, i) => {
+            {usersTable.map((user, i) => {
               return (
                 <tr
-                  key={product.Id}
+                  key={user.Id}
                   className="bg-white border-b h-[70px] dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                 >
                   <th
                     scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    className="px-6 py- h-[70px] font-medium text-gray-900 whitespace-nowrap dark:text-white"
                   >
-                    {product.Name}
+                    {user.Name}
                   </th>
-                  <td className="px-6 py-2">{product.Description}</td>
-                  <td scope="row" class="">
-                    <img
-                      src={product.img1}
-                      alt={product.img1}
-                      class="w-auto h-8 mr-3"
-                    />
+                  <td className="px-6 h-[70px] py-2">{user.Email}</td>
+                  <td className="px-2  h-[70px] overflow-clip text-clip py-2">
+                    {user.Password}
                   </td>
-
-                  <td className="px-6 py-2">
-                    <img
-                      src={product.img2}
-                      alt="iMac Front Image"
-                      class="w-auto h-8 mr-3"
-                    />
-                  </td>
-                  <td className="px-6 py-2">
-                    {" "}
-                    <img
-                      src={product.img3}
-                      alt="iMac Front Image"
-                      class="w-auto h-8 mr-3"
-                    />
-                  </td>
-                  <td className="px-6 py-2">{product.Price}</td>
-                  <td className="px-6 py-2">{product.Stock}</td>
-                  <td className="px-6 py-2">{product.CategoryId}</td>
-                  <td className="px-6 py-2 text-right">
+                  <td className="px-6 h-[70px] py-2">{user.Address}</td>
+                  <td className="px-6 h-[70px] py-2">{user.City}</td>
+                  <td className="px-6 h-[70px] py-2">{user.Phone}</td>
+                  <td className="px-6 h-[70px] py-2">{user.User_Type}</td>
+                  <td className="px-6 h-[70px] py-2 text-right">
                     <button
                       onClick={() => {
-                        console.log(product.Id);
-                        deleteProduct(product.Id);
+                        console.log(user.Id);
+                        deleteUser(user.Id);
                       }}
                       type="button"
                       className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-14 h-25"
@@ -408,7 +357,7 @@ const Products = () => {
                     <button
                       className="bg-gradient-to-r text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-14 h-25"
                       onClick={() => {
-                        setProductId((productId = product.Id));
+                        setUserId((userId = user.Id));
                         // console.log(userId);
                         open();
                       }}
@@ -440,7 +389,7 @@ const Products = () => {
                           <section className="bg-white dark:bg-gray-900">
                             <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
                               <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-                                Update Product with Id: {productId}
+                                Update User with Id: {userId}
                               </h2>
                               <form action="">
                                 <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
@@ -459,7 +408,7 @@ const Products = () => {
                                       name="nameU"
                                       id="name"
                                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Type product name"
+                                      placeholder="Type user name"
                                       required=""
                                     />
                                   </div>
@@ -468,17 +417,17 @@ const Products = () => {
                                       for="emailU"
                                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                     >
-                                      Description
+                                      Email
                                     </label>
                                     <input
                                       onChange={(e) => {
-                                        setDescU(e.target.value);
+                                        setEmailUpdated(e.target.value);
                                       }}
-                                      type="text"
-                                      name="descU"
+                                      type="Email"
+                                      name="emailU"
                                       id="brand"
                                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Description"
+                                      placeholder="Email"
                                       required=""
                                     />
                                   </div>
@@ -487,17 +436,17 @@ const Products = () => {
                                       for="passwordU"
                                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                     >
-                                      Img1
+                                      Password
                                     </label>
                                     <input
                                       onChange={(e) => {
-                                        setImg1U(e.target.value);
+                                        setPasswordUpdated(e.target.value);
                                       }}
-                                      type="file"
-                                      name="img1U"
+                                      type="text"
+                                      name="passwordU"
                                       id="price"
                                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Image"
+                                      placeholder="Password"
                                       required=""
                                     />
                                   </div>
@@ -506,17 +455,17 @@ const Products = () => {
                                       for="addressU"
                                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                     >
-                                      Img2
+                                      Address
                                     </label>
                                     <input
                                       onChange={(e) => {
-                                        setImg2U(e.target.value);
+                                        setAddressUpdated(e.target.value);
                                       }}
-                                      type="file"
-                                      name="img2U"
+                                      type="text"
+                                      name="addressU"
                                       id="price"
                                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Image"
+                                      placeholder="Password"
                                       required=""
                                     />
                                   </div>
@@ -525,15 +474,14 @@ const Products = () => {
                                       for="category"
                                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                     >
-                                      Img3
+                                      User Type
                                     </label>
                                     <input
                                       onChange={(e) => {
-                                        setImg3U(e.target.value);
+                                        setUsertTypeUpdated(e.target.value);
                                       }}
-                                      type="file"
-                                      name="img3U"
-                                      placeholder="Image"
+                                      name="usertypeU"
+                                      placeholder="User Type"
                                       id="category"
                                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     />
@@ -543,17 +491,17 @@ const Products = () => {
                                       for="item-weight"
                                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                     >
-                                      Price
+                                      Phone
                                     </label>
                                     <input
                                       onChange={(e) => {
-                                        setPriceU(e.target.value);
+                                        setPhoneUpdated(e.target.value);
                                       }}
                                       type="number"
-                                      name="priceU"
+                                      name="phoneU"
                                       id="item-weight"
                                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Price"
+                                      placeholder="Phone"
                                       required=""
                                     />
                                   </div>
@@ -562,36 +510,17 @@ const Products = () => {
                                       for="description"
                                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                     >
-                                      Stock
+                                      City
                                     </label>
                                     <input
                                       onChange={(e) => {
-                                        setStockU(e.target.value);
+                                        setCityUpdated(e.target.value);
                                       }}
                                       type="text"
-                                      name="stockU"
+                                      name="cityU"
                                       id="item-weight"
                                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Stock"
-                                      required=""
-                                    />
-                                  </div>
-                                  <div>
-                                    <label
-                                      for="item-weight"
-                                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >
-                                      Category
-                                    </label>
-                                    <input
-                                      onChange={(e) => {
-                                        setCategoryU(e.target.value);
-                                      }}
-                                      type="number"
-                                      name="categoryU"
-                                      id="item-weight"
-                                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Category"
+                                      placeholder="City"
                                       required=""
                                     />
                                   </div>
@@ -600,8 +529,8 @@ const Products = () => {
                                 <button
                                   onClick={(e) => {
                                     e.preventDefault();
-                                    console.log(productId);
-                                    updateProduct(productId);
+                                    console.log(userId);
+                                    updateUser(userId);
                                   }}
                                   type="submit"
                                   className="bg-gradient-to-r text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-14 h-25"
@@ -625,4 +554,4 @@ const Products = () => {
   );
 };
 
-export default Products;
+export default Users;

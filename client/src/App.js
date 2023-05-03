@@ -8,6 +8,8 @@ import Cart from "./components/Cart";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Postman from "./components/Postman";
+import Category from "./components/Category";
+import Products from "./components/Products";
 function App() {
   return (
     <>
@@ -15,6 +17,8 @@ function App() {
         <Routes>
           {/* <Route path="/" element={<Home />} /> */}
           <Route path="/postman" element={<Postman />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/category" element={<Category />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />

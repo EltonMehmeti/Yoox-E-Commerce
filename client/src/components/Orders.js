@@ -27,46 +27,40 @@ const Orders = () => {
       });
   }, []);  
 
- // delete postman function
- const deletePostman = (id) => {
+ // delete orders function
+ const deleteOrder = (id) => {
     axios
-      .delete(`http://localhost:3001/api/deletePostman/${id}`)
+      .delete(`http://localhost:3001/api/deleteOrder/${id}`)
       .then((response) => {
-        setPostmanTable(postmanTable.filter((val) => val.id !== id));
+        set0rdersTable(ordersTable.filter((val) => val.id !== id));
         window.location.reload();
       });
   };
   //
 
-  const [name, setName] = useState("")
+  const [orderNo, setOrderNo] = useState("")
+  const [orderTotal, setOrderTotal] = useState("")
+  const [userId, setUserId] = useState("")
+  const [shippingDate, setShippingDate] = useState("")
 
   //
-  const insertPostman = () => {
-    axios
-      .post(`http://localhost:3001/api/insertPostman`, {
-        name: name,
-      })
-      .then(() => {
-        Swal.fire({
-          position: "top",
-          icon: "success",
-          title: "Inserted Successfully!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        window.location.reload();
-      });
-  };
+  
   //
 
-  // update postman function
-  const [nameU, setNameUpdated] = useState("");
+  // update order function
+  const [orderNoU, setOrderNoUpdated] = useState("");
+  const [orderTotalU, setOrderTotalUpdated] = useState("");
+  const [userIdU, setUserIdUpdated] = useState("");
+  const [shippingDateU, setShippingDateUpdated] = useState("");
 
   const Swal = require("sweetalert2");
-  const updatePostman = (id) => {
+  const updateOrder = (id) => {
     axios
-      .put(`http://localhost:3001/api/updatePostman/${id}`, {
-        nameU: nameU,
+      .put(`http://localhost:3001/api/updateOrder/${id}`, {
+        orderNoU: orderNoU,
+        orderTotalU: orderTotalU,
+        userIdU: userIdU,
+        shippingDateU: shippingDateU,
       })
       .then(() => {
         Swal.fire({
@@ -79,7 +73,7 @@ const Orders = () => {
         window.location.reload();
       });
   };
-  let [postmanId, setPostmanId] = useState(null);
+  let [orderId, setOrderId] = useState(null);
 
     // update modal
 

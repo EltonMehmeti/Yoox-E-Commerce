@@ -50,6 +50,7 @@ const Admin = () => {
       }
     });
   }, []);
+
   return (
     <div className="flex h-screen">
       <Sidebar username={username} />

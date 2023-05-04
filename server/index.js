@@ -199,8 +199,7 @@ app.get("/admin/postman", (req, res) => {
   });
 });
 
-
-// Fetch products 
+// Fetch products
 app.get("/admin/products", (req, res) => {
   db.query("SELECT * FROM product", (err, result) => {
     if (err) {
@@ -215,26 +214,25 @@ app.post("/api/insertProduct", async (req, res) => {
   try {
     const { name, desc, img1, img2, img3, price, stock, category } = req.body;
 
-      const sqlInsert = `
+    const sqlInsert = `
         INSERT INTO Product (Name, Description, Img1, Img2, Img3, Price, Stock, CategoryId)
         VALUES (?, ?, ?, ?, ?, ?,?,?)
       `;
 
-      const result = db.query(sqlInsert, [
-        name,
-        desc,
-        img1,
-        img2,
-        img3,
-        price,
-        stock,
-        category,
-      ]);
+    const result = db.query(sqlInsert, [
+      name,
+      desc,
+      img1,
+      img2,
+      img3,
+      price,
+      stock,
+      category,
+    ]);
 
-      console.log(result);
+    console.log(result);
 
-      res.sendStatus(200);
-    ;
+    res.sendStatus(200);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
@@ -256,7 +254,7 @@ app.delete("/api/deleteProduct/:id", (req, res) => {
 // Update product
 app.put("/api/updateProduct/:id", (req, res) => {
   const id = Number(req.params.id);
-  const nameU = req.body.nameU;  
+  const nameU = req.body.nameU;
   const descU = req.body.descU;
   const img1U = req.body.img1U;
   const img2U = req.body.img2U;
@@ -264,18 +262,41 @@ app.put("/api/updateProduct/:id", (req, res) => {
   const priceU = req.body.priceU;
   const stockU = req.body.stockU;
   const categoryU = req.body.categoryU;
-  
-    db.query(
-      "UPDATE Product SET Name=?, Description=?, Img1=?, Img2=?, Img3=?, Price=?, Stock=?, CategoryId=? WHERE Id=?;",
-      [nameU, descU, img1U, img2U, img3U, priceU, stockU, categoryU, id],
-      (err, result) => {
-        if (err) {
-          console.log(err);
-        } else {
-          res.send(result);
-        }
+
+  db.query(
+    "UPDATE Product SET Name=?, Description=?, Img1=?, Img2=?, Img3=?, Price=?, Stock=?, CategoryId=? WHERE Id=?;",
+    [nameU, descU, img1U, img2U, img3U, priceU, stockU, categoryU, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
       }
-    );
+    }
+  );
+});
+
+// count total users
+app.get("/api/totalUsers", (req, res) => {
+  const countQuery = "SELECT COUNT(*) as total_users FROM users;";
+  db.query(countQuery, (err, result) => {
+    if (err) {
+      res.send({ err });
+      console.log(err);
+    }
+    res.send(result);
+  });
+});
+// count total products
+app.get("/api/totalProducts", (req, res) => {
+  const countQuery = "SELECT COUNT(*) as total_products FROM product;";
+  db.query(countQuery, (err, result) => {
+    if (err) {
+      res.send({ err });
+      console.log(err);
+    }
+    res.send(result);
+  });
 });
 
 app.listen(3001, () => {

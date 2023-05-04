@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 const Sidebar = (props) => {
   const navigate = useNavigate();
   const menus = [
-    { name: "General", link: "/", icon: BsHouse },
+    { name: "Dashboard", link: "/admin", icon: BsHouse },
     { name: "Settings", link: "/", icon: CiSettings },
     { name: "Users", link: "/users", icon: HiOutlineUsers },
     { name: "Billing", link: "/", icon: RiBillLine },
@@ -28,7 +28,7 @@ const Sidebar = (props) => {
         <div className="flex gap-x-3 items-center">
           <img className="flex items-center w-14 rounded-full" src={icon1} />
           <h2 className="font-bold text-white origin-left text-xl  ">
-            Company
+            Hi {props.username}
           </h2>
         </div>
 

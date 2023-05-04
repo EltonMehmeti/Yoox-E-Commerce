@@ -33,13 +33,6 @@ const SignIn = () => {
       });
   };
 
-  useEffect(() => {
-    axios.get("http://localhost:3001/api/login").then((response) => {
-      if (response.data.loggedIn == true) {
-        setLoginStatus(response.data.user[0].Name);
-      }
-    });
-  }, []);
   return (
     <div className="h-screen w-full flex bg-orange-50">
       <div className=" grid grid-cols-1 md:grid-cols-2 m-auto  shadow-lg bg-orange-50 sm:max-w-[1000px] rounded-lg">

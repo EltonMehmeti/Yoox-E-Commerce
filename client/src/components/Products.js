@@ -356,6 +356,7 @@ const Products = () => {
           </thead>
           <tbody>
             {productsTable.map((product, i) => {
+              console.log(product);
               return (
                 <tr
                   key={product.Id}

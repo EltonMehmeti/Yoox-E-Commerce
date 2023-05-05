@@ -105,7 +105,7 @@ const Users = () => {
   return (
     <div className="flex ">
       <Sidebar />
-      <div className="relative overflow-x-auto mt-10 ml-20 w-[75%] h-[70%] p-4 shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto mt-10 ml-20 w-[65%] h-[70%] p-4 shadow-md sm:rounded-lg">
         <button
           className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
           onClick={() => {
@@ -293,7 +293,7 @@ const Users = () => {
             </div>
           </Modal2>
         </div>
-        <table className="w-[45%] h-[200px] text-sm text-left overflow-y-scroll text-gray-500 dark:text-gray-400">
+        <table className="w-[35%] h-[200px] text-sm text-left overflow-y-scroll text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
@@ -336,8 +336,8 @@ const Users = () => {
                     {user.Name}
                   </th>
                   <td className="px-6 h-[70px] py-2">{user.Email}</td>
-                  <td className="px-2  h-[70px] overflow-clip text-clip py-2">
-                    {user.Password}
+                  <td className="px-2  h-[70px] truncate w-1/2 py-2">
+                    {user.Password.slice(0, 6)}
                   </td>
                   <td className="px-6 h-[70px] py-2">{user.Address}</td>
                   <td className="px-6 h-[70px] py-2">{user.City}</td>

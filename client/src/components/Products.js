@@ -368,7 +368,9 @@ const Products = () => {
                   >
                     {product.Name}
                   </th>
-                  <td className="px-6 py-2">{product.Description}</td>
+                  <td className="px-6 py-2">
+                    {product.Description.slice(0, 60)}
+                  </td>
                   <td scope="row" class="">
                     <img
                       src={product.img1}

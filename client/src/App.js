@@ -16,7 +16,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          {/* <Route path="/" element={<Home />} /> */}
+          <Route path="/" element={<Home />} />
           <Route path="/users" element={<Users />} />
           <Route path="/postman" element={<Postman />} />
           <Route path="/products" element={<Products />} />

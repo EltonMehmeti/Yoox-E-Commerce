@@ -18,7 +18,7 @@ const Sidebar = (props) => {
     { name: "Users", link: "/users", icon: HiOutlineUsers },
     { name: "Billing", link: "/", icon: RiBillLine },
     { name: "Products", link: "/products", icon: MdProductionQuantityLimits },
-    { name: "PostMan", link: "/", icon: MdEmojiTransportation },
+    { name: "PostMan", link: "/postman", icon: MdEmojiTransportation },
     { name: "Customer Support", link: "/", icon: MdSupportAgent },
     { name: "SignOut", link: "/", icon: FaSignOutAlt, margin: true },
   ];

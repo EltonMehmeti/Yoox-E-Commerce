@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { BsFillTrash3Fill } from "react-icons/bs";
-import { AiOutlineEdit } from "react-icons/ai";
-import { AiFillCloseCircle } from "react-icons/ai";
-import { useModal } from "react-hooks-use-modal";
-import Swal from "sweetalert2";
+
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 import Widgets from "../components/Widgets";
@@ -22,12 +18,6 @@ const Admin = () => {
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
 
-  // useEffect(() => {
-  //   axios.get("http://localhost:3001/api/totalUsers").then((response) => {
-  //     console.log(response.data[0].total_users);
-  //     setTotalUsers(response.data[0].total_users);
-  //   });
-  // }, []);
   useEffect(() => {
     Promise.all([
       axios.get("http://localhost:3001/api/totalUsers"),

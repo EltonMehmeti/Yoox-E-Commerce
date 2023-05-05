@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import axios from "axios";
 import ProductsTemplate from "../components/ProductsTemplate";
 import ScrollToTop from "react-scroll-up";
+import Intro from "../img/intro.png";
 const Home = () => {
   const [username, setUsername] = useState("");
   useEffect(() => {
@@ -38,33 +39,12 @@ const Home = () => {
         console.log(error);
       });
   }, []);
-
-  const data = [
-    {
-      id: 1,
-      title: "Product A",
-      img: "https://images.unsplash.com/photo-1600086827875-a63b01f1335c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fGhlYWRwaG9uZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-      desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sed nisi euismod, interdum justo quis, finibus nulla. Proin consequat ante eget lacinia varius.",
-    },
-    // {
-    //   id: 2,
-    //   title: "Product B",
-    //   img: "https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8aGVhZHBob25lfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-    //   desc: "Nullam ornare velit vel lorem fermentum, a lacinia nisi bibendum. Nullam id sapien semper, imperdiet mi vel, convallis metus.",
-    // },
-    // {
-    //   id: 3,
-    //   title: "Product C",
-    //   img: "https://images.unsplash.com/photo-1557063673-0493e05da49f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fGhlYWRwaG9uZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-    //   desc: "In euismod est sit amet odio maximus vestibulum. Aenean eu augue eget nibh bibendum finibus. Sed euismod dolor in libero tristique, non auctor mi sagittis.",
-    // },
-    // {
-    //   id: 4,
-    //   title: "Product D",
-    //   img: "https://dummyimage.com/300x200/000/fff&text=Product+D",
-    //   desc: "Vivamus eu dolor ut orci posuere tincidunt vel nec lacus. Praesent in velit quis risus porttitor lobortis a vitae odio. Sed quis tellus ut velit volutpat maximus.",
-    // },
-  ];
+  //
+  const handleCar = (CatId) => {
+    setProductsTable(
+      productsTable.filter((product) => product.CategoryId === CatId)
+    );
+  };
 
   return (
     <div>
@@ -110,26 +90,35 @@ const Home = () => {
           </div>
         </div>
         <div id="right" className="w-1/3 p-10 flex items-center justify-center">
-          <img
-            src="https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP858/mbp16-gray.png"
-            className="h-[300px] w-[100%]"
-          />
+          <img src={Intro} className="h-[300px] w-[100%]" />
         </div>
       </div>
-      {categoriesTable?.map((category, i) => {
-        console.log(category);
-        return (
-          <div
-            key={i}
-            className=" absolute p-2 top-[650px] w-40 rounded-lg h-16 border backdrop-filter backdrop-blur-md left-1/4 "
-          >
-            <span className=" text-[#bebcbe]">{category.Name}</span>
-          </div>
-        );
-      })}
+      <div className="mt-10 flex w-full items-center flex-wrap bg-transparent justify-center flex-row gap-4">
+        {categoriesTable?.map((category, i) => {
+          console.log(category);
+          return (
+            <div
+              key={i}
+              className=" flex p-2 cursor-pointer items-center justify-center w-44 rounded-xl h-16 bg-[#221F24] text-center backdrop-filter backdrop-blur-md left-1/4 "
+            >
+              <img src="" />
+              <span
+                onClick={() => {
+                  handleCar(category.Id);
+                }}
+                className=" text-white text-center"
+              >
+                <h1>
+                  {category.Id} - {category.Name}
+                </h1>
+              </span>
+            </div>
+          );
+        })}
+      </div>
       <div className=" px-32 py-20">
         <h1 className="text-[#24292F] text-[49px]">New Arrivals</h1>
-        <div className="flex flex-row flex-wrap gap-6">
+        <div id="products" className="flex flex-row flex-wrap gap-6">
           {productsTable?.map((product, i) => {
             return (
               <ProductsTemplate

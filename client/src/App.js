@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import logo from "../src/img/logo1.png";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
-import Header from "./components/Header";
-import Cart from "./components/Cart";
+
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Postman from "./components/Postman";
 import Category from "./components/Category";
+
 import Products from "./components/Products";
 import Users from "./components/Users";
 import Footer from "./components/Footer";
+import AboutUs from "./pages/AboutUs";
 function App() {
   return (
     <>
@@ -25,6 +25,7 @@ function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
+          <Route path="/aboutus" element={<AboutUs />} />
         </Routes>
       </Router>
       <Footer />

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SlBasket } from "react-icons/sl";
 import Header from "../components/Header";
 import axios from "axios";
+import ProductsTemplate from "../components/ProductsTemplate";
 const Home = () => {
   const [username, setUsername] = useState("");
   useEffect(() => {
@@ -12,6 +13,19 @@ const Home = () => {
       }
     });
   }, []);
+  const [productsTable, setProductsTable] = useState([]);
+  axios.defaults.withCredentials = true;
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/admin/products")
+      .then((response) => {
+        setProductsTable(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const data = [
     {
@@ -20,24 +34,24 @@ const Home = () => {
       img: "https://images.unsplash.com/photo-1600086827875-a63b01f1335c?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MTd8fGhlYWRwaG9uZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
       desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce sed nisi euismod, interdum justo quis, finibus nulla. Proin consequat ante eget lacinia varius.",
     },
-    {
-      id: 2,
-      title: "Product B",
-      img: "https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8aGVhZHBob25lfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
-      desc: "Nullam ornare velit vel lorem fermentum, a lacinia nisi bibendum. Nullam id sapien semper, imperdiet mi vel, convallis metus.",
-    },
-    {
-      id: 3,
-      title: "Product C",
-      img: "https://images.unsplash.com/photo-1557063673-0493e05da49f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fGhlYWRwaG9uZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
-      desc: "In euismod est sit amet odio maximus vestibulum. Aenean eu augue eget nibh bibendum finibus. Sed euismod dolor in libero tristique, non auctor mi sagittis.",
-    },
-    {
-      id: 4,
-      title: "Product D",
-      img: "https://dummyimage.com/300x200/000/fff&text=Product+D",
-      desc: "Vivamus eu dolor ut orci posuere tincidunt vel nec lacus. Praesent in velit quis risus porttitor lobortis a vitae odio. Sed quis tellus ut velit volutpat maximus.",
-    },
+    // {
+    //   id: 2,
+    //   title: "Product B",
+    //   img: "https://images.unsplash.com/photo-1583394838336-acd977736f90?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8NHx8aGVhZHBob25lfGVufDB8fDB8fA%3D%3D&auto=format&fit=crop&w=500&q=60",
+    //   desc: "Nullam ornare velit vel lorem fermentum, a lacinia nisi bibendum. Nullam id sapien semper, imperdiet mi vel, convallis metus.",
+    // },
+    // {
+    //   id: 3,
+    //   title: "Product C",
+    //   img: "https://images.unsplash.com/photo-1557063673-0493e05da49f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MjB8fGhlYWRwaG9uZXxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60",
+    //   desc: "In euismod est sit amet odio maximus vestibulum. Aenean eu augue eget nibh bibendum finibus. Sed euismod dolor in libero tristique, non auctor mi sagittis.",
+    // },
+    // {
+    //   id: 4,
+    //   title: "Product D",
+    //   img: "https://dummyimage.com/300x200/000/fff&text=Product+D",
+    //   desc: "Vivamus eu dolor ut orci posuere tincidunt vel nec lacus. Praesent in velit quis risus porttitor lobortis a vitae odio. Sed quis tellus ut velit volutpat maximus.",
+    // },
   ];
 
   return (
@@ -90,37 +104,18 @@ const Home = () => {
           />
         </div>
       </div>
-      <div className=" px-40 py-20">
+      <div className=" px-32 py-20">
         <h1 className="text-[#24292F] text-[49px]">New Arrivals</h1>
         <div className="flex flex-row flex-wrap gap-6">
-          {data.map((element) => (
-            <a
-              key={element.id}
-              href="#"
-              class="flex flex-col items-center mt-4 bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
-            >
-              <img
-                class=" object-cover w-full rounded-t-lg h-full md:h-auto md:w-28 md:rounded-none md:rounded-l-lg"
-                src={element.img}
-                alt=""
-                className="w-[500px] h-[250px]"
+          {productsTable.map((product, i) => {
+            return (
+              <ProductsTemplate
+                name={product.Name}
+                desc={product.Description}
+                price={product.Price}
               />
-              <div class="flex flex-col justify-between p-4 leading-normal overflow-hidden">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {element.title}
-                </h5>
-                <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 break-words">
-                  {element.desc}
-                </p>
-                <button
-                  type="button"
-                  class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br  focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-40 h-25"
-                >
-                  Add To Cart
-                </button>
-              </div>
-            </a>
-          ))}
+            );
+          })}
         </div>
       </div>
     </div>

@@ -11,6 +11,7 @@ import Postman from "./components/Postman";
 import Category from "./components/Category";
 import Products from "./components/Products";
 import Users from "./components/Users";
+import Footer from "./components/Footer";
 function App() {
   return (
     <>
@@ -26,6 +27,7 @@ function App() {
           <Route path="/signin" element={<SignIn />} />
         </Routes>
       </Router>
+      <Footer />
     </>
   );
 }

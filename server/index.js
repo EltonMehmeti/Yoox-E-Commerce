@@ -278,6 +278,150 @@ app.put("/api/updateProduct/:id", (req, res) => {
     );
 });
 
+
+
+//INSERT postman
+app.post('/create', (req,res) =>{
+  try{
+      const name=req.body.name;
+      const lastname=req.body.lastname;
+      const phonenumber=req.body.phonenumber;
+
+      db.query('INSERT INTO postman (Name, LastName, phonenumber) VALUES (?,?,?)',
+      [name,lastname,phonenumber], 
+      (err, result) => {
+        if(err) {
+          console.log(err)
+        }else{
+          res.send("Values inserted!")
+        }
+      });
+ }catch (err) {
+  console.error(err);
+  res.sendStatus("success");
+ }
+});
+//get postmen
+app.get('/postman', (req,res) => {
+  const SqlSelect ='SELECT * from postman';
+  db.query(SqlSelect, (err, result) => {
+    if(err) {
+      res.send(err)
+    }else{
+      console.log(result);
+      res.send(result)
+    }
+  });
+
+});
+//update postman 
+app.put("/api/updatePostman/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const nameU=req.body.nameU;
+  const lastnameU= req.body.lastnameU;
+  const phonenumberU=req.body.phonenumberU;
+  db.query("UPDATE postman SET Name=?, LastName=?, phonenumber=? WHERE Id=?",
+  [nameU,lastnameU, phonenumberU,id],
+      (err, result) => {
+        if (err) {
+          console.log(err);
+          // res.status(500).send("Error updating data");
+        } else {
+          res.send(result);
+        }
+      }
+  );
+});
+
+//delete postman
+app.delete("/deletePostman/:id", (req, res) => {
+  const id = Number(req.params.id);
+  db.query("DELETE FROM postman WHERE Id=?", id, (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Postman is not deleted!");
+    } else {
+      console.log(`Deleted postman with ID ${id}`);
+      res.status(200).send("Postman deleted successfully");
+    }
+  });
+});
+// Jeta - Categories CRUD
+
+// Fetch category
+
+app.get("/admin/category", (req, res) => {
+  db.query("SELECT * FROM category", (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    }
+    console.log(result);
+    res.send(result);
+  });
+});
+
+// Create category
+app.post("/api/insertCategory", async (req, res) => {
+  try {
+    const { name, img } = req.body;
+
+      const sqlInsert = `
+        INSERT INTO Category (Name,img)
+        VALUES (?,?)
+      `;
+
+      const result = db.query(sqlInsert, [
+        name,
+        img,
+      ]);
+
+      console.log(result);
+
+      res.sendStatus(200);
+    ;
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+// Delete Category
+app.delete("/api/deleteCategory/:id", (req, res) => {
+  const id = Number(req.params.id);
+  db.query("DELETE FROM Category WHERE Id=?", id, (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send("Error deleting category");
+    } else {
+      console.log(`Deleted category with ID ${id}`);
+      res.status(200).send(" deleted successfully");
+    }
+  });
+});
+
+
+// Update Category
+app.put("/api/updateCategory/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const name = req.body.nameU;
+  const imgU = req.body.imgU;
+
+  db.query(
+    "UPDATE Category SET Name=?, Img=? WHERE Id=?",
+    [name, imgU, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("Failed to update category.");
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+
+
 app.listen(3001, () => {
   console.log("Running server");
 });

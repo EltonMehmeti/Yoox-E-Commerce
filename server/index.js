@@ -302,36 +302,37 @@ app.get("/api/totalProducts", (req, res) => {
 app.get("/postman", (req, res) => {
   db.query("SELECT * FROM postman", (err, result) => {
     if (err) {
-      res.send({err: err });
+      res.send({ err: err });
     }
     console.log(result);
     res.send(result);
   });
 });
 // create postman
-app.post('/create', (req,res) =>{
-  try{
-      const name=req.body.name;
-      const lastname=req.body.lastname;
-      const phonenumber=req.body.phonenumber;
+app.post("/create", (req, res) => {
+  try {
+    const name = req.body.name;
+    const lastname = req.body.lastname;
+    const phonenumber = req.body.phonenumber;
 
-      db.query('INSERT INTO postman (Name, LastName, phonenumber) VALUES (?,?,?)',
-      [name,lastname,phonenumber], 
+    db.query(
+      "INSERT INTO postman (Name, LastName, phonenumber) VALUES (?,?,?)",
+      [name, lastname, phonenumber],
       (err, result) => {
-        if(err) {
-          console.log(err)
-        }else{
-          res.send("Values inserted!")
+        if (err) {
+          console.log(err);
+        } else {
+          res.send("Values inserted!");
         }
-      });
- }catch (err) {
-  console.error(err);
-  res.sendStatus("success");
- }
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.sendStatus("success");
+  }
 });
 
-
-// Fetch products 
+// Fetch products
 app.get("/admin/products", (req, res) => {
   db.query("SELECT * FROM product", (err, result) => {
     if (err) {
@@ -346,26 +347,25 @@ app.post("/api/insertProduct", async (req, res) => {
   try {
     const { name, desc, img1, img2, img3, price, stock, category } = req.body;
 
-      const sqlInsert = `
+    const sqlInsert = `
         INSERT INTO Product (Name, Description, Img1, Img2, Img3, Price, Stock, CategoryId)
         VALUES (?, ?, ?, ?, ?, ?,?,?)
       `;
 
-      const result = db.query(sqlInsert, [
-        name,
-        desc,
-        img1,
-        img2,
-        img3,
-        price,
-        stock,
-        category,
-      ]);
+    const result = db.query(sqlInsert, [
+      name,
+      desc,
+      img1,
+      img2,
+      img3,
+      price,
+      stock,
+      category,
+    ]);
 
-      console.log(result);
+    console.log(result);
 
-      res.sendStatus(200);
-    ;
+    res.sendStatus(200);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
@@ -387,7 +387,7 @@ app.delete("/api/deleteProduct/:id", (req, res) => {
 // Update product
 app.put("/api/updateProduct/:id", (req, res) => {
   const id = Number(req.params.id);
-  const nameU = req.body.nameU;  
+  const nameU = req.body.nameU;
   const descU = req.body.descU;
   const img1U = req.body.img1U;
   const img2U = req.body.img2U;
@@ -395,72 +395,72 @@ app.put("/api/updateProduct/:id", (req, res) => {
   const priceU = req.body.priceU;
   const stockU = req.body.stockU;
   const categoryU = req.body.categoryU;
-  
+
+  db.query(
+    "UPDATE Product SET Name=?, Description=?, Img1=?, Img2=?, Img3=?, Price=?, Stock=?, CategoryId=? WHERE Id=?;",
+    [nameU, descU, img1U, img2U, img3U, priceU, stockU, categoryU, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.send(result);
+      }
+    }
+  );
+});
+
+//INSERT postman
+app.post("/create", (req, res) => {
+  try {
+    const name = req.body.name;
+    const lastname = req.body.lastname;
+    const phonenumber = req.body.phonenumber;
+
     db.query(
-      "UPDATE Product SET Name=?, Description=?, Img1=?, Img2=?, Img3=?, Price=?, Stock=?, CategoryId=? WHERE Id=?;",
-      [nameU, descU, img1U, img2U, img3U, priceU, stockU, categoryU, id],
+      "INSERT INTO postman (Name, LastName, phonenumber) VALUES (?,?,?)",
+      [name, lastname, phonenumber],
       (err, result) => {
         if (err) {
           console.log(err);
         } else {
-          res.send(result);
+          res.send("Values inserted!");
         }
       }
     );
-});
-
-
-
-//INSERT postman
-app.post('/create', (req,res) =>{
-  try{
-      const name=req.body.name;
-      const lastname=req.body.lastname;
-      const phonenumber=req.body.phonenumber;
-
-      db.query('INSERT INTO postman (Name, LastName, phonenumber) VALUES (?,?,?)',
-      [name,lastname,phonenumber], 
-      (err, result) => {
-        if(err) {
-          console.log(err)
-        }else{
-          res.send("Values inserted!")
-        }
-      });
- }catch (err) {
-  console.error(err);
-  res.sendStatus("success");
- }
+  } catch (err) {
+    console.error(err);
+    res.sendStatus("success");
+  }
 });
 //get postmen
-app.get('/postman', (req,res) => {
-  const SqlSelect ='SELECT * from postman';
+app.get("/postman", (req, res) => {
+  const SqlSelect = "SELECT * from postman";
   db.query(SqlSelect, (err, result) => {
-    if(err) {
-      res.send(err)
-    }else{
+    if (err) {
+      res.send(err);
+    } else {
       console.log(result);
-      res.send(result)
+      res.send(result);
     }
   });
-
 });
-//update postman 
+//update postman
 app.put("/api/updatePostman/:id", (req, res) => {
   const id = Number(req.params.id);
-  const nameU=req.body.nameU;
-  const lastnameU= req.body.lastnameU;
-  const phonenumberU=req.body.phonenumberU;
-  db.query("UPDATE postman SET Name=?, LastName=?, phonenumber=? WHERE Id=?",
-  [nameU,lastnameU, phonenumberU,id],
-      (err, result) => {
-        if (err) {
-          console.log(err);
-          // res.status(500).send("Error updating data");
-        } else {
-          res.send(result);
-        }
+  const nameU = req.body.nameU;
+  const lastnameU = req.body.lastnameU;
+  const phonenumberU = req.body.phonenumberU;
+  db.query(
+    "UPDATE postman SET Name=?, LastName=?, phonenumber=? WHERE Id=?",
+    [nameU, lastnameU, phonenumberU, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        // res.status(500).send("Error updating data");
+      } else {
+        res.send(result);
       }
+    }
   );
 });
 //pe boj push okej
@@ -475,6 +475,16 @@ app.delete("/deletePostman/:id", (req, res) => {
       console.log(`Deleted postman with ID ${id}`);
       res.status(200).send("Postman deleted successfully");
     }
+  });
+});
+//
+app.get("/admin/category", (req, res) => {
+  db.query("SELECT * FROM category", (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    }
+    console.log(result);
+    res.send(result);
   });
 });
 

@@ -3,6 +3,7 @@ import { SlBasket } from "react-icons/sl";
 import Header from "../components/Header";
 import axios from "axios";
 import ProductsTemplate from "../components/ProductsTemplate";
+import ScrollToTop from "react-scroll-up";
 const Home = () => {
   const [username, setUsername] = useState("");
   useEffect(() => {
@@ -14,6 +15,7 @@ const Home = () => {
     });
   }, []);
   const [productsTable, setProductsTable] = useState([]);
+  const [categoriesTable, setCategoriesTable] = useState([]);
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
@@ -21,6 +23,16 @@ const Home = () => {
       .get("http://localhost:3001/admin/products")
       .then((response) => {
         setProductsTable(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/admin/category")
+      .then((response) => {
+        setCategoriesTable(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -104,10 +116,21 @@ const Home = () => {
           />
         </div>
       </div>
+      {categoriesTable?.map((category, i) => {
+        console.log(category);
+        return (
+          <div
+            key={i}
+            className=" absolute p-2 top-[650px] w-40 rounded-lg h-16 border backdrop-filter backdrop-blur-md left-1/4 "
+          >
+            <span className=" text-[#bebcbe]">{category.Name}</span>
+          </div>
+        );
+      })}
       <div className=" px-32 py-20">
         <h1 className="text-[#24292F] text-[49px]">New Arrivals</h1>
         <div className="flex flex-row flex-wrap gap-6">
-          {productsTable.map((product, i) => {
+          {productsTable?.map((product, i) => {
             return (
               <ProductsTemplate
                 name={product.Name}
@@ -116,6 +139,27 @@ const Home = () => {
               />
             );
           })}
+          <ScrollToTop showUnder={160}>
+            <button
+              type="button"
+              class="text-blue-700 border rotate-[-90deg] border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 "
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              <span class="sr-only">Icon description</span>
+            </button>
+          </ScrollToTop>
         </div>
       </div>
     </div>

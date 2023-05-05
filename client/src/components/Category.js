@@ -25,7 +25,6 @@ const Category = () => {
       });
   }, []);
 
-
   // delete category function
   const deleteCategory = (id) => {
     axios
@@ -39,7 +38,6 @@ const Category = () => {
   //
   const [name, setName] = useState("");
   const [img, setImg] = useState("");
- 
 
   // insert category function
   const insertCategory = () => {
@@ -95,7 +93,6 @@ const Category = () => {
     closeOnOverlayClick: false,
   });
   return (
-   
     <div className="row-auto flex items-center justify-start h-screen">
       <Sidebar />
       <div className="relative overflow-x-auto ml-80 shadow-md sm:rounded-lg">
@@ -111,7 +108,9 @@ const Category = () => {
           <Modal2>
             <div className="bg-white p-14 rounded-xl">
               <div className="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
-                <h3 className="text-xl font-semibold dark:text-white">Add New</h3>
+                <h3 className="text-xl font-semibold dark:text-white">
+                  Add New
+                </h3>
                 <button
                   type="button"
                   class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-700 dark:hover:text-white"
@@ -155,7 +154,7 @@ const Category = () => {
                         }}
                       />
                     </div>
-                  
+
                     <div class="col-span-6 sm:col-span-3">
                       <label
                         for="email"
@@ -207,13 +206,7 @@ const Category = () => {
             </tr>
           </thead>
           <tbody>
-            
-          
-          
-          
-          
-          
-          {categoryTable.map((category, i) => {
+            {categoryTable.map((category, i) => {
               return (
                 <tr
                   key={category.Id}
@@ -227,8 +220,7 @@ const Category = () => {
                   </th>
                   <td className="px-6 py-4">{category.Name}</td>
                   <td className="px-6 py-4">{category.Img}</td>
-                  
-                 
+
                   <td className="px-6 py-4 text-right">
                     <button
                       onClick={() => {
@@ -305,7 +297,7 @@ const Category = () => {
                                     >
                                       Img
                                     </label>
-                               
+
                                     <input
                                       onChange={(e) => {
                                         setImgU(e.target.value);
@@ -322,14 +314,11 @@ const Category = () => {
                                     <label
                                       for="addressU"
                                       className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >
-                                     
-                                    </label>
-                                   </div>
-                                  
+                                    ></label>
                                   </div>
-                                  <br></br>
-                                  <button
+                                </div>
+                                <br></br>
+                                <button
                                   onClick={(e) => {
                                     e.preventDefault();
                                     console.log(categoryId);
@@ -338,7 +327,6 @@ const Category = () => {
                                   type="submit"
                                   className="bg-gradient-to-r text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-14 h-25"
                                 >
-                                   
                                   <AiOutlineEdit />
                                 </button>
                               </form>
@@ -350,7 +338,6 @@ const Category = () => {
                   </td>
                 </tr>
               );
-
             })}
           </tbody>
         </table>

@@ -41,7 +41,7 @@ const Sidebar = (props) => {
               onClick={() => {
                 navigate(menu.link);
               }}
-              className="flex items-center text-sm gap-3.5 font-medium p-2 hover:bg-gray-800 rounded-md"
+              className="flex cursor-pointer items-center text-sm gap-3.5 font-medium p-2 hover:bg-gray-800 rounded-md"
             >
               <div>{React.createElement(menu?.icon, { size: "20" })} </div>
               <h2>{menu?.name}</h2>

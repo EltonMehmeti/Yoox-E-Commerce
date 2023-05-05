@@ -4,7 +4,7 @@ import { useModal } from "react-hooks-use-modal";
 import { useNavigate } from "react-router-dom";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
-import { AiFillCloseCircle } from "react-icons/ai";
+import { BsSortAlphaDown } from "react-icons/bs";
 import Sidebar from "./Sidebar";
 const Users = () => {
   const [usersTable, setUsersTable] = useState([]);
@@ -102,6 +102,21 @@ const Users = () => {
     preventScroll: true,
     closeOnOverlayClick: false,
   });
+  const sort = () => {
+    const sortedUsersTable = [...usersTable].sort((a, b) => {
+      const nameA = a.Name.toUpperCase();
+      const nameB = b.Name.toUpperCase();
+      if (nameA < nameB) {
+        return -1;
+      }
+      if (nameA > nameB) {
+        return 1;
+      }
+      return 0;
+    });
+    setUsersTable(sortedUsersTable);
+  };
+
   return (
     <div className="flex ">
       <Sidebar />
@@ -113,6 +128,14 @@ const Users = () => {
           }}
         >
           Create User
+        </button>
+        <button
+          class="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mr-2 mb-2"
+          onClick={() => {
+            sort();
+          }}
+        >
+          <BsSortAlphaDown />
         </button>
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-800">
           <Modal2>

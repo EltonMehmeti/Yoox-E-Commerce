@@ -5,6 +5,7 @@ import axios from "axios";
 import ProductsTemplate from "../components/ProductsTemplate";
 import ScrollToTop from "react-scroll-up";
 import Intro from "../img/intro.png";
+import { Link } from "react-router-dom";
 const Home = () => {
   const [username, setUsername] = useState("");
   useEffect(() => {
@@ -93,22 +94,22 @@ const Home = () => {
           <img src={Intro} className="h-[300px] w-[100%]" />
         </div>
       </div>
-      <div className="mt-10 flex w-full items-center flex-wrap bg-transparent justify-center flex-row gap-4">
+      <div className="mt-10  flex w-full p-2   border-b-2 items-center flex-wrap justify-center flex-row gap-4">
         {categoriesTable?.map((category, i) => {
           console.log(category);
           return (
             <div
               key={i}
-              className=" flex p-2 cursor-pointer items-center justify-center w-44 rounded-xl h-16 bg-[#221F24] text-center backdrop-filter backdrop-blur-md left-1/4 "
+              className=" flex p-2 cursor-pointer border-b-2 items-center justify-center w-50 h-16 text-center  left-1/4 "
             >
               <img src="" />
               <span
                 onClick={() => {
                   handleCar(category.Id);
                 }}
-                className=" text-white text-center"
+                className=" text-black text-xl font-bold text-center"
               >
-                <h1>
+                <h1 style={{ fontFamily: "Geo, sans-serif" }}>
                   {category.Id} - {category.Name}
                 </h1>
               </span>
@@ -121,11 +122,13 @@ const Home = () => {
         <div id="products" className="flex flex-row flex-wrap gap-6">
           {productsTable?.map((product, i) => {
             return (
-              <ProductsTemplate
-                name={product.Name}
-                desc={product.Description}
-                price={product.Price}
-              />
+              <Link to={`/Sproduct:${product.Id}`}>
+                <ProductsTemplate
+                  name={product.Name}
+                  desc={product.Description}
+                  price={product.Price}
+                />
+              </Link>
             );
           })}
           <ScrollToTop showUnder={160}>

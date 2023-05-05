@@ -488,58 +488,58 @@ app.get("/admin/category", (req, res) => {
   });
 });
 
-
-
 //INSERT postman
-app.post('/create', (req,res) =>{
-  try{
-      const name=req.body.name;
-      const lastname=req.body.lastname;
-      const phonenumber=req.body.phonenumber;
+app.post("/create", (req, res) => {
+  try {
+    const name = req.body.name;
+    const lastname = req.body.lastname;
+    const phonenumber = req.body.phonenumber;
 
-      db.query('INSERT INTO postman (Name, LastName, phonenumber) VALUES (?,?,?)',
-      [name,lastname,phonenumber], 
-      (err, result) => {
-        if(err) {
-          console.log(err)
-        }else{
-          res.send("Values inserted!")
-        }
-      });
- }catch (err) {
-  console.error(err);
-  res.sendStatus("success");
- }
-});
-//get postmen
-app.get('/postman', (req,res) => {
-  const SqlSelect ='SELECT * from postman';
-  db.query(SqlSelect, (err, result) => {
-    if(err) {
-      res.send(err)
-    }else{
-      console.log(result);
-      res.send(result)
-    }
-  });
-
-});
-//update postman 
-app.put("/api/updatePostman/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const nameU=req.body.nameU;
-  const lastnameU= req.body.lastnameU;
-  const phonenumberU=req.body.phonenumberU;
-  db.query("UPDATE postman SET Name=?, LastName=?, phonenumber=? WHERE Id=?",
-  [nameU,lastnameU, phonenumberU,id],
+    db.query(
+      "INSERT INTO postman (Name, LastName, phonenumber) VALUES (?,?,?)",
+      [name, lastname, phonenumber],
       (err, result) => {
         if (err) {
           console.log(err);
-          // res.status(500).send("Error updating data");
         } else {
-          res.send(result);
+          res.send("Values inserted!");
         }
       }
+    );
+  } catch (err) {
+    console.error(err);
+    res.sendStatus("success");
+  }
+});
+//get postmen
+app.get("/postman", (req, res) => {
+  const SqlSelect = "SELECT * from postman";
+  db.query(SqlSelect, (err, result) => {
+    if (err) {
+      res.send(err);
+    } else {
+      console.log(result);
+      res.send(result);
+    }
+  });
+});
+//update postman
+app.put("/api/updatePostman/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const nameU = req.body.nameU;
+  const lastnameU = req.body.lastnameU;
+  const phonenumberU = req.body.phonenumberU;
+  db.query(
+    "UPDATE postman SET Name=?, LastName=?, phonenumber=? WHERE Id=?",
+    [nameU, lastnameU, phonenumberU, id],
+    (err, result) => {
+      if (err) {
+        console.log(err);
+        // res.status(500).send("Error updating data");
+      } else {
+        res.send(result);
+      }
+    }
   );
 });
 
@@ -575,20 +575,16 @@ app.post("/api/insertCategory", async (req, res) => {
   try {
     const { name, img } = req.body;
 
-      const sqlInsert = `
+    const sqlInsert = `
         INSERT INTO Category (Name,img)
         VALUES (?,?)
       `;
 
-      const result = db.query(sqlInsert, [
-        name,
-        img,
-      ]);
+    const result = db.query(sqlInsert, [name, img]);
 
-      console.log(result);
+    console.log(result);
 
-      res.sendStatus(200);
-    ;
+    res.sendStatus(200);
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
@@ -609,7 +605,6 @@ app.delete("/api/deleteCategory/:id", (req, res) => {
   });
 });
 
-
 // Update Category
 app.put("/api/updateCategory/:id", (req, res) => {
   const id = Number(req.params.id);
@@ -629,8 +624,6 @@ app.put("/api/updateCategory/:id", (req, res) => {
     }
   );
 });
-
-
 
 app.listen(3001, () => {
   console.log("Running server");

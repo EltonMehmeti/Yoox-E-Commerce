@@ -6,6 +6,18 @@ import ProductsTemplate from "../components/ProductsTemplate";
 import ScrollToTop from "react-scroll-up";
 import Intro from "../img/intro.png";
 import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from "swiper/react";
+import budsW from "../img/nothingW.webp";
+import budsB from "../img/nothingB.webp";
+import buds3 from "../img/nothing3.webp";
+import nVideo from "../img/nothingVideo.mp4";
+// Import Swiper styles
+
+import "swiper/css/effect-cube";
+import "swiper/css/pagination";
+
+// import required modules
+import { EffectCube, Pagination } from "swiper";
 const Home = () => {
   const [username, setUsername] = useState("");
   useEffect(() => {
@@ -46,13 +58,15 @@ const Home = () => {
       productsTable.filter((product) => product.CategoryId === CatId)
     );
   };
+  const [search, setSearch] = useState("");
 
   return (
     <div>
       <Header username={username} />
       <div className="flex flex-wrap flex-row bg-orange-500   ">
         <div id="left" className="w-2/3 overflow-hidden p-40">
-          <h1 className="text-[#bebcbe] text-[89px]">Mackbook 14 Pro</h1>
+          <p className="text-clip text-[#bebcbe] text-xl">New Arrival</p>
+          <h1 className="text-[#bebcbe] text-[89px]">Nothing</h1>
           <p className="text-clip text-[#bebcbe] text-xl">
             Supercharged M2 Pro or M2 Max, Mackbook Pro takes its powe and
             efficiency further than ever. It delivers exceptional peformance
@@ -91,7 +105,36 @@ const Home = () => {
           </div>
         </div>
         <div id="right" className="w-1/3 p-10 flex items-center justify-center">
-          <img src={Intro} className="h-[300px] w-[100%]" />
+          {/* <img src={Intro} className="h-[300px] w-[100%]" /> */}
+          <Swiper
+            effect={"cube"}
+            grabCursor={true}
+            cubeEffect={{
+              shadow: true,
+              slideShadows: true,
+              shadowOffset: 20,
+              shadowScale: 0.94,
+            }}
+            pagination={true}
+            modules={[EffectCube, Pagination]}
+          >
+            <SwiperSlide>
+              <img src={budsB} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={budsW} />
+            </SwiperSlide>
+            <SwiperSlide className="flex items-center justify-center">
+              <video
+                className="h-full w-full object-contain"
+                src={nVideo}
+                autoPlay
+                loop
+                muted
+              />
+              <img src={buds3} />
+            </SwiperSlide>
+          </Swiper>
         </div>
       </div>
       <div className="mt-10  flex w-full p-2   border-b-2 items-center flex-wrap justify-center flex-row gap-4">
@@ -117,20 +160,64 @@ const Home = () => {
           );
         })}
       </div>
+
       <div className=" px-32 py-20">
-        <h1 className="text-[#24292F] text-[49px]">New Arrivals</h1>
+        <div className="p-10">
+          <h1 className="text-[#24292F] text-[49px]">New Arrivals</h1>
+
+          <label for="voice-search" class="sr-only">
+            Search
+          </label>
+          <div class="relative w-full">
+            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+              <svg
+                aria-hidden="true"
+                class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+            </div>
+            <input
+              onChange={(e) => {
+                setSearch(e.target.value);
+              }}
+              type="text"
+              id="voice-search"
+              class="bg-gray-50 border w-72 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search Mockups, Logos, Design Templates..."
+              required
+            />
+          </div>
+        </div>
         <div id="products" className="flex flex-row flex-wrap gap-6">
-          {productsTable?.map((product, i) => {
-            return (
-              <Link to={`/Sproduct:${product.Id}`}>
-                <ProductsTemplate
-                  name={product.Name}
-                  desc={product.Description}
-                  price={product.Price}
-                />
-              </Link>
-            );
-          })}
+          {productsTable
+            ?.filter((val) => {
+              if (search == "") {
+                return val;
+              } else if (
+                val.Name.toLowerCase().includes(search.toLowerCase())
+              ) {
+                return val;
+              }
+            })
+            .map((product, i) => {
+              return (
+                <Link to={`/product/${product.Id}`}>
+                  <ProductsTemplate
+                    name={product.Name}
+                    desc={product.Description}
+                    price={product.Price}
+                  />
+                </Link>
+              );
+            })}
           <ScrollToTop showUnder={160}>
             <button
               type="button"

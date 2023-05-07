@@ -117,26 +117,41 @@ const Products = () => {
     const sortedByPrice = [...productsTable].sort((a, b) => a.Price - b.Price);
     setProductsTable(sortedByPrice);
   };
+  const [search, setSearch] = useState("");
   return (
     <div className="flex items-center justify-start h-screen">
       <Sidebar />
       <div className="relative overflow-x-auto ml-20 w-[75%] h-[70%] shadow-md sm:rounded-lg">
-        <button
-          className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
-          onClick={() => {
-            open2();
-          }}
-        >
-          Create Product
-        </button>
-        <button
-          class="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mr-2 mb-2"
-          onClick={() => {
-            sort();
-          }}
-        >
-          <BsSortNumericDown />
-        </button>
+        <div className="flex flex-row justify-around items-center">
+          <button
+            className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+            onClick={() => {
+              open2();
+            }}
+          >
+            Create Product
+          </button>
+          <button
+            class="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mr-2 mb-2"
+            onClick={() => {
+              sort();
+            }}
+          >
+            <BsSortNumericDown />
+          </button>
+
+          <input
+            type="search"
+            onChange={(e) => {
+              console.log(e.target.value);
+              setSearch(e.target.value);
+            }}
+            id="default-search"
+            class=" w-1/5  h-[40px] mb-2  p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            placeholder="Search By Name"
+            required
+          />
+        </div>
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-800">
           <Modal2>
             <div className="bg-white p-14 rounded-xl">
@@ -368,272 +383,282 @@ const Products = () => {
             </tr>
           </thead>
           <tbody>
-            {productsTable.map((product, i) => {
-              console.log(product);
-              return (
-                <tr
-                  key={product.Id}
-                  className="bg-white border-b h-[70px] dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
-                >
-                  <th
-                    scope="row"
-                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            {productsTable
+              .filter((val) => {
+                if (search == "") {
+                  return val;
+                } else if (
+                  val.Name.toLowerCase().includes(search.toLowerCase())
+                ) {
+                  return val;
+                }
+              })
+              .map((product, i) => {
+                console.log(product);
+                return (
+                  <tr
+                    key={product.Id}
+                    className="bg-white border-b h-[70px] dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600"
                   >
-                    {product.Name}
-                  </th>
-                  <td className="px-6 py-2">
-                    {product.Description.slice(0, 60)}
-                  </td>
-                  <td scope="row" class="">
-                    <img
-                      src={product.img1}
-                      alt={product.img1}
-                      class="w-auto h-8 mr-3"
-                    />
-                  </td>
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {product.Name}
+                    </th>
+                    <td className="px-6 py-2">
+                      {product.Description.slice(0, 60)}
+                    </td>
+                    <td scope="row" class="">
+                      <img
+                        src={product.img1}
+                        alt={product.img1}
+                        class="w-auto h-8 mr-3"
+                      />
+                    </td>
 
-                  <td className="px-6 py-2">
-                    <img
-                      src={product.img2}
-                      alt="iMac Front Image"
-                      class="w-auto h-8 mr-3"
-                    />
-                  </td>
-                  <td className="px-6 py-2">
-                    {" "}
-                    <img
-                      src={product.img3}
-                      alt="iMac Front Image"
-                      class="w-auto h-8 mr-3"
-                    />
-                  </td>
-                  <td className="px-6 py-2">{product.Price}</td>
-                  <td className="px-6 py-2">{product.Stock}</td>
-                  <td className="px-6 py-2">{product.CategoryId}</td>
-                  <td className="px-6 py-2 text-right">
-                    <button
-                      onClick={() => {
-                        console.log(product.Id);
-                        deleteProduct(product.Id);
-                      }}
-                      type="button"
-                      className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-14 h-25"
-                    >
-                      <BsFillTrash3Fill />
-                    </button>
-                    <button
-                      className="bg-gradient-to-r text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-14 h-25"
-                      onClick={() => {
-                        setProductId((productId = product.Id));
-                        // console.log(userId);
-                        open();
-                      }}
-                    >
-                      <AiOutlineEdit />
-                    </button>
-                    <div class="relative bg-white rounded-lg shadow dark:bg-gray-800">
-                      <Modal>
-                        <div className=" bg-white p-14 rounded-xl">
-                          <button
-                            type="button"
-                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-700 dark:hover:text-white"
-                            data-modal-toggle="add-user-modal"
-                            onClick={close}
-                          >
-                            <svg
-                              class="w-5 h-5"
-                              fill="currentColor"
-                              viewBox="0 0 20 20"
-                              xmlns="http://www.w3.org/2000/svg"
+                    <td className="px-6 py-2">
+                      <img
+                        src={product.img2}
+                        alt="iMac Front Image"
+                        class="w-auto h-8 mr-3"
+                      />
+                    </td>
+                    <td className="px-6 py-2">
+                      {" "}
+                      <img
+                        src={product.img3}
+                        alt="iMac Front Image"
+                        class="w-auto h-8 mr-3"
+                      />
+                    </td>
+                    <td className="px-6 py-2">{product.Price}</td>
+                    <td className="px-6 py-2">{product.Stock}</td>
+                    <td className="px-6 py-2">{product.CategoryId}</td>
+                    <td className="px-6 py-2 text-right">
+                      <button
+                        onClick={() => {
+                          console.log(product.Id);
+                          deleteProduct(product.Id);
+                        }}
+                        type="button"
+                        className="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-red-300 dark:focus:ring-red-800 shadow-lg shadow-red-500/50 dark:shadow-lg dark:shadow-red-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-14 h-25"
+                      >
+                        <BsFillTrash3Fill />
+                      </button>
+                      <button
+                        className="bg-gradient-to-r text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-14 h-25"
+                        onClick={() => {
+                          setProductId((productId = product.Id));
+                          // console.log(userId);
+                          open();
+                        }}
+                      >
+                        <AiOutlineEdit />
+                      </button>
+                      <div class="relative bg-white rounded-lg shadow dark:bg-gray-800">
+                        <Modal>
+                          <div className=" bg-white p-14 rounded-xl">
+                            <button
+                              type="button"
+                              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-700 dark:hover:text-white"
+                              data-modal-toggle="add-user-modal"
+                              onClick={close}
                             >
-                              <path
-                                fill-rule="evenodd"
-                                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                                clip-rule="evenodd"
-                              ></path>
-                            </svg>
-                          </button>
-                          <section className="bg-white dark:bg-gray-900">
-                            <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
-                              <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-                                Update Product with Id: {productId}
-                              </h2>
-                              <form action="">
-                                <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                                  <div className="sm:col-span-2">
-                                    <label
-                                      for="name"
-                                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >
-                                      Name{" "}
-                                    </label>
-                                    <input
-                                      onChange={(e) => {
-                                        setNameUpdated(e.target.value);
-                                      }}
-                                      type="text"
-                                      name="nameU"
-                                      id="name"
-                                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Type product name"
-                                      required=""
-                                    />
+                              <svg
+                                class="w-5 h-5"
+                                fill="currentColor"
+                                viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                  clip-rule="evenodd"
+                                ></path>
+                              </svg>
+                            </button>
+                            <section className="bg-white dark:bg-gray-900">
+                              <div className="py-8 px-4 mx-auto max-w-2xl lg:py-16">
+                                <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
+                                  Update Product with Id: {productId}
+                                </h2>
+                                <form action="">
+                                  <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
+                                    <div className="sm:col-span-2">
+                                      <label
+                                        for="name"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                      >
+                                        Name{" "}
+                                      </label>
+                                      <input
+                                        onChange={(e) => {
+                                          setNameUpdated(e.target.value);
+                                        }}
+                                        type="text"
+                                        name="nameU"
+                                        id="name"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="Type product name"
+                                        required=""
+                                      />
+                                    </div>
+                                    <div className="w-full">
+                                      <label
+                                        for="emailU"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                      >
+                                        Description
+                                      </label>
+                                      <input
+                                        onChange={(e) => {
+                                          setDescU(e.target.value);
+                                        }}
+                                        type="text"
+                                        name="descU"
+                                        id="brand"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="Description"
+                                        required=""
+                                      />
+                                    </div>
+                                    <div className="w-full">
+                                      <label
+                                        for="passwordU"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                      >
+                                        Img1
+                                      </label>
+                                      <input
+                                        onChange={(e) => {
+                                          setImg1U(e.target.value);
+                                        }}
+                                        type="file"
+                                        name="img1U"
+                                        id="price"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="Image"
+                                        required=""
+                                      />
+                                    </div>
+                                    <div className="w-full">
+                                      <label
+                                        for="addressU"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                      >
+                                        Img2
+                                      </label>
+                                      <input
+                                        onChange={(e) => {
+                                          setImg2U(e.target.value);
+                                        }}
+                                        type="file"
+                                        name="img2U"
+                                        id="price"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="Image"
+                                        required=""
+                                      />
+                                    </div>
+                                    <div>
+                                      <label
+                                        for="category"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                      >
+                                        Img3
+                                      </label>
+                                      <input
+                                        onChange={(e) => {
+                                          setImg3U(e.target.value);
+                                        }}
+                                        type="file"
+                                        name="img3U"
+                                        placeholder="Image"
+                                        id="category"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                      />
+                                    </div>
+                                    <div>
+                                      <label
+                                        for="item-weight"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                      >
+                                        Price
+                                      </label>
+                                      <input
+                                        onChange={(e) => {
+                                          setPriceU(e.target.value);
+                                        }}
+                                        type="number"
+                                        name="priceU"
+                                        id="item-weight"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="Price"
+                                        required=""
+                                      />
+                                    </div>
+                                    <div className="">
+                                      <label
+                                        for="description"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                      >
+                                        Stock
+                                      </label>
+                                      <input
+                                        onChange={(e) => {
+                                          setStockU(e.target.value);
+                                        }}
+                                        type="text"
+                                        name="stockU"
+                                        id="item-weight"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="Stock"
+                                        required=""
+                                      />
+                                    </div>
+                                    <div>
+                                      <label
+                                        for="item-weight"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                      >
+                                        Category
+                                      </label>
+                                      <input
+                                        onChange={(e) => {
+                                          setCategoryU(e.target.value);
+                                        }}
+                                        type="number"
+                                        name="categoryU"
+                                        id="item-weight"
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="Category"
+                                        required=""
+                                      />
+                                    </div>
                                   </div>
-                                  <div className="w-full">
-                                    <label
-                                      for="emailU"
-                                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >
-                                      Description
-                                    </label>
-                                    <input
-                                      onChange={(e) => {
-                                        setDescU(e.target.value);
-                                      }}
-                                      type="text"
-                                      name="descU"
-                                      id="brand"
-                                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Description"
-                                      required=""
-                                    />
-                                  </div>
-                                  <div className="w-full">
-                                    <label
-                                      for="passwordU"
-                                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >
-                                      Img1
-                                    </label>
-                                    <input
-                                      onChange={(e) => {
-                                        setImg1U(e.target.value);
-                                      }}
-                                      type="file"
-                                      name="img1U"
-                                      id="price"
-                                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Image"
-                                      required=""
-                                    />
-                                  </div>
-                                  <div className="w-full">
-                                    <label
-                                      for="addressU"
-                                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >
-                                      Img2
-                                    </label>
-                                    <input
-                                      onChange={(e) => {
-                                        setImg2U(e.target.value);
-                                      }}
-                                      type="file"
-                                      name="img2U"
-                                      id="price"
-                                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Image"
-                                      required=""
-                                    />
-                                  </div>
-                                  <div>
-                                    <label
-                                      for="category"
-                                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >
-                                      Img3
-                                    </label>
-                                    <input
-                                      onChange={(e) => {
-                                        setImg3U(e.target.value);
-                                      }}
-                                      type="file"
-                                      name="img3U"
-                                      placeholder="Image"
-                                      id="category"
-                                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    />
-                                  </div>
-                                  <div>
-                                    <label
-                                      for="item-weight"
-                                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >
-                                      Price
-                                    </label>
-                                    <input
-                                      onChange={(e) => {
-                                        setPriceU(e.target.value);
-                                      }}
-                                      type="number"
-                                      name="priceU"
-                                      id="item-weight"
-                                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Price"
-                                      required=""
-                                    />
-                                  </div>
-                                  <div className="">
-                                    <label
-                                      for="description"
-                                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >
-                                      Stock
-                                    </label>
-                                    <input
-                                      onChange={(e) => {
-                                        setStockU(e.target.value);
-                                      }}
-                                      type="text"
-                                      name="stockU"
-                                      id="item-weight"
-                                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Stock"
-                                      required=""
-                                    />
-                                  </div>
-                                  <div>
-                                    <label
-                                      for="item-weight"
-                                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                    >
-                                      Category
-                                    </label>
-                                    <input
-                                      onChange={(e) => {
-                                        setCategoryU(e.target.value);
-                                      }}
-                                      type="number"
-                                      name="categoryU"
-                                      id="item-weight"
-                                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      placeholder="Category"
-                                      required=""
-                                    />
-                                  </div>
-                                </div>
-                                <br></br>
-                                <button
-                                  onClick={(e) => {
-                                    e.preventDefault();
-                                    console.log(productId);
-                                    updateProduct(productId);
-                                  }}
-                                  type="submit"
-                                  className="bg-gradient-to-r text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-14 h-25"
-                                >
-                                  <AiOutlineEdit />
-                                </button>
-                              </form>
-                            </div>
-                          </section>
-                        </div>
-                      </Modal>
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
+                                  <br></br>
+                                  <button
+                                    onClick={(e) => {
+                                      e.preventDefault();
+                                      console.log(productId);
+                                      updateProduct(productId);
+                                    }}
+                                    type="submit"
+                                    className="bg-gradient-to-r text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-14 h-25"
+                                  >
+                                    <AiOutlineEdit />
+                                  </button>
+                                </form>
+                              </div>
+                            </section>
+                          </div>
+                        </Modal>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>

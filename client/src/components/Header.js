@@ -5,9 +5,9 @@ import Logo from "../img/logo2.png";
 import { AiOutlineLogin } from "react-icons/ai";
 const Header = (props) => {
   return (
-    <nav class="bg-orange-500  border-gray-200 dark:bg-gray-900 sticky z-50">
+    <nav class="bg-[#24292F]   border-gray-200 dark:bg-gray-900 sticky z-50">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="#" class="flex items-center">
+        <a href="http://localhost:3000/" class="flex items-center">
           <img src={Logo} class="h-8 mr-3" alt="Flowbite Logo" />
           <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-black text-white">
             YOoX
@@ -46,7 +46,14 @@ const Header = (props) => {
                 Home
               </a>
             </li>
-            <li>
+            <li
+              onClick={() => {
+                const ele = document.getElementById("products");
+                setTimeout(() => {
+                  ele.scrollIntoView({ behavior: "smooth" });
+                }, 0);
+              }}
+            >
               <a
                 href="#"
                 class="block py-2 pl-3 pr-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"

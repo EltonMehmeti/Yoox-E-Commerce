@@ -63,14 +63,14 @@ const Home = () => {
   return (
     <div>
       <Header username={username} />
-      <div className="flex flex-wrap flex-row bg-orange-500   ">
+      <div className="flex flex-wrap flex-row  bg-[#24292F]   ">
         <div id="left" className="w-2/3 overflow-hidden p-40">
           <p className="text-clip text-[#bebcbe] text-xl">New Arrival</p>
           <h1 className="text-[#bebcbe] text-[89px]">Nothing</h1>
           <p className="text-clip text-[#bebcbe] text-xl">
-            Supercharged M2 Pro or M2 Max, Mackbook Pro takes its powe and
-            efficiency further than ever. It delivers exceptional peformance
-            wether its plugged or not.
+            Tech gets in the way too often. Of what we want to experience. The
+            sensations. The emotions. Ear (stick) takes away those walls. This
+            is tech you can’t feel. So you can experience everything els
           </p>
           <br></br>
           <div className="flex flex-row ">
@@ -118,12 +118,6 @@ const Home = () => {
             pagination={true}
             modules={[EffectCube, Pagination]}
           >
-            <SwiperSlide>
-              <img src={budsB} />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src={budsW} />
-            </SwiperSlide>
             <SwiperSlide className="flex items-center justify-center">
               <video
                 className="h-full w-full object-contain"
@@ -134,10 +128,16 @@ const Home = () => {
               />
               <img src={buds3} />
             </SwiperSlide>
+            <SwiperSlide>
+              <img src={budsB} />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src={budsW} />
+            </SwiperSlide>
           </Swiper>
         </div>
       </div>
-      <div className="mt-10  flex w-full p-2   border-b-2 items-center flex-wrap justify-center flex-row gap-4">
+      <div className="mt-10  flex w-full p-2 bg-gray-100   border-b-2 items-center flex-wrap justify-center flex-row gap-4">
         {categoriesTable?.map((category, i) => {
           console.log(category);
           return (
@@ -161,7 +161,7 @@ const Home = () => {
         })}
       </div>
 
-      <div className=" px-32 py-20">
+      <div className=" px-32 bg-gray-100 py-20">
         <div className="p-10">
           <h1 className="text-[#24292F] text-[49px]">New Arrivals</h1>
 
@@ -221,7 +221,7 @@ const Home = () => {
           <ScrollToTop showUnder={160}>
             <button
               type="button"
-              class="text-blue-700 border rotate-[-90deg] border-blue-700 hover:bg-blue-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:focus:ring-blue-800 dark:hover:bg-blue-500"
+              class="text-gray-700 border rotate-[-90deg] border-gray-700 hover:bg-gray-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:focus:ring-gray-800 dark:hover:bg-gray-500"
             >
               <svg
                 aria-hidden="true"

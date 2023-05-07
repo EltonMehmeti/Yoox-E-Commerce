@@ -72,7 +72,7 @@ const SingleProduct = () => {
           <h1 class="text-gray-900 font-bold text-xl mb-2">{name}</h1>
           <h3 class="text-gray-700 text-base">{desc}</h3>
           <h1 className="font-bold">{price}$</h1>
-          <p class="text-gray-600">{stock}</p>
+          <p class="text-gray-600">Stock: {stock}</p>
           <button>Add to Cart</button>
         </div>
       </div>

@@ -8,7 +8,7 @@ import Header from "../components/Header";
 
 const AboutUs = () => {
   return (
-    <div className="w-full h-full  bg-gray-900">
+    <div className="w-full h-full  bg-[#24292F]">
       <Header />
       <div className="max-w-[1240px] mx-auto">
         <div className="text-center">
@@ -35,7 +35,7 @@ const AboutUs = () => {
         </div>
       </div>
       <div className="w-full h-screen mt-24">
-        <div className=" w-full h-[700px] bg-gray-900/90 absolute">
+        <div className=" w-full h-[700px] bg-[#24292F] absolute">
           <img
             className="w-full h-full object-cover mix-blend-overlay "
             src={photo}
@@ -62,7 +62,7 @@ const AboutUs = () => {
               <div className="p-8 text-center">
                 <img className="w-[200px] rounded-full " src={e1} />
                 <h3 className="font-bold pt-6 py-4 text-orange-500  text-2xl">
-                  Tom Cook
+                  Elton Mehmeti
                 </h3>
                 <p>Web Developer</p>
               </div>
@@ -71,7 +71,7 @@ const AboutUs = () => {
               <div className="p-8 text-center">
                 <img className="w-[200px] rounded-full " src={e2} />
                 <h3 className="font-bold pt-6 py-4 text-orange-500 text-2xl">
-                  Kristin Watson
+                  Dasara Rexha
                 </h3>
                 <p>UX-Designer</p>
               </div>
@@ -80,7 +80,7 @@ const AboutUs = () => {
               <div className="p-8 text-center">
                 <img className="w-[200px] rounded-full " src={e3} />
                 <h3 className="font-bold text-2xl text-orange-500 py-4 pt-6">
-                  Floyd Miles
+                  Blendi Miftari
                 </h3>
                 <p>Content Creator</p>
               </div>
@@ -89,7 +89,7 @@ const AboutUs = () => {
               <div className="p-8 text-center">
                 <img className="w-[200px] rounded-full " src={e4} />
                 <h3 className="font-bold pt-6 py-4 text-orange-500 text-2xl">
-                  Alicia Bell
+                  Jeta Gagica
                 </h3>
                 <p>Customer Service Representative</p>
               </div>

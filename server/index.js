@@ -624,6 +624,18 @@ app.put("/api/updateCategory/:id", (req, res) => {
     }
   );
 });
+// Single Prodcuts
+app.get("/product/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const q = "Select * from product where Id=?;";
+
+  db.query(q, [id], (err, result) => {
+    if (err) {
+      console.log(err);
+    }
+    res.send(result);
+  });
+});
 
 app.listen(3001, () => {
   console.log("Running server");

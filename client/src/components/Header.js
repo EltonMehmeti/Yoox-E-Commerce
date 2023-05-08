@@ -50,7 +50,7 @@ const Header = (props) => {
               onClick={() => {
                 const ele = document.getElementById("products");
                 setTimeout(() => {
-                  ele.scrollIntoView({ behavior: "smooth" });
+                  ele?.scrollIntoView({ behavior: "smooth" });
                 }, 0);
               }}
             >

@@ -13,6 +13,7 @@ import Users from "./components/Users";
 import Footer from "./components/Footer";
 import AboutUs from "./pages/AboutUs";
 import SingleProduct from "./components/SingleProduct";
+
 function App() {
   return (
     <>

@@ -8,6 +8,8 @@ const saltRounds = 10;
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
 
+const multer = require("multer");
+
 app.use(express.json());
 app.use(
   cors({
@@ -342,6 +344,7 @@ app.get("/admin/products", (req, res) => {
     res.send(result);
   });
 });
+
 // Create product
 app.post("/api/insertProduct", async (req, res) => {
   try {

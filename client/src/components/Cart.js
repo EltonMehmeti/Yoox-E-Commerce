@@ -62,7 +62,7 @@ const Cart = () => {
       </div>
       {showCart && (
         <div
-          className="absolute overflow-y-scroll overflow-x-hidden rounded-2xl right-4 backdrop-filter backdrop-blur-md border-2 bg-white bg-opacity-5 w-[380px] h-[300px] p-3  mt-20"
+          className="absolute overflow-y-scroll border-none overflow-x-hidden rounded-2xl right-4 backdrop-filter backdrop-blur-md border-2 bg-white bg-opacity-5 w-[380px] h-[300px] p-3  mt-20"
           style={{ scrollbarWidth: "none" }}
         >
           {data.map((element) => (

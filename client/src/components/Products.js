@@ -394,7 +394,8 @@ const Products = () => {
                 }
               })
               .map((product, i) => {
-                console.log(product);
+                console.log(`C:\Users\px\Desktop\DBImage${product.img2}`);
+
                 return (
                   <tr
                     key={product.Id}
@@ -409,9 +410,9 @@ const Products = () => {
                     <td className="px-6 py-2">
                       {product.Description.slice(0, 60)}
                     </td>
-                    <td scope="row" class="">
+                    <td scope="row" class="px-6 py-2">
                       <img
-                        src={product.img1}
+                        src={`C:\Users\px\Desktop\DBImage${product.img1}`}
                         alt={product.img1}
                         class="w-auto h-8 mr-3"
                       />

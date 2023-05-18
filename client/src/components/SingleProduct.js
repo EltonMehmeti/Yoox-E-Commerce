@@ -7,6 +7,8 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper";
+import Swal from "sweetalert2";
+
 const SingleProduct = () => {
   const location = useLocation();
   const [name, setName] = useState("");
@@ -16,7 +18,7 @@ const SingleProduct = () => {
   const [img3, setImg3] = useState("");
   const [price, setPrice] = useState(null);
   const [stock, setStock] = useState(null);
-  const id = location.pathname.split("/")[2];
+
   useEffect(() => {
     const id = location.pathname.split("/")[2];
     console.log(id);
@@ -121,13 +123,13 @@ const SingleProduct = () => {
           >
             <SwiperSlide>
               <img
-                className=" h-full"
+                className=" h-full object-cover"
                 src="https://w7.pngwing.com/pngs/961/642/png-transparent-iphone-14-pro.png"
               ></img>
             </SwiperSlide>
             <SwiperSlide>
               <img
-                className="w-full h-full"
+                className="w-[100%] object-cover"
                 src="https://plus.unsplash.com/premium_photo-1672243970579-8cd2d0e9e0b6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dGVjaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
               ></img>
             </SwiperSlide>
@@ -144,6 +146,7 @@ const SingleProduct = () => {
           <h3 class="text-gray-700 text-base">{desc}</h3>
           <h1 className="font-bold">{price}$</h1>
           <p class="text-gray-600">Stock: {stock}</p>
+
           <button className=" hover:border-2 w-24">Add to Cart</button>
         </div>
       </div>

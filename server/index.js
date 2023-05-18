@@ -97,7 +97,6 @@ app.post("/api/login", (req, res) => {
         if (response) {
           req.session.user = result;
 
-          console.log(req.session);
           req.session.user = result;
           res.send(result);
         } else {
@@ -277,7 +276,7 @@ app.put("/api/updateProduct/:id", (req, res) => {
     }
   );
 });
-
+// WIDGETS
 // count total users
 app.get("/api/totalUsers", (req, res) => {
   const countQuery = "SELECT COUNT(*) as total_users FROM users;";
@@ -300,6 +299,26 @@ app.get("/api/totalProducts", (req, res) => {
     res.send(result);
   });
 });
+// get the new created users
+app.get("/api/getnewusers", (req, res) => {
+  const today = new Date();
+  const firstDayOfWeek = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() - today.getDay()
+  ); // Get the first day of the week
+  const q = `SELECT COUNT(*) AS newUsers FROM Users WHERE createdAt >= '${firstDayOfWeek.toISOString()}'`;
+  // Execute the query
+  db.query(q, (error, results) => {
+    if (error) {
+      res.status(500).send({ error: "Error fetching new users." });
+    } else {
+      const newUsersCount = results[0].newUsers;
+      res.send({ count: newUsersCount });
+    }
+  });
+});
+
 // DASARAA
 app.get("/postman", (req, res) => {
   db.query("SELECT * FROM postman", (err, result) => {
@@ -466,7 +485,7 @@ app.put("/api/updatePostman/:id", (req, res) => {
     }
   );
 });
-//pe boj push okej
+
 //delete postman
 app.delete("/deletePostman/:id", (req, res) => {
   const id = Number(req.params.id);
@@ -639,6 +658,7 @@ app.get("/product/:id", (req, res) => {
     res.send(result);
   });
 });
+// add to cart session
 
 app.listen(3001, () => {
   console.log("Running server");

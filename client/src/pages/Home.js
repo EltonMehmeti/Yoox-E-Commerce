@@ -18,6 +18,7 @@ import "swiper/css/pagination";
 
 // import required modules
 import { EffectCube, Pagination } from "swiper";
+import Page404 from "../components/404";
 const Home = () => {
   const [username, setUsername] = useState("");
   useEffect(() => {
@@ -66,7 +67,9 @@ const Home = () => {
       <div className="flex flex-wrap flex-row  bg-[#24292F]   ">
         <div id="left" className="w-2/3 overflow-hidden p-40">
           <p className="text-clip text-[#bebcbe] text-xl">New Arrival</p>
-          <h1 className="text-[#bebcbe] text-[89px]">Nothing</h1>
+          <h1 className="text-[#bebcbe] text-[89px] first-letter:text-[#d31e2b]">
+            Nothing
+          </h1>
           <p className="text-clip text-[#bebcbe] text-xl">
             Tech gets in the way too often. Of what we want to experience. The
             sensations. The emotions. Ear (stick) takes away those walls. This
@@ -197,27 +200,31 @@ const Home = () => {
           </div>
         </div>
         <div id="products" className="flex flex-row flex-wrap gap-6">
-          {productsTable
-            ?.filter((val) => {
-              if (search == "") {
-                return val;
-              } else if (
-                val.Name.toLowerCase().includes(search.toLowerCase())
-              ) {
-                return val;
-              }
-            })
-            .map((product, i) => {
-              return (
-                <Link to={`/product/${product.Id}`}>
-                  <ProductsTemplate
-                    name={product.Name}
-                    desc={product.Description}
-                    price={product.Price}
-                  />
-                </Link>
-              );
-            })}
+          {productsTable.length > 0 ? (
+            productsTable
+              ?.filter((val) => {
+                if (search == "") {
+                  return val;
+                } else if (
+                  val.Name.toLowerCase().includes(search.toLowerCase())
+                ) {
+                  return val;
+                }
+              })
+              .map((product, i) => {
+                return (
+                  <Link to={`/product/${product.Id}`}>
+                    <ProductsTemplate
+                      name={product.Name}
+                      desc={product.Description}
+                      price={product.Price}
+                    />
+                  </Link>
+                );
+              })
+          ) : (
+            <Page404 />
+          )}
           <ScrollToTop showUnder={160}>
             <button
               type="button"

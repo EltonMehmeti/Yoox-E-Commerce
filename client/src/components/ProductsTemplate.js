@@ -1,5 +1,6 @@
 import React from "react";
-import Logo from "../img/loginFigure.png";
+import Logo from "../img/nothingW.webp";
+import { TbBoxMultiple3 } from "react-icons/tb";
 const ProductsTemplate = ({ name, desc, img, price }) => {
   return (
     <div>
@@ -8,6 +9,7 @@ const ProductsTemplate = ({ name, desc, img, price }) => {
           <img class="p-8 rounded-t-lg" src={Logo} alt="product image" />
         </a>
         <div class="px-5 pb-5">
+          <TbBoxMultiple3 />
           <a href="#">
             <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
               {name}

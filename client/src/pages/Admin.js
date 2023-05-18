@@ -17,16 +17,21 @@ const Admin = () => {
   }, []);
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
+  const [newUsers, setNewUsers] = useState(0);
 
   useEffect(() => {
     Promise.all([
       axios.get("http://localhost:3001/api/totalUsers"),
       axios.get("http://localhost:3001/api/totalProducts"),
-    ]).then(([totalUsersResponse, ordersResponse]) => {
+      axios.get("http://localhost:3001/api/getnewusers"),
+    ]).then(([totalUsersResponse, ordersResponse, newUsersTotal]) => {
       console.log(totalUsersResponse.data[0].total_users);
       setTotalUsers(totalUsersResponse.data[0].total_users);
       console.log(ordersResponse.data[0].total_products);
       setTotalProducts(ordersResponse.data[0].total_products);
+      console.log(newUsersTotal);
+      console.log(newUsersTotal.data.count);
+      setNewUsers(newUsersTotal.data.count);
     });
   }, []);
 
@@ -44,7 +49,11 @@ const Admin = () => {
   return (
     <div className="flex h-screen">
       <Sidebar username={username} />
-      <Widgets users={totalUsers} products={totalProducts} />
+      <Widgets
+        users={totalUsers}
+        products={totalProducts}
+        newUsers={newUsers}
+      />
     </div>
   );
 };

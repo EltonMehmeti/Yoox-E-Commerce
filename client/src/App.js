@@ -2,19 +2,20 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
-
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Postman from "./components/Postman";
 import Category from "./components/Category";
-
+import Delivery  from "./components/Delivery";
 import Products from "./components/Products";
 import Users from "./components/Users";
 import Footer from "./components/Footer";
 import AboutUs from "./pages/AboutUs";
 import SingleProduct from "./components/SingleProduct";
+
 import Chat from "./components/Chat";
 import ChatComponent from "./components/ChatComponent";
+
 
 function App() {
   return (
@@ -23,7 +24,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/product/:id" element={<SingleProduct />} />
-
           <Route path="/users" element={<Users />} />
           <Route path="/postman" element={<Postman />} />
           <Route path="/products" element={<Products />} />
@@ -33,7 +33,8 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/aboutus" element={<AboutUs />} />
-        </Routes>
+          <Route path = "/delivery" element={<Delivery /> }/>
+         </Routes>
       </Router>
     </>
   );

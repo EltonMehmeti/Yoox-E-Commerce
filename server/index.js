@@ -658,8 +658,51 @@ app.get("/product/:id", (req, res) => {
     res.send(result);
   });
 });
-// add to cart session
+// Real time chat
+const http = require("http");
+const server = http.createServer(app);
 
+const { Server } = require("socket.io");
+const io = new Server(server, {
+  cors: {
+    origin: "http://localhost:3000",
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+// Create an empty array to store the room names
+
+io.on("connection", (socket) => {
+  const rooms = [];
+  console.log("User connected", socket.id);
+
+  socket.on("join_room", (data) => {
+    socket.join(data);
+    if (!rooms.includes(data)) {
+      rooms.push(data);
+
+      // Send the updated room list to all connected clients
+      io.emit("room_list", rooms);
+      console.log(rooms);
+    }
+    console.log(`User with ID: ${socket.id} joined room ${data}`);
+
+    // Add the room name to the array if it doesn't already exist
+  });
+
+  socket.on("send_message", (data) => {
+    console.log(data);
+    socket.to(data.room).emit("receive_message", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("User disconnected!", socket.id);
+  });
+});
+
+server.listen(3002, () => {
+  console.log("Server running");
+});
 app.listen(3001, () => {
   console.log("Running server");
 });

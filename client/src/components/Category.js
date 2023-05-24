@@ -3,9 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
-import { AiFillCloseCircle } from "react-icons/ai";
 import { useModal } from "react-hooks-use-modal";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 

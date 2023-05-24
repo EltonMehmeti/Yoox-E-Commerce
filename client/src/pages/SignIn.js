@@ -29,6 +29,9 @@ const SignIn = () => {
         } else if (response.data[0].User_Type == "Admin") {
           navigate("/admin");
           setLoginStatus(response.data[0].Name);
+        } else if (response.data[0].User_Type == "CS") {
+          navigate("/costumerS");
+          setLoginStatus(response.data[0].Name);
         }
       });
   };

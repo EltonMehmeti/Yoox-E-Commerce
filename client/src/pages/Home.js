@@ -19,6 +19,7 @@ import "swiper/css/pagination";
 // import required modules
 import { EffectCube, Pagination } from "swiper";
 import Page404 from "../components/404";
+import Chat from "../components/Chat";
 const Home = () => {
   const [username, setUsername] = useState("");
   useEffect(() => {
@@ -64,6 +65,7 @@ const Home = () => {
   return (
     <div>
       <Header username={username} />
+
       <div className="flex flex-wrap flex-row  bg-[#24292F]   ">
         <div id="left" className="w-2/3 overflow-hidden p-40">
           <p className="text-clip text-[#bebcbe] text-xl">New Arrival</p>
@@ -225,6 +227,7 @@ const Home = () => {
           ) : (
             <Page404 />
           )}
+
           <ScrollToTop showUnder={160}>
             <button
               type="button"
@@ -248,6 +251,7 @@ const Home = () => {
           </ScrollToTop>
         </div>
       </div>
+      <Chat />
     </div>
   );
 };

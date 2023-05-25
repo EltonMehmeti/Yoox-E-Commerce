@@ -83,15 +83,16 @@ const Chat = () => {
   }, []);
 
   return (
-    <div className="sticky left-10 bottom-10">
+    <div className="">
       <button
         onClick={() => {
           handleCreateRoom();
           console.log(rooms);
         }}
-        className="w-14 h-14 flex items-center justify-center p-3 rounded-full bg-white border-2"
+        className="w-14 h-14 flex items-center hover:bg-blue-600
+         justify-center p-4 rounded-full bg-white border-2"
       >
-        <BsChatLeft size={"40px"} />
+        <BsChatLeft className="hover:text-white" size={"40px"} />
       </button>
 
       {popup && (
@@ -108,13 +109,19 @@ const Chat = () => {
                     }`}
                   >
                     <div>
-                      <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+                      <div
+                        class={
+                          room === message.author
+                            ? "bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg"
+                            : "bg-gray-300 p-3 rounded-r-lg rounded-bl-lg"
+                        }
+                      >
                         <p class="text-sm">{message.message}</p>
                       </div>
                       <span class="text-xs text-gray-500 leading-none">
                         {message.time}
                       </span>
-                      <p className="text-black">{message.author}</p>
+                      <p className="text-black text-xs">{message.author}</p>
                     </div>
                   </div>
                 );

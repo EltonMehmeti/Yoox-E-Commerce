@@ -3,7 +3,15 @@ import logo from "../img/logo1.png";
 import Cart from "./Cart";
 import Logo from "../img/logo2.png";
 import { AiOutlineLogin } from "react-icons/ai";
+import { CartContext } from "../pages/CartContext";
+import { useContext } from "react";
 const Header = (props) => {
+  const cart = useContext(CartContext);
+
+  const productsCount = cart.items.reduce(
+    (sum, product) => sum + product.quantity,
+    0
+  );
   return (
     <nav class="bg-[#24292F]   border-gray-200 dark:bg-gray-900 sticky z-50">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">

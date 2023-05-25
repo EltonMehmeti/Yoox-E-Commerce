@@ -215,13 +215,15 @@ const Home = () => {
               })
               .map((product, i) => {
                 return (
-                  <Link to={`/product/${product.Id}`}>
-                    <ProductsTemplate
-                      name={product.Name}
-                      desc={product.Description}
-                      price={product.Price}
-                    />
-                  </Link>
+                  // <Link to={`/product/${product.Id}`}>
+                  <ProductsTemplate
+                    id={product.Id}
+                    name={product.Name}
+                    desc={product.Description}
+                    price={product.Price}
+                    stock={product.Stock}
+                  />
+                  // </Link>
                 );
               })
           ) : (
@@ -251,7 +253,9 @@ const Home = () => {
           </ScrollToTop>
         </div>
       </div>
-      <Chat />
+      <div className="sticky ml-4 bottom-4">
+        <Chat />
+      </div>
     </div>
   );
 };

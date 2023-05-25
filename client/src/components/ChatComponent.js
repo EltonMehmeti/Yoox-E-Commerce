@@ -140,10 +140,8 @@ const ChatComponent = () => {
       <Modal>
         <div className="flex items-center justify-center">
           <div className=" w-[500px] h-[500px] bg-slate-400 border  rounded-lg">
-            <h1>Hi{} </h1>
-
             <div class="flex flex-col flex-grow w-full h-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
-              <div class="flex flex-col flex-grow h-0 p-4 overflow-auto">
+              <div class="flex flex-col items-center flex-grow h-0 p-4 overflow-auto">
                 <h3 className="p-1">{singleRoom}</h3>
                 {messageList?.map((message) => {
                   console.log(currentMessage, message.author);
@@ -156,7 +154,13 @@ const ChatComponent = () => {
                       }`}
                     >
                       <div>
-                        <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+                        <div
+                          class={
+                            singleRoom === message.author
+                              ? "bg-gray-300 p-3 rounded-r-lg rounded-bl-lg"
+                              : "bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg"
+                          }
+                        >
                           <p class="text-sm">{message.message}</p>
                         </div>
                         <span class="text-xs text-gray-500 leading-none">

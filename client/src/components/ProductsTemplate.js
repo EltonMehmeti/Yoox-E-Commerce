@@ -1,7 +1,12 @@
 import React from "react";
 import Logo from "../img/nothingW.webp";
 import { TbBoxMultiple3 } from "react-icons/tb";
-const ProductsTemplate = ({ name, desc, img, price }) => {
+import { CartContext } from "../pages/CartContext";
+import { useContext } from "react";
+const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
+  const cart = useContext(CartContext);
+  const productQuantity = cart.getProductQuantity(id);
+  console.log(cart.items);
   return (
     <div>
       <div class="w-full max-w-sm h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
@@ -70,16 +75,49 @@ const ProductsTemplate = ({ name, desc, img, price }) => {
               5.0
             </span>
           </div>
+          <h3>In Cart:{productQuantity}</h3>
+
           <div class="flex items-center justify-between">
             <span class="text-3xl font-bold text-gray-900 dark:text-white">
               {price}$
             </span>
-            <a
-              href="#"
-              class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              Add to cart
-            </a>
+            {productQuantity > 0 ? (
+              <>
+                <button
+                  onClick={() => {
+                    cart.removeOneFromCart(id);
+                  }}
+                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  -
+                </button>
+                <button
+                  onClick={() => {
+                    cart.addOneToCart(id);
+                  }}
+                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  +
+                </button>
+                <br></br>
+                <button
+                  class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                  onClick={() => cart.deleteFromCart(id)}
+                >
+                  Remove from Cart
+                </button>
+              </>
+            ) : (
+              <button
+                onClick={() => {
+                  cart.addOneToCart(id);
+                }}
+                href="#"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                Add to cart
+              </button>
+            )}
           </div>
         </div>
       </div>

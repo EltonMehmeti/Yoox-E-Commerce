@@ -4,7 +4,7 @@ import { BsChatLeft } from "react-icons/bs";
 import { BsSend } from "react-icons/bs";
 import Swal from "sweetalert2";
 import axios from "axios";
-
+import ScrollToBottom from "react-scroll-to-bottom";
 const socket = io.connect("http://localhost:3002");
 const Chat = () => {
   axios.defaults.withCredentials = true;
@@ -51,7 +51,7 @@ const Chat = () => {
     if (currentMessage !== "") {
       const messageData = {
         room: room,
-        author: room.trim(),
+        author: currentUser,
         message: currentMessage,
         time:
           new Date(Date.now()).getHours() +
@@ -60,6 +60,7 @@ const Chat = () => {
       };
       await socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
+      setCurrentMessage("");
     }
   };
 
@@ -100,46 +101,23 @@ const Chat = () => {
           <div className="flex flex-col flex-grow w-full h-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
             <div className="flex flex-col flex-grow h-0 p-4 overflow-auto">
               {messageList?.map((message) => {
-                if (message.author === currentUser) {
-                  return (
-                    <div
-                      className={`flex w-full mt-2 space-x-3 max-w-xs ${
-                        currentUser === message.author
-                          ? "justify-start"
-                          : "justify-end"
-                      }`}
-                    >
-                      <div>
-                        <div
-                          className={`${
-                            currentUser === message.author
-                              ? "bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg"
-                              : "bg-gray-300 p-3 rounded-r-lg rounded-br-lg"
-                          }`}
-                        >
-                          <p className="text-sm">{message.message}</p>
-                        </div>
-                        <span className="text-xs text-gray-500 leading-none">
-                          {message.time}
-                        </span>
+                return (
+                  <div
+                    className={`flex w-full mt-2 space-x-3 max-w-xs ${
+                      room === message.author ? "justify-end" : "justify-start"
+                    }`}
+                  >
+                    <div>
+                      <div class="bg-gray-300 p-3 rounded-r-lg rounded-bl-lg">
+                        <p class="text-sm">{message.message}</p>
                       </div>
+                      <span class="text-xs text-gray-500 leading-none">
+                        {message.time}
+                      </span>
+                      <p className="text-black">{message.author}</p>
                     </div>
-                  );
-                } else {
-                  return (
-                    <div className="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
-                      <div>
-                        <div className="bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg">
-                          <p className="text-sm">{message.author}</p>
-                        </div>
-                        <span className="text-xs text-gray-500 leading-none">
-                          {message.time}
-                        </span>
-                      </div>
-                      <div className="flex-shrink-0 h-10 w-10 rounded-full bg-gray-300"></div>
-                    </div>
-                  );
-                }
+                  </div>
+                );
               })}
 
               {/* <div className="flex w-full mt-2 space-x-3 max-w-xs ml-auto justify-end">
@@ -162,9 +140,13 @@ const Chat = () => {
               <input
                 className="flex items-center h-10 w-full rounded px-3 text-sm"
                 type="text"
+                value={currentMessage}
                 placeholder="Type your message…"
                 onChange={(e) => {
                   setCurrentMessage(e.target.value);
+                }}
+                onKeyDown={(e) => {
+                  e.key === "Enter" && sendMessage();
                 }}
               />
               <button onClick={sendMessage} className="p-1">

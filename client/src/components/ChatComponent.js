@@ -24,6 +24,7 @@ const ChatComponent = () => {
   }, []);
   const handleJoinRoom = (room) => {
     setSingleRoom(room);
+    setRoomStatus("Joined");
     socket.emit("join_room", room);
   };
 
@@ -41,7 +42,7 @@ const ChatComponent = () => {
     if (currentMessage !== "") {
       const messageData = {
         room: singleRoom,
-        author: singleRoom,
+        author: currentUser,
         message: currentMessage,
         time:
           new Date(Date.now()).getHours() +
@@ -50,6 +51,7 @@ const ChatComponent = () => {
       };
       await socket.emit("send_message", messageData);
       setMessageList((list) => [...list, messageData]);
+      setCurrentMessage("");
     }
   };
   // receive message
@@ -72,7 +74,7 @@ const ChatComponent = () => {
     console.log(rooms);
     setRooms(rooms);
   };
-
+  const [roomStatus, setRoomStatus] = useState("Pending...");
   const [Modal, open, close, isOpen] = useModal("root", {
     preventScroll: true,
     closeOnOverlayClick: true,
@@ -107,9 +109,19 @@ const ChatComponent = () => {
                       <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
                         {room}
                       </p>
+                      <h3
+                        className={`${
+                          roomStatus === "Pending..."
+                            ? "text-orange-400"
+                            : "text-green-400"
+                        }`}
+                      >
+                        {roomStatus}
+                      </h3>
                     </div>
                     <div class="inline-flex items-center cursor-pointer text-base font-semibold text-gray-900 dark:text-white">
                       <button
+                        class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                         onClick={() => {
                           handleJoinRoom(room);
                           open();
@@ -138,7 +150,7 @@ const ChatComponent = () => {
                   return (
                     <div
                       className={`flex w-full mt-2 space-x-3 max-w-xs ${
-                        currentUser === message.author
+                        singleRoom === message.author
                           ? "justify-start"
                           : "justify-end"
                       }`}
@@ -150,6 +162,7 @@ const ChatComponent = () => {
                         <span class="text-xs text-gray-500 leading-none">
                           {message.time}
                         </span>
+                        <p className="text-black">{message.author}</p>
                       </div>
                     </div>
                   );
@@ -160,9 +173,13 @@ const ChatComponent = () => {
                 <input
                   class="flex items-center h-10 w-full rounded px-3 text-sm"
                   type="text"
+                  value={currentMessage}
                   placeholder="Type your message…"
                   onChange={(e) => {
                     setCurrentMessage(e.target.value);
+                  }}
+                  onKeyDown={(e) => {
+                    e.key === "Enter" && sendMessage();
                   }}
                 />
                 <button onClick={sendMessage} className=" p-1">

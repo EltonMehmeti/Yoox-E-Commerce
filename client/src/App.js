@@ -4,17 +4,17 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
-import Postman from "./components/Postman";
-import Category from "./components/Category";
-import Delivery from "./components/Delivery";
-import Products from "./components/Products";
-import Users from "./components/Users";
+import Postman from "./components/admin/Postman";
+import Category from "./components/admin/Category";
+import Delivery from "./components/admin/Delivery";
+import Products from "./components/admin/Products";
+import Users from "./components/admin/Users";
 import Footer from "./components/Footer";
 import AboutUs from "./pages/AboutUs";
 import SingleProduct from "./components/SingleProduct";
 
 import Chat from "./components/Chat";
-import ChatComponent from "./components/ChatComponent";
+import ChatComponent from "./components/admin/ChatComponent";
 import CartProvider, { CartContext } from "./pages/CartContext";
 
 function App() {
@@ -38,7 +38,7 @@ function App() {
           </Routes>
         </Router>
       </CartProvider>
-      <Delivery progress={31} />
+      {/* <Delivery progress={31} /> */}
     </>
   );
 }

@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
-import Widgets from "../components/Widgets";
+import Sidebar from "../components/admin/Sidebar";
+import Widgets from "../components/admin/Widgets";
 const Admin = () => {
   axios.defaults.withCredentials = true;
   const [username, setUsername] = useState("");

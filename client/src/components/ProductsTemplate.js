@@ -3,6 +3,7 @@ import Logo from "../img/nothingW.webp";
 import { TbBoxMultiple3 } from "react-icons/tb";
 import { CartContext } from "../pages/CartContext";
 import { useContext } from "react";
+import { Link } from "react-router-dom";
 const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
   const cart = useContext(CartContext);
   const productQuantity = cart.getProductQuantity(id);
@@ -10,9 +11,16 @@ const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
   return (
     <div>
       <div class="w-full max-w-sm h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-        <a href="#">
-          <img class="p-8 rounded-t-lg" src={Logo} alt="product image" />
-        </a>
+        <Link to={`/product/${id}`}>
+          <div className="relative">
+            <img className="p-8 rounded-t-lg" src={Logo} alt="product image" />
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
+              <p className="text-white text-lg bg-black bg-opacity-75 px-4 py-2 rounded">
+                See more
+              </p>
+            </div>
+          </div>
+        </Link>
         <div class="px-5 pb-5">
           <TbBoxMultiple3 />
           <a href="#">
@@ -87,7 +95,7 @@ const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
                   onClick={() => {
                     cart.removeOneFromCart(id);
                   }}
-                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   -
                 </button>
@@ -95,13 +103,13 @@ const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
                   onClick={() => {
                     cart.addOneToCart(id);
                   }}
-                  class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   +
                 </button>
-                <br></br>
+                <br />
                 <button
-                  class="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                  className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                   onClick={() => cart.deleteFromCart(id)}
                 >
                   Remove from Cart
@@ -113,7 +121,7 @@ const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
                   cart.addOneToCart(id);
                 }}
                 href="#"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Add to cart
               </button>

@@ -64,7 +64,9 @@ const Home = () => {
 
   return (
     <div>
-      <Header username={username} />
+      <div className="top-0 z-50 sticky">
+        <Header username={username} />
+      </div>
 
       <div className="flex flex-wrap flex-row  bg-[#24292F]   ">
         <div id="left" className="w-2/3 overflow-hidden p-40">

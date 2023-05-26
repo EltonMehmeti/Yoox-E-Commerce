@@ -7,7 +7,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { BsSortNumericDown } from "react-icons/bs";
 import { useModal } from "react-hooks-use-modal";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "./Sidebar";
 
 const Products = () => {
   const [productsTable, setProductsTable] = useState([]);

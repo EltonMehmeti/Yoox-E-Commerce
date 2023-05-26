@@ -146,8 +146,6 @@ const SingleProduct = () => {
           <h3 class="text-gray-700 text-base">{desc}</h3>
           <h1 className="font-bold">{price}$</h1>
           <p class="text-gray-600">Stock: {stock}</p>
-
-          <button className=" hover:border-2 w-24">Add to Cart</button>
         </div>
       </div>
     </>

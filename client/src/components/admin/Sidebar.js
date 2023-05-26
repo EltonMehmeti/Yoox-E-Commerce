@@ -1,5 +1,5 @@
 import React from "react";
-import icon1 from "../img/logo2.png";
+import icon1 from "../../img/logo2.png";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { BsHouse } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";

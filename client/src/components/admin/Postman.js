@@ -7,7 +7,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { useModal } from "react-hooks-use-modal";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "./Sidebar";
 
 const Postman = () => {
   axios.defaults.withCredentials = true;

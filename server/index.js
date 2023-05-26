@@ -717,7 +717,6 @@ const stripe = require("stripe")(
 app.post("/checkout", async (req, res) => {
   const items = req.body.items;
   let lineItems = [];
-
   items.forEach((item) => {
     lineItems.push({
       price_data: {
@@ -725,23 +724,34 @@ app.post("/checkout", async (req, res) => {
         product_data: {
           name: item.Name,
           description: item.Description,
-          images: [item.Img1, item.Img2, item.Img3],
+          // images: [item.Img1, item.Img2, item.Img3],
         },
-        unit_amount: item.Price * 100,
+        unit_amount: Math.round(item.Price * 100),
       },
-      quantity: item.Stock, // Include the quantity property
+      quantity: item.quantity, // Include the quantity property
     });
+    console.log("Your cart items: " + JSON.stringify(items));
   });
 
   const session = await stripe.checkout.sessions.create({
     line_items: lineItems,
     payment_method_types: ["card"],
     mode: "payment",
-    success_url: "http://localhost:3000/success",
+    success_url: "http://localhost:3000/",
     cancel_url: "http://localhost:3000/signin",
   });
 
   res.send(JSON.stringify({ url: session.url }));
+});
+
+app.get("/api/stripeorders", async (req, res) => {
+  try {
+    const orders = await stripe.orders.list();
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ error: "Failed to fetch orders" });
+  }
 });
 
 app.listen(3001, () => {

@@ -13,7 +13,7 @@ const Header = (props) => {
     0
   );
   return (
-    <nav class="bg-[#24292F]   border-gray-200 dark:bg-gray-900 sticky z-50">
+    <nav class="bg-[#24292F] top-0   border-gray-200 dark:bg-gray-900 sticky z-50">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
         <a href="http://localhost:3000/" class="flex items-center">
           <img src={Logo} class="h-8 mr-3" alt="Flowbite Logo" />
@@ -103,12 +103,12 @@ const Header = (props) => {
               )}
             </li>
             <li>
-              <a
-                href="#"
-                class="block py-2 pl-3 pr-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
+              <span
+                href=""
+                class=" cursor-pointer block py-2 pl-3 pr-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
               >
                 <Cart />
-              </a>
+              </span>
             </li>
           </ul>
         </div>

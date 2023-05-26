@@ -703,6 +703,60 @@ io.on("connection", (socket) => {
 server.listen(3002, () => {
   console.log("Server running");
 });
+<<<<<<< Updated upstream
+=======
+
+// stripee
+// Key:   sk_test_51NBiUGDbbGVWjFGzO8hy2eeRGzMqDMSG6I4UX9iLF6WDQPE9ME0nLfDOkd1wF7XvSM1h9G92tZlathSUN7Cg3weZ00hgf7QWUP
+// macbook :price_1NBiWJDbbGVWjFGzgwyFXMFM
+// iphone: price_1NBiXtDbbGVWjFGz2lrpCbr5
+// camera: price_1NBiYcDbbGVWjFGz5zNa6rKL
+
+const stripe = require("stripe")(
+  "sk_test_51NBiUGDbbGVWjFGzO8hy2eeRGzMqDMSG6I4UX9iLF6WDQPE9ME0nLfDOkd1wF7XvSM1h9G92tZlathSUN7Cg3weZ00hgf7QWUP"
+);
+
+app.post("/checkout", async (req, res) => {
+  const items = req.body.items;
+  let lineItems = [];
+  items.forEach((item) => {
+    lineItems.push({
+      price_data: {
+        currency: "usd",
+        product_data: {
+          name: item.Name,
+          description: item.Description,
+          // images: [item.Img1, item.Img2, item.Img3],
+        },
+        unit_amount: Math.round(item.Price * 100),
+      },
+      quantity: item.quantity, // Include the quantity property
+    });
+    console.log("Your cart items: " + JSON.stringify(items));
+  });
+
+  const session = await stripe.checkout.sessions.create({
+    line_items: lineItems,
+    payment_method_types: ["card"],
+    mode: "payment",
+    success_url: "http://localhost:3000/",
+    cancel_url: "http://localhost:3000/signin",
+  });
+
+  res.send(JSON.stringify({ url: session.url }));
+});
+
+app.get("/api/stripeorders", async (req, res) => {
+  try {
+    const orders = await stripe.orders.list();
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ error: "Failed to fetch orders" });
+  }
+});
+
+>>>>>>> Stashed changes
 app.listen(3001, () => {
   console.log("Running server");
 });

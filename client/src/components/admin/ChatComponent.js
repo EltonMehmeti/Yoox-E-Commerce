@@ -140,16 +140,21 @@ const ChatComponent = () => {
       <Modal>
         <div className="flex items-center justify-center">
           <div className=" w-[500px] h-[500px] bg-slate-400 border  rounded-lg">
+<<<<<<< Updated upstream:client/src/components/ChatComponent.js
             <h1>Hi{} </h1>
 
             <div class="flex flex-col flex-grow w-full h-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
               <div class="flex flex-col flex-grow h-0 p-4 overflow-auto">
+=======
+            <div class="flex flex-col flex-grow w-full h-full  bg-white shadow-xl rounded-lg overflow-hidden">
+              <div class="flex flex-col items-center flex-grow h-0 p-4 overflow-auto">
+>>>>>>> Stashed changes:client/src/components/admin/ChatComponent.js
                 <h3 className="p-1">{singleRoom}</h3>
                 {messageList?.map((message) => {
                   console.log(currentMessage, message.author);
                   return (
                     <div
-                      className={`flex w-full mt-2 space-x-3 max-w-xs ${
+                      className={`flex w-full mt-2 space-x-3  ${
                         singleRoom === message.author
                           ? "justify-start"
                           : "justify-end"

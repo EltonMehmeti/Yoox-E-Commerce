@@ -16,6 +16,7 @@ import SingleProduct from "./components/SingleProduct";
 import Chat from "./components/Chat";
 import ChatComponent from "./components/admin/ChatComponent";
 import CartProvider, { CartContext } from "./pages/CartContext";
+import Payments from "./components/admin/Payments";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/aboutus" element={<AboutUs />} />
             <Route path="/delivery" element={<Delivery />} />
+            <Route path="/orders" element={<Payments />} />
           </Routes>
         </Router>
       </CartProvider>

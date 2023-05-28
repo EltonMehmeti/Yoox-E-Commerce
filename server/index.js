@@ -743,16 +743,41 @@ app.post("/checkout", async (req, res) => {
 
   res.send(JSON.stringify({ url: session.url }));
 });
-
-app.get("/api/stripeorders", async (req, res) => {
+app.get("/api/payments", async (req, res) => {
   try {
-    const orders = await stripe.orders.list();
-    res.json(orders);
+    // Fetch payments from Stripe API
+    const payments = await stripe.charges.list();
+
+    // Extract item information from payments and populate checkoutSummary
+    const checkoutSummary = {
+      customer: "", // Set the customer value accordingly
+      items: [],
+      totalAmount: 0,
+    };
+
+    payments.data.forEach((payment) => {
+      const item = {
+        name: payment.description, // Set the item name accordingly
+        quantity: payment.quantity, // Use the quantity value from payment
+        unitPrice: payment.unit_price, // Format the unit price as desired
+        amount: formatPrice(payment.amount), // Format the amount as desired
+      };
+
+      checkoutSummary.items.push(item);
+      checkoutSummary.totalAmount += payment.amount;
+    });
+
+    res.json(checkoutSummary);
   } catch (error) {
-    console.error("Error fetching orders:", error);
-    res.status(500).json({ error: "Failed to fetch orders" });
+    console.error(error);
+    res.status(500).json({ error: "An error occurred" });
   }
 });
+function formatPrice(amount) {
+  return (amount / 100).toFixed(2) + " $"; // Format the amount as USD
+}
+
+// balance
 
 app.listen(3001, () => {
   console.log("Running server");

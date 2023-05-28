@@ -4,7 +4,7 @@ import { BsChatLeft } from "react-icons/bs";
 import { BsSend } from "react-icons/bs";
 import Swal from "sweetalert2";
 import axios from "axios";
-import ScrollToBottom from "react-scroll-to-bottom";
+
 const socket = io.connect("http://localhost:3002");
 const Chat = () => {
   axios.defaults.withCredentials = true;

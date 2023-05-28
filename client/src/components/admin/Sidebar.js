@@ -14,7 +14,7 @@ const Sidebar = (props) => {
   const navigate = useNavigate();
   const menus = [
     { name: "Dashboard", link: "/admin", icon: BsHouse },
-    { name: "Settings", link: "/", icon: CiSettings },
+
     { name: "Users", link: "/users", icon: HiOutlineUsers },
     { name: "Products", link: "/products", icon: MdProductionQuantityLimits },
     { name: "Category", link: "/category", icon: RiBillLine },

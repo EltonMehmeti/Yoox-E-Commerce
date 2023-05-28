@@ -147,7 +147,7 @@ const ChatComponent = () => {
                   console.log(currentMessage, message.author);
                   return (
                     <div
-                      className={`flex w-full mt-2 space-x-3 max-w-xs ${
+                      className={`flex w-full mt-2 space-x-3  ${
                         singleRoom === message.author
                           ? "justify-start"
                           : "justify-end"

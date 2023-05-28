@@ -772,12 +772,16 @@ app.get("/api/payments", async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "An error occurred" });
   }
+
 });
 function formatPrice(amount) {
   return (amount / 100).toFixed(2) + " $"; // Format the amount as USD
 }
 
 // balance
+
+
+});
 
 app.listen(3001, () => {
   console.log("Running server");

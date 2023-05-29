@@ -737,7 +737,7 @@ app.post("/checkout", async (req, res) => {
     line_items: lineItems,
     payment_method_types: ["card"],
     mode: "payment",
-    success_url: "http://localhost:3000/",
+    success_url: "http://localhost:3000/success",
     cancel_url: "http://localhost:3000/signin",
   });
 
@@ -772,16 +772,12 @@ app.get("/api/payments", async (req, res) => {
     console.error(error);
     res.status(500).json({ error: "An error occurred" });
   }
-
 });
 function formatPrice(amount) {
   return (amount / 100).toFixed(2) + " $"; // Format the amount as USD
 }
 
 // balance
-
-
-});
 
 app.listen(3001, () => {
   console.log("Running server");

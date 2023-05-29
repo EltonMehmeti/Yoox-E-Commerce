@@ -12,10 +12,10 @@ import Users from "./components/admin/Users";
 import Footer from "./components/Footer";
 import AboutUs from "./pages/AboutUs";
 import SingleProduct from "./components/SingleProduct";
-
 import Chat from "./components/Chat";
 import ChatComponent from "./components/admin/ChatComponent";
 import CartProvider, { CartContext } from "./pages/CartContext";
+import SuccessfulPayment from "./components/SuccessfulPayment";
 
 function App() {
   return (
@@ -35,6 +35,7 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/aboutus" element={<AboutUs />} />
             <Route path="/delivery" element={<Delivery />} />
+            <Route path= "/successfulPayment" element={<SuccessfulPayment />} />
           </Routes>
         </Router>
       </CartProvider>

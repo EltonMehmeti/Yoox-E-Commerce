@@ -752,8 +752,7 @@ app.get("/api/stripeorders", async (req, res) => {
     console.error("Error fetching orders:", error);
     res.status(500).json({ error: "Failed to fetch orders" });
   }
-});
-
+});``
 app.listen(3001, () => {
   console.log("Running server");
 });

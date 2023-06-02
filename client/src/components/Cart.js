@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CgShoppingBag } from "react-icons/cg";
 import { IoBagCheckOutline } from "react-icons/io5";
 import { BsFillTrash3Fill } from "react-icons/bs";
@@ -10,7 +10,41 @@ import { CartContext } from "../pages/CartContext";
 import { useContext } from "react";
 import CartProduct from "./CartProduct";
 import { ProductsData, getProductData } from "./ProductsData";
+
+const getTotalCost = (cartProducts, productsTable) => {
+  let totalCost = 0;
+  console.log(cartProducts);
+  if (cartProducts && Array.isArray(cartProducts)) {
+    cartProducts.forEach((cartItem) => {
+      const productData = productsTable.find(
+        (product) => product.Id === cartItem.id
+      );
+
+      if (productData) {
+        totalCost += productData.Price * cartItem.quantity;
+      }
+    });
+  }
+
+  return totalCost;
+};
+
 const Cart = () => {
+  const [customerEmail, setCustomerEmail] = useState("");
+  const [address, setAddress] = useState("");
+
+  useEffect(() => {
+    axios.get("http://localhost:3001/api/loginStatus").then((response) => {
+      if (response.data.loggedIn === true) {
+        // Set the customer's email
+        setCustomerEmail(response.data.user[0].Email);
+        setAddress(response.data.user[0].Address);
+
+        // Call the checkout function with the customer's email
+      }
+    });
+  }, []);
+
   const checkout = async () => {
     console.log(checkoutItems);
     await fetch("http://localhost:3001/checkout", {
@@ -18,7 +52,12 @@ const Cart = () => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ items: checkoutItems }),
+      body: JSON.stringify({
+        items: checkoutItems,
+        customerEmail: customerEmail,
+        address: address,
+      }),
+      // Include the customer's email in the request body
     })
       .then((response) => {
         return response.json();
@@ -29,14 +68,11 @@ const Cart = () => {
         }
       });
   };
+
   const navigate = useNavigate();
   const Swal = require("sweetalert2");
-
   const [showCart, setShowCart] = useState(false);
-
   const handleClick = () => {
-    console.log(filteredItems2);
-
     axios.get("http://localhost:3001/api/loginStatus").then((response) => {
       if (response.data.loggedIn === true) {
         setShowCart(!showCart);
@@ -54,42 +90,27 @@ const Cart = () => {
     console.log(cart.items);
     console.log(checkoutItems);
   };
+
   const cart = useContext(CartContext);
   const productsCount = cart.items.reduce(
     (sum, product) => sum + product.quantity,
     0
   );
 
-  // Assuming the array is named 'items' and the cart items are in 'cart.items'
-
-  // Extract the cart item IDs into a separate array
   const cartItemIds = cart.items.map((item) => item.id);
-
   const { productsTable, isLoading } = ProductsData();
 
-  // Filter the 'items' array based on the cart item IDs
   const filteredItems = productsTable.filter((item) =>
     cartItemIds.includes(item.Id)
   );
-  const filteredItems2 = productsTable
-    .filter((item) => cartItemIds.includes(item.Id))
-    .map((item) => {
-      const cartItem = cart.items.find(
-        (cartItem) => cartItem.productId === item.Id
-      );
-      const quantity = cartItem ? cartItem.quantity : 0;
-      return {
-        ...item,
-        quantity: quantity,
-      };
-    });
 
   const checkoutItems = filteredItems.map((item) => {
     const quantity = cart.getProductQuantity(item.Id);
     const productInfo = productsTable.find((product) => product.Id === item.Id);
     return { id: item.Id, quantity: quantity, ...productInfo };
   });
-  // const totalCost = cart.getTotalCost(cart.items);
+
+  console.log();
   return (
     <div className="">
       <Toaster />
@@ -110,12 +131,12 @@ const Cart = () => {
             />
           ))}
 
-          {filteredItems <= 0 ? (
+          {checkoutItems <= 0 ? (
             <p>Your cart is empty!</p>
           ) : (
             <div>
               <h1 className="text-blue-600">
-                {/* Total : {cart.getTotalCost().toFixed(2)} */}
+                Total : {getTotalCost(checkoutItems, productsTable).toFixed(2)}
               </h1>
               <button
                 onClick={checkout}

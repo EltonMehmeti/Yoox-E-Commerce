@@ -85,7 +85,7 @@ export function CartProvider({ children }) {
 
   function getTotalCost(cartProducts) {
     let totalCost = 0;
-
+    console.log(cartProducts);
     if (cartProducts && Array.isArray(cartProducts)) {
       cartProducts.forEach((cartItem) => {
         const productData = getProductData(cartItem.id);

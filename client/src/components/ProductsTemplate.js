@@ -93,14 +93,6 @@ const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
               <>
                 <button
                   onClick={() => {
-                    cart.removeOneFromCart(id);
-                  }}
-                  className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  -
-                </button>
-                <button
-                  onClick={() => {
                     cart.addOneToCart(id);
                   }}
                   className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -120,7 +112,6 @@ const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
                 onClick={() => {
                   cart.addOneToCart(id);
                 }}
-                href="#"
                 className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
               >
                 Add to cart

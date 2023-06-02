@@ -715,8 +715,9 @@ const stripe = require("stripe")(
 );
 
 app.post("/checkout", async (req, res) => {
-  const items = req.body.items;
+  const { items, customerEmail, address } = req.body; // Retrieve items and customerEmail from the request body
   let lineItems = [];
+
   items.forEach((item) => {
     lineItems.push({
       price_data: {
@@ -724,13 +725,11 @@ app.post("/checkout", async (req, res) => {
         product_data: {
           name: item.Name,
           description: item.Description,
-          // images: [item.Img1, item.Img2, item.Img3],
         },
         unit_amount: Math.round(item.Price * 100),
       },
-      quantity: item.quantity, // Include the quantity property
+      quantity: item.quantity,
     });
-    console.log("Your cart items: " + JSON.stringify(items));
   });
 
   const session = await stripe.checkout.sessions.create({
@@ -738,46 +737,167 @@ app.post("/checkout", async (req, res) => {
     payment_method_types: ["card"],
     mode: "payment",
     success_url: "http://localhost:3000/success",
-    cancel_url: "http://localhost:3000/signin",
+    cancel_url: "http://localhost:3000/",
+    customer_email: customerEmail, // Add customer's email to the checkout session
   });
+
+  // Insert the order data into the database
+  insertOrderData(customerEmail, address, items);
 
   res.send(JSON.stringify({ url: session.url }));
 });
-app.get("/api/payments", async (req, res) => {
-  try {
-    // Fetch payments from Stripe API
-    const payments = await stripe.charges.list();
 
-    // Extract item information from payments and populate checkoutSummary
-    const checkoutSummary = {
-      customer: "", // Set the customer value accordingly
-      items: [],
-      totalAmount: 0,
-    };
+// Function to insert the order data into the database
+function insertOrderData(customerEmail, address, items) {
+  const insertOrderQuery = `INSERT INTO Orders (customer_email, address) VALUES (?, ?)`;
 
-    payments.data.forEach((payment) => {
-      const item = {
-        name: payment.description, // Set the item name accordingly
-        quantity: payment.quantity, // Use the quantity value from payment
-        unitPrice: payment.unit_price, // Format the unit price as desired
-        amount: formatPrice(payment.amount), // Format the amount as desired
-      };
+  // Insert the order data into the Orders table
+  db.query(insertOrderQuery, [customerEmail, address], (err, orderResult) => {
+    if (err) {
+      console.error("Error inserting order data:", err);
+      return;
+    }
 
-      checkoutSummary.items.push(item);
-      checkoutSummary.totalAmount += payment.amount;
+    const orderId = orderResult.insertId;
+
+    const insertOrderItemsQuery = `INSERT INTO OrderItems (order_id, item_id, quantity, name, description, img1, img2, img3, price, stock, category_id) VALUES ?`;
+
+    const orderItemsData = items.map((item) => [
+      orderId,
+      item.id,
+      item.quantity,
+      item.Name,
+      item.Description,
+      item.Img1,
+      item.Img2,
+      item.Img3,
+      item.Price,
+      item.Stock,
+      item.CategoryId,
+    ]);
+
+    // Insert the order items into the OrderItems table
+    db.query(insertOrderItemsQuery, [orderItemsData], (err) => {
+      if (err) {
+        console.error("Error inserting order items:", err);
+        return;
+      }
+
+      console.log("Order data and items inserted successfully.");
     });
-
-    res.json(checkoutSummary);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "An error occurred" });
-  }
-});
-function formatPrice(amount) {
-  return (amount / 100).toFixed(2) + " $"; // Format the amount as USD
+  });
 }
 
-// balance
+app.get("/api/orders", (req, res) => {
+  const query = `
+    SELECT
+      Orders.id AS order_id,
+      Orders.customer_email,
+      Orders.order_date,
+      GROUP_CONCAT(OrderItems.name SEPARATOR ', ') AS item_names,
+      GROUP_CONCAT(OrderItems.quantity SEPARATOR ', ') AS item_quantity,
+      SUM(OrderItems.quantity) AS total_quantity,
+      SUM(OrderItems.price) AS total_price,
+      Orders.shipping_status
+    FROM Orders
+    JOIN OrderItems ON Orders.id = OrderItems.order_id
+    GROUP BY Orders.id
+    ORDER BY Orders.order_date DESC;
+  `;
+
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error("Error fetching order details:", error);
+      res.status(500).json({ error: "An error occurred" });
+      return;
+    }
+
+    const orders = results.map((row) => ({
+      order_id: row.order_id,
+      customer_email: row.customer_email,
+      order_date: row.order_date,
+      item_names: row.item_names.split(", "),
+      item_quantity: row.item_quantity.split(", "),
+      total_quantity: row.total_quantity,
+      total_price: row.total_price,
+      shipping_status: row.shipping_status,
+    }));
+
+    res.json(orders);
+  });
+});
+// single order
+app.get("/api/orders/:id", (req, res) => {
+  const orderId = req.params.id;
+
+  const query = `
+  SELECT
+  Orders.id AS order_id,
+  Orders.customer_email,
+  Orders.order_date,
+  Orders.address,
+  
+  GROUP_CONCAT(OrderItems.img1 SEPARATOR ', ') AS item_images,
+  GROUP_CONCAT(OrderItems.price SEPARATOR ', ') AS item_prices,
+  GROUP_CONCAT(OrderItems.name SEPARATOR ', ') AS item_names,
+  GROUP_CONCAT(OrderItems.quantity SEPARATOR ', ') AS item_quantity,
+  SUM(OrderItems.quantity) AS total_quantity,
+  SUM(OrderItems.price) AS total_price,
+  Orders.shipping_status
+FROM Orders
+JOIN OrderItems ON Orders.id = OrderItems.order_id
+WHERE Orders.id = ?
+GROUP BY Orders.id;
+  `;
+
+  db.query(query, [orderId], (error, results) => {
+    if (error) {
+      console.error("Error fetching order details:", error);
+      res.status(500).json({ error: "An error occurred" });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).json({ error: "Order not found" });
+      return;
+    }
+
+    const row = results[0];
+    const order = {
+      order_id: row.order_id,
+      customer_email: row.customer_email,
+      address: row.address,
+      order_date: row.order_date,
+      item_images: row.item_images.split(", "),
+      item_prices: row.item_prices.split(", "),
+      item_names: row.item_names.split(", "),
+      item_quantity: row.item_quantity.split(", "),
+      total_quantity: row.total_quantity,
+      total_price: row.total_price,
+      shipping_status: row.shipping_status,
+    };
+    console.log(order);
+    res.json(order);
+  });
+});
+
+// update shipping status
+app.put("/api/orders/:orderId", (req, res) => {
+  const orderId = req.params.orderId;
+  const { shippingStatus } = req.body;
+
+  // Update the shipping status in the database
+  const query = "UPDATE Orders SET shipping_status = ? WHERE id = ?";
+  db.query(query, [shippingStatus, orderId], (error, results) => {
+    if (error) {
+      console.error("Error updating shipping status:", error);
+      res.status(500).json({ error: "Failed to update shipping status" });
+    } else {
+      console.log("Shipping status updated successfully");
+      res.status(200).json({ message: "Shipping status updated successfully" });
+    }
+  });
+});
 
 app.listen(3001, () => {
   console.log("Running server");

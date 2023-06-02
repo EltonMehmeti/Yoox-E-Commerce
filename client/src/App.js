@@ -19,7 +19,7 @@ import CartProvider, { CartContext } from "./pages/CartContext";
 import Payments from "./components/admin/Payments";
 
 import SuccessfulPayment from "./components/SuccessfulPayment";
-
+import ShippingPostman from "./components/admin/ShippingPostman";
 
 function App() {
   return (
@@ -38,16 +38,15 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/aboutus" element={<AboutUs />} />
+            <Route path="/shipping" element={<ShippingPostman />} />
             <Route path="/delivery" element={<Delivery />} />
 
             <Route path="/orders" element={<Payments />} />
 
-            <Route path= "/successfulPayment" element={<SuccessfulPayment />} />
-
+            <Route path="/success" element={<SuccessfulPayment />} />
           </Routes>
         </Router>
       </CartProvider>
-      {/* <Delivery progress={31} /> */}
     </>
   );
 }

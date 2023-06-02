@@ -9,6 +9,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 import { MdProductionQuantityLimits } from "react-icons/md";
 import { MdEmojiTransportation } from "react-icons/md";
 import { MdSupportAgent } from "react-icons/md";
+import { GiShoppingBag } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 const Sidebar = (props) => {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ const Sidebar = (props) => {
     { name: "Dashboard", link: "/admin", icon: BsHouse },
 
     { name: "Users", link: "/users", icon: HiOutlineUsers },
+    { name: "Orders", link: "/orders", icon: GiShoppingBag },
     { name: "Products", link: "/products", icon: MdProductionQuantityLimits },
     { name: "Category", link: "/category", icon: RiBillLine },
     { name: "PostMan", link: "/postman", icon: MdEmojiTransportation },

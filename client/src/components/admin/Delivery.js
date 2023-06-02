@@ -3,50 +3,104 @@ import { GoChecklist } from "react-icons/go";
 import { BsBoxSeamFill } from "react-icons/bs";
 import { MdLocalShipping } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
+import { MdPendingActions } from "react-icons/md";
+import { GiBoxUnpacking } from "react-icons/gi";
 
-function ProgressBar({ progress }) {
+const Delivery = ({ status }) => {
+  const getProgressBarWidth = () => {
+    if (status === "selectServer") {
+      return "0%";
+    } else if (status === "addUser") {
+      return "33%";
+    } else if (status === "setting") {
+      return "66%";
+    } else if (status === "finished") {
+      return "100%";
+    }
+  };
+
   return (
-    <div className="w-[84%] bg-gray-300 rounded overflow-hidden">
-      <div
-        className="bg-slate-500   h-15 leading-none py-1 text-center text-white"
-        style={{ width: `${progress}%` }}
-      >
-        {progress}%
-      </div>
-    </div>
-  );
-}
-const progressValue = 75;
-const Delivery = ({ progress }) => {
-  return (
-    <div className="h-screen w-full  flex justify-center bg-[#24292F] ">
-      <div className="  m-auto md:grid-cols-4 bg-white rounded-lg ">
-        <form className="grid w-[950px] h-[300px] ">
-          <div className="px-6 pt-5">
-            <h1 className="font-bold text-4xl ">Order #56756</h1>
-          </div>
-          <div className=" text-4xl flex items-center justify-center">
-            <ProgressBar progress={progress} />
-          </div>
-          <div className="flex justify-center items-end p-3   gap-12">
-            <div className=" flex gap-1 mr-4 ">
-              <GoChecklist className="text-5xl  " />
-              <h4 className=" font-bold text-slate-500">Order processed</h4>
-            </div>
-            <div className=" flex  gap-1 mr-4">
-              <BsBoxSeamFill className="text-5xl" />
-              <h4 className="font-bold  text-slate-500">Order shipped</h4>
-            </div>
-            <div className=" flex  gap-1  mr-4">
-              <MdLocalShipping className="text-5xl" />
-              <h4 className="font-bold text-slate-500 ">Order on route</h4>
-            </div>
-            <div className=" flex  gap-1 mr-4">
-              <FaHome className="text-5xl" />
-              <h4 className="font-bold text-slate-500">Order arrived</h4>
+    <div className="w-full py-6">
+      <div className="flex">
+        <div className="w-1/4">
+          <div className="relative mb-2">
+            <div className="w-10 h-10 mx-auto bg-green-500 rounded-full text-lg text-white flex items-center">
+              <span className="text-center text-white w-full">
+                <MdPendingActions className="w-full fill-current" />
+              </span>
             </div>
           </div>
-        </form>
+          <div className="text-xs text-center md:text-base">Pending</div>
+        </div>
+
+        <div className="w-1/4">
+          <div className="relative mb-2">
+            <div
+              className="absolute flex align-center items-center align-middle content-center"
+              style={{
+                width: "calc(100% - 2.5rem - 1rem)",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <div className="w-full bg-gray-200 rounded items-center align-middle align-center flex-1">
+                <div
+                  className="bg-green-300 py-1 rounded"
+                  style={{ width: getProgressBarWidth() }}
+                ></div>
+              </div>
+            </div>
+
+            <div className="w-10 h-10 mx-auto bg-green-500 rounded-full text-lg text-white flex items-center">
+              <span className="text-center text-white w-full">
+                <GiBoxUnpacking className="w-full fill-current" />
+              </span>
+            </div>
+          </div>
+
+          <div className="text-xs text-center md:text-base">Packing</div>
+        </div>
+
+        <div className="w-1/4">
+          <div className="relative mb-2">
+            <div
+              className="absolute flex align-center items-center align-middle content-center"
+              style={{
+                width: "calc(100% - 2.5rem - 1rem)",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            >
+              <div className="w-full bg-gray-200 rounded items-center align-middle align-center flex-1">
+                <div
+                  className="w-0 bg-green-300 py-1 rounded"
+                  style={{ width: getProgressBarWidth() }}
+                ></div>
+              </div>
+            </div>
+
+            <div className="w-10 h-10 mx-auto bg-white border-2 border-gray-200 rounded-full text-lg text-white flex items-center">
+              <span className="text-center text-gray-600 w-full">
+                <MdLocalShipping className="w-full fill-current" />
+              </span>
+            </div>
+          </div>
+
+          <div className="text-xs text-center md:text-base">Delivered</div>
+        </div>
+
+        <div className="w-1/4">
+          <div className="relative mb-2">
+            <div
+              className="absolute flex align-center items-center align-middle content-center"
+              style={{
+                width: "calc(100% - 2.5rem - 1rem)",
+                top: "50%",
+                transform: "translate(-50%, -50%)",
+              }}
+            ></div>
+          </div>
+        </div>
       </div>
     </div>
   );

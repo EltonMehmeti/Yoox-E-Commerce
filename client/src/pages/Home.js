@@ -70,11 +70,22 @@ const Home = () => {
 
       <div className="flex flex-wrap flex-row  bg-[#24292F]   ">
         <div id="left" className="w-2/3 overflow-hidden p-40">
-          <p className="text-clip text-[#bebcbe] text-xl">New Arrival</p>
-          <h1 className="text-[#bebcbe] text-[89px] first-letter:text-[#d31e2b]">
+          <p
+            className="text-clip text-[#bebcbe] text-xl"
+            style={{ fontFamily: "Geo, sans-serif" }}
+          >
+            New Arrival
+          </p>
+          <h1
+            className="text-[#bebcbe] text-[89px] first-letter:text-[#d31e2b]"
+            style={{ fontFamily: "Geo, sans-serif" }}
+          >
             Nothing
           </h1>
-          <p className="text-clip text-[#bebcbe] text-xl">
+          <p
+            className="text-clip text-[#bebcbe] text-xl"
+            style={{ fontFamily: "Geo, sans-serif" }}
+          >
             Tech gets in the way too often. Of what we want to experience. The
             sensations. The emotions. Ear (stick) takes away those walls. This
             is tech you can’t feel. So you can experience everything els
@@ -159,7 +170,7 @@ const Home = () => {
                 }}
                 className=" text-black text-xl font-bold text-center"
               >
-                <h1 style={{ fontFamily: "Geo, sans-serif" }}>
+                <h1>
                   {category.Id} - {category.Name}
                 </h1>
               </span>

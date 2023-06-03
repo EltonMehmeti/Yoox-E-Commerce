@@ -26,7 +26,7 @@ const Sidebar = (props) => {
   ];
   return (
     <div className="flex gap-6">
-      <div className="bg-blue-900 p-6 min-h-screen w-72 text-gray-100  px-4">
+      <div className="bg-[#33373e] p-6 min-h-screen w-72 text-gray-100  px-4">
         <div className="flex gap-x-3 items-center">
           <img className="flex items-center w-14 rounded-full" src={icon1} />
           <h2 className="font-bold text-white origin-left text-xl  ">

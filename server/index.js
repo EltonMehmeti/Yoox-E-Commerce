@@ -93,10 +93,10 @@ app.post("/api/login", (req, res) => {
     }
 
     if (result.length > 0) {
-      const storedPassword = result[0].Password;
-
-      bcrypt.compare(password, storedPassword, (error, response) => {
+      bcrypt.compare(password, result[0].Password, (error, response) => {
         if (response) {
+          req.session.user = result;
+
           req.session.user = result;
           res.send(result);
         } else {

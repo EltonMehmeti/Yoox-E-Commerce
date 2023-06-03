@@ -3,7 +3,7 @@ import { CartContext } from "../pages/CartContext";
 import { useContext } from "react";
 import { getProductData } from "./ProductsData";
 import { BsFillTrash3Fill } from "react-icons/bs";
-
+import { AiFillDelete } from "react-icons/ai";
 const CartProduct = (props) => {
   const cart = useContext(CartContext);
   const id = props.id;
@@ -18,14 +18,14 @@ const CartProduct = (props) => {
 
   return (
     <div>
-      <a
+      {/* <a
         key={productData.Id}
         href=""
         className="flex flex-col items-center mt-4 bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
       >
         <img
           className="object-cover w-full rounded-t-lg h-full md:h-auto md:w-28 md:rounded-none md:rounded-l-lg"
-          src={productData.Img}
+          src="https://storage.googleapis.com/alpine-inkwell-325917.appspot.com/devices/macbook-pro-m1-14-header.png"
           alt=""
         />
         <div className="flex flex-col justify-between p-4 leading-normal overflow-hidden">
@@ -51,7 +51,49 @@ const CartProduct = (props) => {
             <BsFillTrash3Fill />
           </button>
         </div>
-      </a>
+      </a> */}
+      <div className="flex items-center mt-6 mb-6">
+        <div>
+          <img
+            src="https://storage.googleapis.com/alpine-inkwell-325917.appspot.com/devices/macbook-pro-m1-14-header.png"
+            className="w-36 h-36 rounded-lg object-cover"
+          />
+        </div>
+        <div className="flex-1 ml-4">
+          <div>
+            <h1 className="font-light text-gray-500 truncate">
+              {productData.Name}
+            </h1>
+            <p className="font-light text-gray-500">
+              ${productData.Price}|{" "}
+              <span className="font-bold text-green-500">In Stock</span>
+            </p>
+            <h3 className="font-light text-gray-500">{quantity}</h3>
+          </div>
+          <div>
+            <p className="font-light text-gray-500">
+              Total: {(quantity * productData.Price).toFixed(2)}
+            </p>
+
+            <button
+              onClick={() => {
+                cart.addOneToCart(id);
+              }}
+              className="font-light flex flex-row items-center justify-center ml-32 text-gray-600"
+            >
+              +
+            </button>
+            <button
+              onClick={() => {
+                cart.deleteFromCart(id);
+              }}
+              className="font-light flex flex-row items-center justify-center ml-28 text-gray-600"
+            >
+              <AiFillDelete /> Delete
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

@@ -104,7 +104,7 @@ const ShippingPostman = () => {
                     {order.total_quantity}
                   </td>
                   <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                    ${order.total_price}
+                    {order.total_price}
                   </td>
                   <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <select
@@ -130,7 +130,7 @@ const ShippingPostman = () => {
             })}
           </tbody>
         </table>
-        <div className="p-2 border rounded-lg  justify-end w-[45%] ">
+        <div className="p-2 border rounded-lg  justify-end w-[40%] ">
           <h1>Delivered Orders</h1>
           <table className="w-1/2 text-sm text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

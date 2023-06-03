@@ -64,6 +64,8 @@ app.post("/api/register", async (req, res) => {
         phone,
       ]);
 
+      console.log(result);
+
       res.sendStatus(200);
     });
   } catch (err) {
@@ -113,7 +115,7 @@ app.get("/admin/users", (req, res) => {
     if (err) {
       res.send({ err: err });
     }
-
+    console.log(result);
     res.send(result);
   });
 });
@@ -141,6 +143,8 @@ app.post("/api/insert", async (req, res) => {
         phone,
         userType,
       ]);
+
+      console.log(result);
 
       res.sendStatus(200);
     });
@@ -191,7 +195,7 @@ app.get("/admin/postman", (req, res) => {
     if (err) {
       res.send({ err: err });
     }
-
+    console.log(result);
     res.send(result);
   });
 });
@@ -202,7 +206,7 @@ app.get("/admin/products", (req, res) => {
     if (err) {
       res.send({ err: err });
     }
-
+    console.log(result);
     res.send(result);
   });
 });
@@ -226,6 +230,8 @@ app.post("/api/insertProduct", async (req, res) => {
       stock,
       category,
     ]);
+
+    console.log(result);
 
     res.sendStatus(200);
   } catch (err) {
@@ -319,7 +325,7 @@ app.get("/postman", (req, res) => {
     if (err) {
       res.send({ err: err });
     }
-
+    console.log(result);
     res.send(result);
   });
 });
@@ -353,7 +359,7 @@ app.get("/admin/products", (req, res) => {
     if (err) {
       res.send({ err: err });
     }
-
+    console.log(result);
     res.send(result);
   });
 });
@@ -378,6 +384,8 @@ app.post("/api/insertProduct", async (req, res) => {
       stock,
       category,
     ]);
+
+    console.log(result);
 
     res.sendStatus(200);
   } catch (err) {
@@ -453,6 +461,7 @@ app.get("/postman", (req, res) => {
     if (err) {
       res.send(err);
     } else {
+      console.log(result);
       res.send(result);
     }
   });
@@ -496,7 +505,7 @@ app.get("/admin/category", (req, res) => {
     if (err) {
       res.send({ err: err });
     }
-
+    console.log(result);
     res.send(result);
   });
 });
@@ -531,6 +540,7 @@ app.get("/postman", (req, res) => {
     if (err) {
       res.send(err);
     } else {
+      console.log(result);
       res.send(result);
     }
   });
@@ -577,7 +587,7 @@ app.get("/admin/category", (req, res) => {
     if (err) {
       res.send({ err: err });
     }
-
+    console.log(result);
     res.send(result);
   });
 });
@@ -593,6 +603,8 @@ app.post("/api/insertCategory", async (req, res) => {
       `;
 
     const result = db.query(sqlInsert, [name, img]);
+
+    console.log(result);
 
     res.sendStatus(200);
   } catch (err) {

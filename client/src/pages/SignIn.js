@@ -32,9 +32,6 @@ const SignIn = () => {
         } else if (response.data[0].User_Type == "CS") {
           navigate("/costumerS");
           setLoginStatus(response.data[0].Name);
-        } else if (response.data[0].User_Type == "Post") {
-          navigate("/shipping");
-          setLoginStatus(response.data[0].Name);
         }
       });
   };

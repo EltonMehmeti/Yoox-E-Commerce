@@ -7,6 +7,7 @@ const app = express();
 const saltRounds = 10;
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const path = require("path");
 
 const multer = require("multer");
 
@@ -108,6 +109,21 @@ app.post("/api/login", (req, res) => {
     }
   });
 });
+// logout
+app.post("/api/logout", (req, res) => {
+  if (req.session.user) {
+    req.session.destroy((err) => {
+      if (err) {
+        res.send({ message: "Error logging out" });
+      } else {
+        res.clearCookie("userId");
+        res.send({ message: "Logged out successfully" });
+      }
+    });
+  } else {
+    res.send({ message: "No user logged in" });
+  }
+});
 
 // Fetch the users
 app.get("/admin/users", (req, res) => {
@@ -115,11 +131,12 @@ app.get("/admin/users", (req, res) => {
     if (err) {
       res.send({ err: err });
     }
-    console.log(result);
+
     res.send(result);
   });
 });
-// Create
+
+// Insert Users
 app.post("/api/insert", async (req, res) => {
   try {
     const { name, email, password, address, city, phone, userType } = req.body;
@@ -143,8 +160,6 @@ app.post("/api/insert", async (req, res) => {
         phone,
         userType,
       ]);
-
-      console.log(result);
 
       res.sendStatus(200);
     });
@@ -189,56 +204,123 @@ app.put("/api/update/:id", (req, res) => {
     );
   });
 });
-// \fetch postman's
-app.get("/admin/postman", (req, res) => {
-  db.query("SELECT * FROM postman", (err, result) => {
-    if (err) {
-      res.send({ err: err });
-    }
-    console.log(result);
-    res.send(result);
-  });
+
+//
+// Set up static file serving for images
+app.use(
+  "/images",
+  express.static(path.join(__dirname, "..", "client", "src", "img"))
+);
+
+// Set up multer storage configuration
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "C:\\Users\\px\\Desktop\\Lab-Project-Repo\\client\\src\\img");
+  },
+  filename: (req, file, cb) => {
+    const { originalname } = file;
+    cb(null, Date.now() + path.extname(file.originalname));
+  },
 });
+
+// Create the multer upload instance
+const upload = multer({ storage });
 
 // Fetch products
 app.get("/admin/products", (req, res) => {
   db.query("SELECT * FROM product", (err, result) => {
     if (err) {
       res.send({ err: err });
+    } else {
+      // Map over the result and add the image URLs
+      const productsWithImages = result.map((product) => {
+        return {
+          ...product,
+          Img1: `/images/${product.Img1}`,
+          Img2: `/images/${product.Img2}`,
+          Img3: `/images/${product.Img3}`,
+        };
+      });
+
+      res.send(productsWithImages);
     }
-    console.log(result);
-    res.send(result);
   });
 });
+
 // Create product
-app.post("/api/insertProduct", async (req, res) => {
+app.post("/api/insertProduct", upload.array("images", 3), async (req, res) => {
   try {
-    const { name, desc, img1, img2, img3, price, stock, category } = req.body;
+    const { name, desc, price, stock, category } = req.body;
+    const images = req.files.map((file) => file.filename);
 
     const sqlInsert = `
-        INSERT INTO Product (Name, Description, Img1, Img2, Img3, Price, Stock, CategoryId)
-        VALUES (?, ?, ?, ?, ?, ?,?,?)
-      `;
+      INSERT INTO Product (Name, Description, Img1, Img2, Img3, Price, Stock, CategoryId)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
-    const result = db.query(sqlInsert, [
+    const values = [
       name,
       desc,
-      img1,
-      img2,
-      img3,
+      images[0],
+      images[1],
+      images[2],
       price,
       stock,
       category,
-    ]);
+    ];
 
-    console.log(result);
+    db.query(sqlInsert, values, (err, result) => {
+      if (err) {
+        console.error("Error inserting product into database:", err);
+        return res.status(500).json({ error: "Error uploading product." });
+      }
 
-    res.sendStatus(200);
+      console.log("Product uploaded successfully.");
+      res.sendStatus(200);
+    });
   } catch (err) {
     console.error(err);
     res.sendStatus(500);
   }
 });
+
+// Update product
+app.put(
+  "/api/updateProduct/:id",
+  upload.array("images", 3),
+  async (req, res) => {
+    const id = Number(req.params.id);
+    const { nameU, descU, priceU, stockU, categoryU } = req.body;
+    const images = req.files.map((file) => file.filename);
+
+    const updateQuery = `
+    UPDATE Product SET Name=?, Description=?, Img1=?, Img2=?, Img3=?, Price=?, Stock=?, CategoryId=?
+    WHERE Id=?
+  `;
+    const values = [
+      nameU,
+      descU,
+      images[0] || "", // If no image is provided, use an empty string
+      images[1] || "",
+      images[2] || "",
+      priceU,
+      stockU,
+      categoryU,
+      id,
+    ];
+
+    db.query(updateQuery, values, (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send("An error occurred while updating the product.");
+      } else {
+        console.log("Product updated successfully.");
+
+        res.send(result);
+      }
+    });
+  }
+);
 // Delete product
 app.delete("/api/deleteProduct/:id", (req, res) => {
   const id = Number(req.params.id);
@@ -251,30 +333,6 @@ app.delete("/api/deleteProduct/:id", (req, res) => {
       res.status(200).send("Product deleted successfully");
     }
   });
-});
-// Update product
-app.put("/api/updateProduct/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const nameU = req.body.nameU;
-  const descU = req.body.descU;
-  const img1U = req.body.img1U;
-  const img2U = req.body.img2U;
-  const img3U = req.body.img3U;
-  const priceU = req.body.priceU;
-  const stockU = req.body.stockU;
-  const categoryU = req.body.categoryU;
-
-  db.query(
-    "UPDATE Product SET Name=?, Description=?, Img1=?, Img2=?, Img3=?, Price=?, Stock=?, CategoryId=? WHERE Id=?;",
-    [nameU, descU, img1U, img2U, img3U, priceU, stockU, categoryU, id],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
-    }
-  );
 });
 // WIDGETS
 // count total users
@@ -320,116 +378,6 @@ app.get("/api/getnewusers", (req, res) => {
 });
 
 // DASARAA
-app.get("/postman", (req, res) => {
-  db.query("SELECT * FROM postman", (err, result) => {
-    if (err) {
-      res.send({ err: err });
-    }
-    console.log(result);
-    res.send(result);
-  });
-});
-// create postman
-app.post("/create", (req, res) => {
-  try {
-    const name = req.body.name;
-    const lastname = req.body.lastname;
-    const phonenumber = req.body.phonenumber;
-
-    db.query(
-      "INSERT INTO postman (Name, LastName, phonenumber) VALUES (?,?,?)",
-      [name, lastname, phonenumber],
-      (err, result) => {
-        if (err) {
-          console.log(err);
-        } else {
-          res.send("Values inserted!");
-        }
-      }
-    );
-  } catch (err) {
-    console.error(err);
-    res.sendStatus("success");
-  }
-});
-
-// Fetch products
-app.get("/admin/products", (req, res) => {
-  db.query("SELECT * FROM product", (err, result) => {
-    if (err) {
-      res.send({ err: err });
-    }
-    console.log(result);
-    res.send(result);
-  });
-});
-
-// Create product
-app.post("/api/insertProduct", async (req, res) => {
-  try {
-    const { name, desc, img1, img2, img3, price, stock, category } = req.body;
-
-    const sqlInsert = `
-        INSERT INTO Product (Name, Description, Img1, Img2, Img3, Price, Stock, CategoryId)
-        VALUES (?, ?, ?, ?, ?, ?,?,?)
-      `;
-
-    const result = db.query(sqlInsert, [
-      name,
-      desc,
-      img1,
-      img2,
-      img3,
-      price,
-      stock,
-      category,
-    ]);
-
-    console.log(result);
-
-    res.sendStatus(200);
-  } catch (err) {
-    console.error(err);
-    res.sendStatus(500);
-  }
-});
-// Delete product
-app.delete("/api/deleteProduct/:id", (req, res) => {
-  const id = Number(req.params.id);
-  db.query("DELETE FROM Product WHERE Id=?", id, (err, result) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send("Error deleting product");
-    } else {
-      console.log(`Deleted product with ID ${id}`);
-      res.status(200).send("Product deleted successfully");
-    }
-  });
-});
-// Update product
-app.put("/api/updateProduct/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const nameU = req.body.nameU;
-  const descU = req.body.descU;
-  const img1U = req.body.img1U;
-  const img2U = req.body.img2U;
-  const img3U = req.body.img3U;
-  const priceU = req.body.priceU;
-  const stockU = req.body.stockU;
-  const categoryU = req.body.categoryU;
-
-  db.query(
-    "UPDATE Product SET Name=?, Description=?, Img1=?, Img2=?, Img3=?, Price=?, Stock=?, CategoryId=? WHERE Id=?;",
-    [nameU, descU, img1U, img2U, img3U, priceU, stockU, categoryU, id],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-      } else {
-        res.send(result);
-      }
-    }
-  );
-});
 
 //INSERT postman
 app.post("/create", (req, res) => {
@@ -499,85 +447,7 @@ app.delete("/deletePostman/:id", (req, res) => {
     }
   });
 });
-//
-app.get("/admin/category", (req, res) => {
-  db.query("SELECT * FROM category", (err, result) => {
-    if (err) {
-      res.send({ err: err });
-    }
-    console.log(result);
-    res.send(result);
-  });
-});
 
-//INSERT postman
-app.post("/create", (req, res) => {
-  try {
-    const name = req.body.name;
-    const lastname = req.body.lastname;
-    const phonenumber = req.body.phonenumber;
-
-    db.query(
-      "INSERT INTO postman (Name, LastName, phonenumber) VALUES (?,?,?)",
-      [name, lastname, phonenumber],
-      (err, result) => {
-        if (err) {
-          console.log(err);
-        } else {
-          res.send("Values inserted!");
-        }
-      }
-    );
-  } catch (err) {
-    console.error(err);
-    res.sendStatus("success");
-  }
-});
-//get postmen
-app.get("/postman", (req, res) => {
-  const SqlSelect = "SELECT * from postman";
-  db.query(SqlSelect, (err, result) => {
-    if (err) {
-      res.send(err);
-    } else {
-      console.log(result);
-      res.send(result);
-    }
-  });
-});
-//update postman
-app.put("/api/updatePostman/:id", (req, res) => {
-  const id = Number(req.params.id);
-  const nameU = req.body.nameU;
-  const lastnameU = req.body.lastnameU;
-  const phonenumberU = req.body.phonenumberU;
-  db.query(
-    "UPDATE postman SET Name=?, LastName=?, phonenumber=? WHERE Id=?",
-    [nameU, lastnameU, phonenumberU, id],
-    (err, result) => {
-      if (err) {
-        console.log(err);
-        // res.status(500).send("Error updating data");
-      } else {
-        res.send(result);
-      }
-    }
-  );
-});
-
-//delete postman
-app.delete("/deletePostman/:id", (req, res) => {
-  const id = Number(req.params.id);
-  db.query("DELETE FROM postman WHERE Id=?", id, (err, result) => {
-    if (err) {
-      console.error(err);
-      res.status(500).send("Postman is not deleted!");
-    } else {
-      console.log(`Deleted postman with ID ${id}`);
-      res.status(200).send("Postman deleted successfully");
-    }
-  });
-});
 // Jeta - Categories CRUD
 
 // Fetch category
@@ -646,18 +516,34 @@ app.put("/api/updateCategory/:id", (req, res) => {
     }
   );
 });
+
 // Single Prodcuts
 app.get("/product/:id", (req, res) => {
   const id = Number(req.params.id);
-  const q = "Select * from product where Id=?;";
+  const q = "SELECT * FROM product WHERE Id=?;";
 
   db.query(q, [id], (err, result) => {
     if (err) {
       console.log(err);
+      res.status(500).send("An error occurred while fetching the product.");
+    } else {
+      if (result.length === 0) {
+        res.status(404).send("Product not found.");
+      } else {
+        // Map over the result and add the image URLs
+        const productWithImages = {
+          ...result[0],
+          Img1: `/images/${result[0].Img1}`,
+          Img2: `/images/${result[0].Img2}`,
+          Img3: `/images/${result[0].Img3}`,
+        };
+
+        res.send(productWithImages);
+      }
     }
-    res.send(result);
   });
 });
+
 // Real time chat
 const http = require("http");
 const server = http.createServer(app);
@@ -713,7 +599,7 @@ server.listen(3002, () => {
 const stripe = require("stripe")(
   "sk_test_51NBiUGDbbGVWjFGzO8hy2eeRGzMqDMSG6I4UX9iLF6WDQPE9ME0nLfDOkd1wF7XvSM1h9G92tZlathSUN7Cg3weZ00hgf7QWUP"
 );
-
+// Stripe checkout functionality
 app.post("/checkout", async (req, res) => {
   const { items, customerEmail, address } = req.body; // Retrieve items and customerEmail from the request body
   let lineItems = [];
@@ -787,7 +673,7 @@ function insertOrderData(customerEmail, address, items) {
     });
   });
 }
-
+// Orders List fetch
 app.get("/api/orders", (req, res) => {
   const query = `
     SELECT

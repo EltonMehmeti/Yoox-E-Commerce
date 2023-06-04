@@ -4,6 +4,7 @@ import { TbBoxMultiple3 } from "react-icons/tb";
 import { CartContext } from "../pages/CartContext";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
+import { BsFillTrashFill } from "react-icons/bs";
 const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
   const cart = useContext(CartContext);
   const productQuantity = cart.getProductQuantity(id);
@@ -12,8 +13,13 @@ const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
     <div>
       <div class="w-full max-w-sm h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <Link to={`/product/${id}`}>
-          <div className="relative">
-            <img className="p-8 rounded-t-lg" src={Logo} alt="product image" />
+          <div className="relative w-[20rem] h-[28rem]">
+            <img
+              className="p-8 w-full h-full object-contain  bg-transparent"
+              src={img}
+              alt="product image"
+            />
+
             <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
               <p className="text-white text-lg bg-black bg-opacity-75 px-4 py-2 rounded">
                 See more
@@ -90,7 +96,7 @@ const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
               {price}$
             </span>
             {productQuantity > 0 ? (
-              <>
+              <div className="flex flex-row gap-1">
                 <button
                   onClick={() => {
                     cart.addOneToCart(id);
@@ -104,9 +110,9 @@ const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
                   className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
                   onClick={() => cart.deleteFromCart(id)}
                 >
-                  Remove from Cart
+                  <BsFillTrashFill />
                 </button>
-              </>
+              </div>
             ) : (
               <button
                 onClick={() => {

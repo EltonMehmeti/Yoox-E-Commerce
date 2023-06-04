@@ -10,6 +10,14 @@ import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 
 const Products = () => {
+  const [Modal, open, close, isOpen] = useModal("root", {
+    preventScroll: true,
+    closeOnOverlayClick: false,
+  });
+  const [Modal2, open2, close2, isOpen2] = useModal("root", {
+    preventScroll: true,
+    closeOnOverlayClick: false,
+  });
   const [productsTable, setProductsTable] = useState([]);
   axios.defaults.withCredentials = true;
   const navigate = useNavigate();
@@ -19,6 +27,7 @@ const Products = () => {
       .get("http://localhost:3001/admin/products")
       .then((response) => {
         setProductsTable(response.data);
+        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -45,17 +54,23 @@ const Products = () => {
   const [category, setCategory] = useState("");
 
   // insert product function
+  // insert product function
   const insertProduct = () => {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("desc", desc);
+    formData.append("price", price);
+    formData.append("stock", stock);
+    formData.append("category", category);
+    formData.append("images", img1);
+    formData.append("images", img2);
+    formData.append("images", img3);
+
     axios
-      .post(`http://localhost:3001/api/insertProduct`, {
-        name: name,
-        desc: desc,
-        img1: img1,
-        img2: img2,
-        img3: img3,
-        price: price,
-        stock: stock,
-        category: category,
+      .post(`http://localhost:3001/api/insertProduct`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
       .then(() => {
         Swal.fire({
@@ -70,49 +85,57 @@ const Products = () => {
   };
 
   // update product function
-  const [nameU, setNameUpdated] = useState("");
-  const [descU, setDescU] = useState("");
-  const [img1U, setImg1U] = useState("");
-  const [img2U, setImg2U] = useState("");
-  const [img3U, setImg3U] = useState("");
-  const [priceU, setPriceU] = useState("");
-  const [stockU, setStockU] = useState("");
-  const [categoryU, setCategoryU] = useState("");
+  let [nameU, setNameUpdated] = useState("");
+  let [descU, setDescU] = useState("");
+  let [img1U, setImg1U] = useState("");
+  let [img2U, setImg2U] = useState("");
+  let [img3U, setImg3U] = useState("");
+  let [priceU, setPriceU] = useState("");
+  let [stockU, setStockU] = useState("");
+  let [categoryU, setCategoryU] = useState("");
   const Swal = require("sweetalert2");
   const updateProduct = (id) => {
+    const formData = new FormData();
+    formData.append("nameU", nameU);
+    formData.append("descU", descU);
+    formData.append("priceU", priceU);
+    formData.append("stockU", stockU);
+    formData.append("categoryU", categoryU);
+    formData.append("images", img1U);
+    formData.append("images", img2U);
+    formData.append("images", img3U);
+
     axios
-      .put(`http://localhost:3001/api/updateProduct/${id}`, {
-        nameU: nameU,
-        descU: descU,
-        img1U: img1U,
-        img2U: img2U,
-        img3U: img3U,
-        priceU: priceU,
-        stockU: stockU,
-        categoryU: categoryU,
+      .put(`http://localhost:3001/api/updateProduct/${id}`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       })
       .then(() => {
         Swal.fire({
           position: "top",
           icon: "success",
-          title: "Succesfully Update!",
+          title: "Successfully Updated!",
           showConfirmButton: false,
           timer: 1500,
         });
         window.location.reload();
+      })
+      .catch((error) => {
+        console.log(error);
+        Swal.fire({
+          position: "top",
+          icon: "error",
+          title: "Error Updating Product",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       });
   };
+
   let [productId, setProductId] = useState(null);
   // update modal
 
-  const [Modal, open, close, isOpen] = useModal("root", {
-    preventScroll: true,
-    closeOnOverlayClick: false,
-  });
-  const [Modal2, open2, close2, isOpen2] = useModal("root", {
-    preventScroll: true,
-    closeOnOverlayClick: false,
-  });
   const sort = () => {
     const sortedByPrice = [...productsTable].sort((a, b) => a.Price - b.Price);
     setProductsTable(sortedByPrice);
@@ -230,11 +253,11 @@ const Products = () => {
                         type="file"
                         name="img1"
                         id="email"
-                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className="..."
                         placeholder="Password"
                         required=""
                         onChange={(e) => {
-                          setImg1(e.target.value);
+                          setImg1(e.target.files[0]); // Store the selected file
                         }}
                       />
                     </div>
@@ -249,11 +272,11 @@ const Products = () => {
                         type="file"
                         name="img2"
                         id="position"
-                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className="..."
                         placeholder="Address"
                         required=""
                         onChange={(e) => {
-                          setImg2(e.target.value);
+                          setImg2(e.target.files[0]); // Store the selected file
                         }}
                       />
                     </div>
@@ -268,11 +291,11 @@ const Products = () => {
                         type="file"
                         name="img3"
                         id="position"
-                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className="..."
                         placeholder="City"
                         required=""
                         onChange={(e) => {
-                          setImg3(e.target.value);
+                          setImg3(e.target.files[0]); // Store the selected file
                         }}
                       />
                     </div>
@@ -394,8 +417,7 @@ const Products = () => {
                 }
               })
               .map((product, i) => {
-                console.log(`C:\Users\px\Desktop\DBImage${product.img2}`);
-
+                // console.log(product.img1);
                 return (
                   <tr
                     key={product.Id}
@@ -411,28 +433,33 @@ const Products = () => {
                       {product.Description.slice(0, 60)}
                     </td>
                     <td scope="row" class="px-6 py-2">
-                      <img
-                        src={`C:\Users\px\Desktop\DBImage${product.img1}`}
-                        alt={product.img1}
-                        class="w-auto h-8 mr-3"
-                      />
+                      {product.Img1 && (
+                        <img
+                          src={`http://localhost:3001${product.Img1}`}
+                          alt={product.Img1}
+                          className="w-8 h-8 mr-3"
+                        />
+                      )}
+                    </td>
+                    <td className="px-6 py-2">
+                      {product.Img2 && (
+                        <img
+                          src={`http://localhost:3001${product.Img2}`}
+                          alt={product.Img2}
+                          className="w-8 h-8 mr-3"
+                        />
+                      )}
+                    </td>
+                    <td className="px-6 py-2">
+                      {product.Img3 && (
+                        <img
+                          src={`http://localhost:3001${product.Img3}`}
+                          alt={product.Img3}
+                          className="w-8 h-8 mr-3"
+                        />
+                      )}
                     </td>
 
-                    <td className="px-6 py-2">
-                      <img
-                        src={product.img2}
-                        alt="iMac Front Image"
-                        class="w-auto h-8 mr-3"
-                      />
-                    </td>
-                    <td className="px-6 py-2">
-                      {" "}
-                      <img
-                        src={product.img3}
-                        alt="iMac Front Image"
-                        class="w-auto h-8 mr-3"
-                      />
-                    </td>
                     <td className="px-6 py-2">{product.Price}</td>
                     <td className="px-6 py-2">{product.Stock}</td>
                     <td className="px-6 py-2">{product.CategoryId}</td>
@@ -451,6 +478,11 @@ const Products = () => {
                         className="bg-gradient-to-r text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-14 h-25"
                         onClick={() => {
                           setProductId((productId = product.Id));
+                          setNameUpdated((nameU = product.Name));
+                          setDescU((descU = product.Description));
+                          setPriceU((priceU = product.Price));
+                          setStockU((stockU = product.Stock));
+                          setCategoryU((categoryU = product.CategoryId));
                           // console.log(userId);
                           open();
                         }}
@@ -497,6 +529,7 @@ const Products = () => {
                                         onChange={(e) => {
                                           setNameUpdated(e.target.value);
                                         }}
+                                        value={nameU}
                                         type="text"
                                         name="nameU"
                                         id="name"
@@ -516,6 +549,7 @@ const Products = () => {
                                         onChange={(e) => {
                                           setDescU(e.target.value);
                                         }}
+                                        value={descU}
                                         type="text"
                                         name="descU"
                                         id="brand"
@@ -591,6 +625,7 @@ const Products = () => {
                                         onChange={(e) => {
                                           setPriceU(e.target.value);
                                         }}
+                                        value={priceU}
                                         type="number"
                                         name="priceU"
                                         id="item-weight"
@@ -610,6 +645,7 @@ const Products = () => {
                                         onChange={(e) => {
                                           setStockU(e.target.value);
                                         }}
+                                        value={stockU}
                                         type="text"
                                         name="stockU"
                                         id="item-weight"
@@ -629,6 +665,7 @@ const Products = () => {
                                         onChange={(e) => {
                                           setCategoryU(e.target.value);
                                         }}
+                                        value={categoryU}
                                         type="number"
                                         name="categoryU"
                                         id="item-weight"

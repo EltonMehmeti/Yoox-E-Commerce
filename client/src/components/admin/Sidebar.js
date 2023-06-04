@@ -11,11 +11,12 @@ import { MdEmojiTransportation } from "react-icons/md";
 import { MdSupportAgent } from "react-icons/md";
 import { GiShoppingBag } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 const Sidebar = (props) => {
   const navigate = useNavigate();
   const menus = [
     { name: "Dashboard", link: "/admin", icon: BsHouse },
-
     { name: "Users", link: "/users", icon: HiOutlineUsers },
     { name: "Orders", link: "/orders", icon: GiShoppingBag },
     { name: "Products", link: "/products", icon: MdProductionQuantityLimits },
@@ -24,6 +25,26 @@ const Sidebar = (props) => {
     { name: "Customer Support", link: "/costumerS", icon: MdSupportAgent },
     { name: "SignOut", link: "/", icon: FaSignOutAlt, margin: true },
   ];
+
+  const handleSignOut = async () => {
+    try {
+      const response = await axios.post("http://localhost:3001/api/logout");
+      if (response.data.message === "Logged out successfully") {
+        // Clear session or local storage if necessary
+        localStorage.removeItem("accessToken"); // Example: remove access token from local storage
+        navigate("/signin");
+      } else {
+        // Handle error or display a message
+        console.log("Logout failed:", response.data.message);
+        // Display an error message to the user
+      }
+    } catch (error) {
+      // Handle error or display a message
+      console.log("Logout error:", error);
+      // Display an error message to the user
+    }
+  };
+
   return (
     <div className="flex gap-6">
       <div className="bg-blue-900 p-6 min-h-screen w-72 text-gray-100  px-4">
@@ -41,7 +62,11 @@ const Sidebar = (props) => {
               to={menu?.link}
               key={i}
               onClick={() => {
-                navigate(menu.link);
+                if (menu?.name === "SignOut") {
+                  handleSignOut();
+                } else {
+                  navigate(menu.link);
+                }
               }}
               className="flex cursor-pointer items-center text-sm gap-3.5 font-medium p-2 hover:bg-gray-800 rounded-md"
             >
@@ -54,4 +79,5 @@ const Sidebar = (props) => {
     </div>
   );
 };
+
 export default Sidebar;

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Header from "./Header";
@@ -8,6 +8,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper";
 import Swal from "sweetalert2";
+import { CartContext } from "../pages/CartContext";
 
 const SingleProduct = () => {
   const location = useLocation();
@@ -18,22 +19,31 @@ const SingleProduct = () => {
   const [img3, setImg3] = useState("");
   const [price, setPrice] = useState(null);
   const [stock, setStock] = useState(null);
-
+  const id = location.pathname.split("/")[2];
+  const cart = useContext(CartContext);
   useEffect(() => {
     const id = location.pathname.split("/")[2];
     console.log(id);
-    axios.get(`http://localhost:3001/product/${id}`).then((response) => {
-      console.log(response.data[0]);
-      const data = response.data[0];
-      setName(data.Name);
-      setDesc(data.Description);
-      setImg1(data.img1);
-      setImg2(data.img2);
-      setImg3(data.img3);
-      setPrice(data.Price || 0); // Set price to 0 if it's null
-      setStock(data.Stock || 0); // Set stock to 0 if it's null
-    });
+    axios
+      .get(`http://localhost:3001/product/${id}`)
+      .then((response) => {
+        console.log(response.data);
+        const data = response.data;
+        setName(data.Name);
+        setDesc(data.Description);
+        setImg1(data.Img1);
+        setImg2(data.Img2);
+        setImg3(data.Img3);
+        setPrice(data.Price || 0); // Set price to 0 if it's null
+        setStock(data.Stock || 0); // Set stock to 0 if it's null
+      })
+      .catch((error) => {
+        console.log(error);
+        // Code to handle the error (e.g., display an error message)
+      });
   }, []);
+
+  const productQuantity = cart.getProductQuantity(id);
 
   return (
     <>
@@ -123,20 +133,20 @@ const SingleProduct = () => {
           >
             <SwiperSlide>
               <img
-                className=" h-full object-cover"
-                src="https://w7.pngwing.com/pngs/961/642/png-transparent-iphone-14-pro.png"
+                className=" w-full h-full object-contain  bg-transparent"
+                src={`http://localhost:3001${img1}`}
               ></img>
             </SwiperSlide>
             <SwiperSlide>
               <img
-                className="w-[100%] object-cover"
-                src="https://plus.unsplash.com/premium_photo-1672243970579-8cd2d0e9e0b6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8dGVjaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+                className=" w-full h-full object-contain  bg-transparent"
+                src={`http://localhost:3001${img2}`}
               ></img>
             </SwiperSlide>
             <SwiperSlide>
               <img
-                className="w-full h-full"
-                src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8dGVjaHxlbnwwfHwwfHw%3D&auto=format&fit=crop&w=500&q=60"
+                className="w-full h-full object-contain  bg-transparent"
+                src={`http://localhost:3001${img3}`}
               ></img>
             </SwiperSlide>
           </Swiper>
@@ -146,6 +156,37 @@ const SingleProduct = () => {
           <h3 class="text-gray-700 text-base">{desc}</h3>
           <h1 className="font-bold">{price}$</h1>
           <p class="text-gray-600">Stock: {stock}</p>
+          <h3>In Cart:{productQuantity}</h3>
+          {productQuantity > 0 ? (
+            <>
+              <div className="flex  flex-col justify-evenly">
+                <button
+                  onClick={() => {
+                    cart.addOneToCart(id);
+                  }}
+                  className="text-white w-[3rem] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  +
+                </button>
+                <br />
+                <button
+                  className="text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                  onClick={() => cart.deleteFromCart(id)}
+                >
+                  Remove from Cart
+                </button>
+              </div>
+            </>
+          ) : (
+            <button
+              onClick={() => {
+                cart.addOneToCart(id);
+              }}
+              className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              Add to cart
+            </button>
+          )}
         </div>
       </div>
     </>

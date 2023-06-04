@@ -20,6 +20,7 @@ import Payments from "./components/admin/Payments";
 
 import SuccessfulPayment from "./components/SuccessfulPayment";
 import ShippingPostman from "./components/admin/ShippingPostman";
+import ProductTest from "./components/ProductTest";
 
 function App() {
   return (
@@ -47,6 +48,7 @@ function App() {
           </Routes>
         </Router>
       </CartProvider>
+      {/* <ProductTest /> */}
     </>
   );
 }

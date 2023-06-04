@@ -50,22 +50,26 @@ const Cart = () => {
 
   const checkout = async () => {
     console.log(couponCode);
-    axios.get("http://localhost:3001/api/loginStatus").then((response) => {
-      if (response.data.loggedIn === true) {
-        setShowCart(!showCart);
-      } else {
-        Swal.fire({
-          position: "top",
-          icon: "Error",
-          title: "You need to Login first!",
-          showConfirmButton: false,
-          timer: 1500,
-        });
-        navigate("/signin");
-        return;
-      }
-    });
-    await fetch("http://localhost:3001/checkout", {
+
+    const loginStatusResponse = await axios.get(
+      "http://localhost:3001/api/loginStatus"
+    );
+
+    if (loginStatusResponse.data.loggedIn === true) {
+      setShowCart(!showCart);
+    } else {
+      Swal.fire({
+        position: "top",
+        icon: "error",
+        title: "You need to log in first!",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      navigate("/signin");
+      return;
+    }
+
+    const checkoutResponse = await fetch("http://localhost:3001/checkout", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -76,15 +80,12 @@ const Cart = () => {
         address: address,
         couponCode: couponCode, // Include the coupon code in the request body
       }),
-    })
-      .then((response) => {
-        return response.json();
-      })
-      .then((response) => {
-        if (response.url) {
-          window.location.assign(response.url);
-        }
-      });
+    });
+
+    const responseJson = await checkoutResponse.json();
+    if (responseJson.url) {
+      window.location.assign(responseJson.url);
+    }
   };
 
   const navigate = useNavigate();
@@ -212,7 +213,10 @@ const Cart = () => {
 
               <hr className=" border-dashed m-2   border-2"></hr>
               <div>
-                <h4>Total: ${getTotalCost(checkoutItems, productsTable)}</h4>
+                <h4>
+                  Total: $
+                  {getTotalCost(checkoutItems, productsTable).toFixed(2)}
+                </h4>
               </div>
               <button
                 onClick={checkout}
@@ -223,6 +227,7 @@ const Cart = () => {
                 Checkout
               </button>
               <button
+                onClick={close}
                 type="button"
                 class="text-gray-900 gap-2 w-full bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 mr-2 mb-2"
               >

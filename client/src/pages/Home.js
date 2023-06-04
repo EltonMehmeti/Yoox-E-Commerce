@@ -234,6 +234,7 @@ const Home = () => {
                     name={product.Name}
                     desc={product.Description}
                     price={product.Price}
+                    img={`http://localhost:3001${product.Img1}`}
                     stock={product.Stock}
                   />
                   // </Link>

@@ -70,6 +70,7 @@ const Payments = () => {
       }
     });
   };
+  console.log(Img);
   const options = {
     theme: "",
     animationEnabled: true,
@@ -112,39 +113,35 @@ const Payments = () => {
       <Sidebar />
 
       <div className="ml-20 h-screen flex items-center justify-center flex-col">
-        <div className=" self-baseline justify-self-end w-full justify-center items-center flex-row flex mb-20   h-100 p-4">
-          <div className="w-1/3">
-            <CanvasJSChart
-              options={options}
-              /* onRef={ref => this.chart = ref} */
-            />
-          </div>
-          <div className="flex flex-wrap lg:flex-nowrap justify-center ">
-            <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-44 rounded-xl w-full lg:w-80 p-8 pt-9 m-3 bg-hero-pattern bg-no-repeat bg-cover bg-center">
+        <div className="flex  mb-4">
+          <div className="flex">
+            <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-32 rounded-xl w-52 p-4 m-2 bg-hero-pattern bg-no-repeat bg-cover bg-center">
               <div className="flex justify-between items-center">
                 <div className="flex items-center">
-                  <span className="p-4 rounded-full bg-[#ebfaf2] border">
-                    <MdOutlineAccountBalanceWallet fill="#5fd8b9" size={40} />
+                  <span className="p-2 rounded-full bg-[#ebfaf2] border">
+                    <MdOutlineAccountBalanceWallet fill="#5fd8b9" size={32} />
                   </span>
-                  <div className="ml-4">
+                  <div className="ml-2">
                     <p className="font-bold text-gray-400">Earnings</p>
-                    <p className="text-2xl mt-2">${calculateTotalEarnings()}</p>
+                    <p className="text-lg mt-1">
+                      ${calculateTotalEarnings().toFixed(2)}
+                    </p>
                   </div>
                 </div>
-
                 <button
                   type="button"
-                  className="text-2xl opacity-0.9 text-white hover:drop-shadow-xl rounded-full  p-4"
+                  className="text-lg opacity-0.9 text-white hover:drop-shadow-xl rounded-full p-2"
                 >
                   <BsCurrencyDollar />
                 </button>
               </div>
-              <div className="mt-6">
+              <div className="mt-2">
                 <button color="white" text="Download" borderRadius="10px" />
               </div>
             </div>
           </div>
         </div>
+
         <div className="flex flex-row w-full justify-around items-center">
           <button
             class="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mr-2 mb-2"
@@ -167,116 +164,117 @@ const Payments = () => {
             required
           />
         </div>
-        <table class="w-1/2 text-sm text-left text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" class="px-4 py-3">
-                Costumer
-              </th>
-              <th scope="col" class="px-4 py-3">
-                Order At
-              </th>
-              <th scope="col" class="px-4 py-3">
-                Product Names
-              </th>
-              <th scope="col" class="px-4 py-3">
-                Product Quantity
-              </th>
-              <th scope="col" class="px-4 py-3">
-                Total Quantity
-              </th>
-              <th scope="col" class="px-4 py-3">
-                Total Price{" "}
-              </th>
-              <th scope="col" class="px-4 py-3">
-                Shipping Status
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders
-              .filter((val) => {
-                if (search == "") {
-                  return val;
-                } else if (
-                  val.customer_email
-                    .toLowerCase()
-                    .includes(search.toLowerCase())
-                ) {
-                  return val;
-                }
-              })
-              .map((order, i) => {
-                return (
-                  <tr
-                    class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
-                    key={order.order_id}
-                    // <Link to={`order/${order.order_id}`}>
-                  >
-                    <td class="px-4 py-2">
-                      <span class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
-                        {order.customer_email}
-                      </span>
-                    </td>
-                    <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      <div className="flex items-center">
-                        {new Date(order.order_date).toLocaleDateString([], {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}{" "}
-                        {new Date(order.order_date).toLocaleTimeString([], {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </div>
-                    </td>
-                    <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      {order.item_names.join("| ")}
-                    </td>
-                    <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      {order.item_quantity.join(", ")}
-                    </td>
-                    <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      {order.total_quantity}
-                    </td>
-                    <td class="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      ${order.total_price}
-                    </td>
-                    <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      {order.shipping_status === "Delivered" ? (
-                        <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
-                          <span className="w-2 h-2 mr-1 bg-green-500 rounded-full"></span>
-                          Delivered
+        <div class="max-h-64 overflow-y-auto">
+          <table class="w-2/3 text-xs text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" class="px-2 py-2">
+                  Customer
+                </th>
+                <th scope="col" class="px-2 py-2">
+                  Order At
+                </th>
+                <th scope="col" class="px-2 py-2">
+                  Product Names
+                </th>
+                <th scope="col" class="px-2 py-2">
+                  Product Quantity
+                </th>
+                <th scope="col" class="px-2 py-2">
+                  Total Quantity
+                </th>
+                <th scope="col" class="px-2 py-2">
+                  Total Price
+                </th>
+                <th scope="col" class="px-2 py-2">
+                  Shipping Status
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders
+                .filter((val) => {
+                  if (search == "") {
+                    return val;
+                  } else if (
+                    val.customer_email
+                      .toLowerCase()
+                      .includes(search.toLowerCase())
+                  ) {
+                    return val;
+                  }
+                })
+                .map((order, i) => {
+                  return (
+                    <tr
+                      class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      key={order.order_id}
+                    >
+                      <td class="px-2 py-2">
+                        <span class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
+                          {order.customer_email}
                         </span>
-                      ) : order.shipping_status === "Packing" ? (
-                        <span className="inline-flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">
-                          <span className="w-2 h-2 mr-1 bg-yellow-500 rounded-full"></span>
-                          Packing
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
-                          <span className="w-2 h-2 mr-1 bg-red-500 rounded-full"></span>
-                          Pending
-                        </span>
-                      )}
-                    </td>
+                      </td>
+                      <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <div className="flex items-center">
+                          {new Date(order.order_date).toLocaleDateString([], {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          })}{" "}
+                          {new Date(order.order_date).toLocaleTimeString([], {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          })}
+                        </div>
+                      </td>
+                      <td className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {order.item_names.join("| ")}
+                      </td>
+                      <td className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {order.item_quantity.join(", ")}
+                      </td>
+                      <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {order.total_quantity}
+                      </td>
+                      <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        ${order.total_price}
+                      </td>
+                      <td className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        {order.shipping_status === "Delivered" ? (
+                          <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                            <span className="w-2 h-2 mr-1 bg-green-500 rounded-full"></span>
+                            Delivered
+                          </span>
+                        ) : order.shipping_status === "Packing" ? (
+                          <span className="inline-flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">
+                            <span className="w-2 h-2 mr-1 bg-yellow-500 rounded-full"></span>
+                            Packing
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
+                            <span className="w-2 h-2 mr-1 bg-red-500 rounded-full"></span>
+                            Pending
+                          </span>
+                        )}
+                      </td>
 
-                    <td>
-                      <button
-                        onClick={() => {
-                          open();
-                          handleOrder(order.order_id);
-                        }}
-                      >
-                        <IoMdMore />
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-          </tbody>
-        </table>
+                      <td>
+                        <button
+                          onClick={() => {
+                            open();
+                            handleOrder(order.order_id);
+                          }}
+                        >
+                          <IoMdMore />
+                        </button>
+                      </td>
+                    </tr>
+                  );
+                })}
+            </tbody>
+          </table>
+        </div>
       </div>
       <Modal>
         <div className="bg-white w-[600px] p-14 rounded-xl">
@@ -305,7 +303,7 @@ const Payments = () => {
                 {Img?.map((img, index) => (
                   <div key={index} className="flex items-center mb-3">
                     <img
-                      src="https://storage.googleapis.com/alpine-inkwell-325917.appspot.com/devices/macbook-pro-m1-14-header.png"
+                      src={`http://localhost:3001${img}`}
                       alt={`Product ${index + 1}`}
                       className="w-20 h-20 mr-4 border rounded-lg p-1 bg-gray-100"
                     />

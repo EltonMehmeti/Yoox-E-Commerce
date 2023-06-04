@@ -42,28 +42,28 @@ const ShippingPostman = () => {
   return (
     <div className="flex items-center justify-center h-screen">
       <div className="overflow-x-auto flex flex-col gap-20 justify-center ml-10">
-        <table className="w-1/2 text-sm text-left text-gray-500 dark:text-gray-400">
+        <table className="w-1/3 text-xs text-left text-gray-500 overflow-y-scroll dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-2 py-2">
                 Customer
               </th>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-2 py-2">
                 Order At
               </th>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-2 py-2">
                 Product Names
               </th>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-2 py-2">
                 Product Quantity
               </th>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-2 py-2">
                 Total Quantity
               </th>
-              <th scope="col" className="px-4 py-3">
-                Total Price{" "}
+              <th scope="col" className="px-2 py-2">
+                Total Price
               </th>
-              <th scope="col" className="px-4 py-3">
+              <th scope="col" className="px-2 py-2">
                 Shipping Status
               </th>
             </tr>
@@ -75,12 +75,12 @@ const ShippingPostman = () => {
                   className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
                   key={order.order_id}
                 >
-                  <td className="px-4 py-2">
+                  <td className="px-2 py-1">
                     <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
                       {order.customer_email}
                     </span>
                   </td>
-                  <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <td className="px-2 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <div className="flex items-center">
                       {new Date(order.order_date).toLocaleDateString([], {
                         year: "numeric",
@@ -93,20 +93,19 @@ const ShippingPostman = () => {
                       })}
                     </div>
                   </td>
-                  <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <td className="px-2 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {order.item_names.join("| ")}
                   </td>
-                  <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <td className="px-2 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {order.item_quantity.join(", ")}
                   </td>
-
-                  <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <td className="px-2 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {order.total_quantity}
                   </td>
-                  <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <td className="px-2 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     {order.total_price}
                   </td>
-                  <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  <td className="px-2 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                     <select
                       value={
                         selectedStatus[order.order_id] || order.shipping_status
@@ -118,7 +117,7 @@ const ShippingPostman = () => {
                         });
                         updateShippingStatus(order.order_id, e.target.value);
                       }}
-                      class="bg-gray-50 border w-auto border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-gray-50 border w-auto border-gray-300 text-gray-900 text-xs rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-1.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     >
                       <option value="Pending">Pending</option>
                       <option value="Packing">Packing</option>
@@ -130,19 +129,19 @@ const ShippingPostman = () => {
             })}
           </tbody>
         </table>
-        <div className="p-2 border rounded-lg  justify-end w-[40%] ">
+
+        <div className="p-2 border rounded-lg  justify-end w-[35%] ">
           <h1>Delivered Orders</h1>
-          <table className="w-1/2 text-sm text-left text-gray-500 dark:text-gray-400">
+          <table className="w-1/4 text-xs text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" className="px-4 py-3">
+                <th scope="col" className="px-2 py-2">
                   Customer
                 </th>
-                <th scope="col" className="px-4 py-3">
+                <th scope="col" className="px-2 py-2">
                   Order At
                 </th>
-
-                <th scope="col" className="px-4 py-3">
+                <th scope="col" className="px-2 py-2">
                   Shipping Status
                 </th>
               </tr>
@@ -154,12 +153,12 @@ const ShippingPostman = () => {
                     className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
                     key={order.order_id}
                   >
-                    <td className="px-4 py-2">
+                    <td className="px-2 py-1">
                       <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
                         {order.customer_email}
                       </span>
                     </td>
-                    <td className="px-4 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <td className="px-2 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                       <div className="flex items-center">
                         {new Date(order.order_date).toLocaleDateString([], {
                           year: "numeric",
@@ -172,10 +171,9 @@ const ShippingPostman = () => {
                         })}
                       </div>
                     </td>
-
-                    <td>
-                      <span class="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
-                        <span class="w-2 h-2 mr-1 bg-green-500 rounded-full"></span>
+                    <td className="px-2 py-1">
+                      <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium mr-1 px-1.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
+                        <span className="w-1.5 h-1.5 mr-0.5 bg-green-500 rounded-full"></span>
                         {order.shipping_status}
                       </span>
                     </td>

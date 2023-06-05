@@ -5,6 +5,7 @@ import e2 from "../img/person2.jpg";
 import e3 from "../img/person.jpg";
 import e4 from "../img/person5.jpg";
 import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 const AboutUs = () => {
   return (
@@ -96,6 +97,9 @@ const AboutUs = () => {
             </div>
           </div>
         </div>
+      </div>
+      <div className="bg-white">
+        <Footer />
       </div>
     </div>
   );

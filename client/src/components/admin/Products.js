@@ -8,6 +8,8 @@ import { BsSortNumericDown } from "react-icons/bs";
 import { useModal } from "react-hooks-use-modal";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
+import { MdOutlineAccountBalanceWallet } from "react-icons/md";
+import { BsCurrencyDollar } from "react-icons/bs";
 
 const Products = () => {
   const [Modal, open, close, isOpen] = useModal("root", {
@@ -21,7 +23,7 @@ const Products = () => {
   const [productsTable, setProductsTable] = useState([]);
   axios.defaults.withCredentials = true;
   const navigate = useNavigate();
-
+  const [mostSold, setMostSold] = useState({});
   useEffect(() => {
     axios
       .get("http://localhost:3001/admin/products")
@@ -32,6 +34,10 @@ const Products = () => {
       .catch((error) => {
         console.log(error);
       });
+    axios.get("http://localhost:3001/mostsold").then((response) => {
+      setMostSold(response.data);
+      console.log(mostSold);
+    });
   }, []);
   // delete product function
   const deleteProduct = (id) => {
@@ -145,7 +151,57 @@ const Products = () => {
     <div className="flex items-center justify-start h-screen">
       <Sidebar />
       <div className="relative overflow-x-auto ml-20 w-[75%] h-[70%] shadow-md sm:rounded-lg">
-        <div className="flex flex-row justify-around items-center">
+        <div className="flex border-2">
+          <div className="bg-white border-2 dark:text-gray-200 dark:bg-secondary-dark-bg h-32 rounded-xl w-62 p-4 m-2 bg-hero-pattern bg-no-repeat bg-cover bg-center">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center">
+                <span className="p-2 rounded-full bg-[#ebfaf2] border">
+                  <MdOutlineAccountBalanceWallet fill="#5fd8b9" size={32} />
+                </span>
+                <div className="ml-2">
+                  <p className="font-bold text-gray-400">Most Sold</p>
+                  <p className="text-lg mt-1">{mostSold.product_name}</p>
+                  <p className="text-lg font-bold mt-1">
+                    {mostSold.total_sold}
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="text-lg opacity-0.9 text-white hover:drop-shadow-xl rounded-full p-2"
+              >
+                <BsCurrencyDollar />
+              </button>
+            </div>
+            <div className="mt-2">
+              <button color="white" text="Download" borderRadius="10px" />
+            </div>
+          </div>
+          <div className="bg-white border-2 dark:text-gray-200 dark:bg-secondary-dark-bg h-32 rounded-xl w-62 p-4 m-2 bg-hero-pattern bg-no-repeat bg-cover bg-center">
+            <div className="flex justify-between items-center">
+              <div className="flex items-center">
+                <span className="p-2 rounded-full bg-[#ebfaf2] border">
+                  <MdOutlineAccountBalanceWallet fill="#5fd8b9" size={32} />
+                </span>
+                <div className="ml-2">
+                  <p className="font-bold text-gray-400">Most Sold</p>
+                  <p className="text-lg mt-1">{mostSold.product_name}</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                className="text-lg opacity-0.9 text-white hover:drop-shadow-xl rounded-full p-2"
+              >
+                <BsCurrencyDollar />
+              </button>
+            </div>
+            <div className="mt-2">
+              <button color="white" text="Download" borderRadius="10px" />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex flex-row p-4 justify-around items-center">
           <button
             className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
             onClick={() => {

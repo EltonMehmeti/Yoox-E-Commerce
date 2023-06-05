@@ -20,6 +20,7 @@ import "swiper/css/pagination";
 import { EffectCube, Pagination } from "swiper";
 import Page404 from "../components/404";
 import Chat from "../components/Chat";
+import Footer from "../components/Footer";
 const Home = () => {
   const [username, setUsername] = useState("");
   useEffect(() => {
@@ -214,7 +215,10 @@ const Home = () => {
             />
           </div>
         </div>
-        <div id="products" className="flex flex-row flex-wrap gap-6">
+        <div
+          id="products"
+          className="flex flex-row items-center justify-center flex-wrap gap-6"
+        >
           {productsTable.length > 0 ? (
             productsTable
               ?.filter((val) => {
@@ -270,6 +274,9 @@ const Home = () => {
       <div className="sticky ml-4 bottom-4">
         <Chat />
       </div>
+      <>
+        <Footer />
+      </>
     </div>
   );
 };

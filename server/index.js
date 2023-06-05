@@ -836,6 +836,41 @@ app.post("/api/orders/track", (req, res) => {
     res.json(orders);
   });
 });
+//mostsold
+app.get("/mostsold", (req, res) => {
+  const q = `
+    SELECT
+      oi.item_id,
+      p.Name AS product_name,
+      SUM(oi.quantity) AS total_sold
+    FROM
+      OrderItems oi
+      INNER JOIN Product p ON oi.item_id = p.Id
+    GROUP BY
+      oi.item_id, p.Name
+    ORDER BY
+      total_sold DESC
+    LIMIT 1;
+  `;
+
+  db.query(q, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res
+        .status(500)
+        .json({
+          error: "An error occurred while fetching the most sold product.",
+        });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "No products found." });
+    }
+
+    const mostSoldProduct = results[0];
+    res.json(mostSoldProduct);
+  });
+});
 
 app.listen(3001, () => {
   console.log("Running server");

@@ -11,7 +11,7 @@ const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
   console.log(cart.items);
   return (
     <div>
-      <div class="w-full max-w-sm h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+      <div class=" w-[22rem] max-w-sm h-auto bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
         <Link to={`/product/${id}`}>
           <div className="relative w-[20rem] h-[28rem]">
             <img

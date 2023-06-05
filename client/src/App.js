@@ -21,6 +21,7 @@ import Payments from "./components/admin/Payments";
 import SuccessfulPayment from "./components/SuccessfulPayment";
 import ShippingPostman from "./components/admin/ShippingPostman";
 import ProductTest from "./components/ProductTest";
+import TrackOrders from "./components/TrackOrders";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
             <Route path="/aboutus" element={<AboutUs />} />
             <Route path="/shipping" element={<ShippingPostman />} />
             <Route path="/delivery" element={<Delivery />} />
+            <Route path="/trackorder" element={<TrackOrders />} />
 
             <Route path="/orders" element={<Payments />} />
 

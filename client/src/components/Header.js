@@ -5,13 +5,46 @@ import Logo from "../img/logo2.png";
 import { AiOutlineLogin } from "react-icons/ai";
 import { CartContext } from "../pages/CartContext";
 import { useContext } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Header = (props) => {
   const cart = useContext(CartContext);
-
+  const navigate = useNavigate();
   const productsCount = cart.items.reduce(
     (sum, product) => sum + product.quantity,
     0
   );
+  const handleSignOut = async () => {
+    try {
+      const response = await axios.post("http://localhost:3001/api/logout");
+      if (response.data.message === "Logged out successfully") {
+        // Clear session or local storage if necessary
+        localStorage.removeItem("accessToken"); // Example: remove access token from local storage
+        navigate("/signin");
+      } else {
+        // Handle error or display a message
+        console.log("Logout failed:", response.data.message);
+        // Display an error message to the user
+      }
+    } catch (error) {
+      // Handle error or display a message
+      console.log("Logout error:", error);
+      // Display an error message to the user
+    }
+  };
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const handleToggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
+  const handleMouseEnter = () => {
+    setIsDropdownOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsDropdownOpen(false);
+  };
   return (
     <nav class="bg-[#24292F] top-0   border-gray-200 dark:bg-gray-900 sticky z-50">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -87,12 +120,60 @@ const Header = (props) => {
             </li>
             <li>
               {props.username ? (
-                <a
-                  href="#"
-                  class="block py-2 pl-3 pr-4 text-white rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-black md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                >
-                  Profile: {props.username}
-                </a>
+                <div className="relative">
+                  <button
+                    id="dropdownDelayButton"
+                    className="text-white  text-center font-medium rounded-lg text-sm px-4   inline-flex items-center "
+                    type="button"
+                    onClick={handleToggleDropdown}
+                    onMouseEnter={handleMouseEnter}
+                  >
+                    {props.username}{" "}
+                    <svg
+                      className="w-4 h-4 ml-2"
+                      aria-hidden="true"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M19 9l-7 7-7-7"
+                      ></path>
+                    </svg>
+                  </button>
+
+                  {isDropdownOpen && (
+                    <div
+                      id="dropdownDelay"
+                      className="z-50 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 absolute right-0 top-full mt-2"
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                    >
+                      <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
+                        <li className=" cursor-pointer">
+                          <a
+                            href="http://localhost:3000/trackorder"
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          >
+                            Track Orders
+                          </a>
+                        </li>
+                        <li className=" cursor-pointer">
+                          <a
+                            onClick={handleSignOut}
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                          >
+                            Sign Out
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
               ) : (
                 <a
                   href="http://localhost:3000/signin"

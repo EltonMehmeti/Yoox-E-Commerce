@@ -62,15 +62,15 @@ const Users = () => {
   };
 
   // update user function
-  const [nameUpdated, setNameUpdated] = useState("");
-  const [emailUpdated, setEmailUpdated] = useState("");
-  const [passwordUpdated, setPasswordUpdated] = useState("");
-  const [addressUpdated, setAddressUpdated] = useState("");
-  const [cityUpdated, setCityUpdated] = useState("");
-  const [phoneUpdated, setPhoneUpdated] = useState("");
-  const [usertTypeUpdated, setUsertTypeUpdated] = useState("");
-  const Swal = require("sweetalert2");
-  const updateUser = (id) => {
+  let [nameUpdated, setNameUpdated] = useState("");
+  let [emailUpdated, setEmailUpdated] = useState("");
+  let [passwordUpdated, setPasswordUpdated] = useState("");
+  let [addressUpdated, setAddressUpdated] = useState("");
+  let [cityUpdated, setCityUpdated] = useState("");
+  let [phoneUpdated, setPhoneUpdated] = useState("");
+  let [usertTypeUpdated, setUsertTypeUpdated] = useState("");
+  let Swal = require("sweetalert2");
+  let updateUser = (id) => {
     axios
       .put(`http://localhost:3001/api/update/${id}`, {
         nameU: nameUpdated,
@@ -124,7 +124,7 @@ const Users = () => {
 
       {/*  */}
 
-      <div className="relative overflow-x-auto mt-10 ml-20 w-[65%] h-[70%] p-4 shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto mt-10 ml-20 w-[65%]  p-4 shadow-md sm:rounded-lg">
         <div className="flex flex-row  items-center justify-around">
           <button
             className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
@@ -156,7 +156,7 @@ const Users = () => {
           />
         </div>
 
-        <div class="relative bg-white rounded-lg shadow dark:bg-gray-800">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-800 overflow-y-auto">
           <Modal2>
             <div className="bg-white p-14 rounded-xl">
               <div class="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
@@ -335,7 +335,7 @@ const Users = () => {
             </div>
           </Modal2>
         </div>
-        <table className="w-[35%] h-[200px] text-sm text-left overflow-y-scroll text-gray-500 dark:text-gray-400">
+        <table className=" text-sm text-left overflow-y-scroll text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="px-6 py-3">
@@ -410,6 +410,16 @@ const Users = () => {
                         className="bg-gradient-to-r text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-14 h-25"
                         onClick={() => {
                           setUserId((userId = user.Id));
+                          setNameUpdated((nameUpdated = user.Name));
+                          setEmailUpdated((emailUpdated = user.Email));
+                          setPasswordUpdated((passwordUpdated = user.Password));
+                          setAddressUpdated((addressUpdated = user.Address));
+                          setCityUpdated((cityUpdated = user.City));
+                          setPhoneUpdated((phoneUpdated = user.Phone));
+                          setUsertTypeUpdated(
+                            (usertTypeUpdated = user.User_Type)
+                          );
+                          setCityUpdated((cityUpdated = user.City));
                           // console.log(userId);
                           open();
                         }}
@@ -456,6 +466,7 @@ const Users = () => {
                                         onChange={(e) => {
                                           setNameUpdated(e.target.value);
                                         }}
+                                        value={nameUpdated}
                                         type="text"
                                         name="nameU"
                                         id="name"
@@ -472,6 +483,7 @@ const Users = () => {
                                         Email
                                       </label>
                                       <input
+                                        value={emailUpdated}
                                         onChange={(e) => {
                                           setEmailUpdated(e.target.value);
                                         }}
@@ -491,6 +503,7 @@ const Users = () => {
                                         Password
                                       </label>
                                       <input
+                                        value={passwordUpdated}
                                         onChange={(e) => {
                                           setPasswordUpdated(e.target.value);
                                         }}
@@ -510,6 +523,7 @@ const Users = () => {
                                         Address
                                       </label>
                                       <input
+                                        value={addressUpdated}
                                         onChange={(e) => {
                                           setAddressUpdated(e.target.value);
                                         }}
@@ -529,6 +543,7 @@ const Users = () => {
                                         User Type
                                       </label>
                                       <input
+                                        value={usertTypeUpdated}
                                         onChange={(e) => {
                                           setUsertTypeUpdated(e.target.value);
                                         }}
@@ -546,6 +561,7 @@ const Users = () => {
                                         Phone
                                       </label>
                                       <input
+                                        value={phoneUpdated}
                                         onChange={(e) => {
                                           setPhoneUpdated(e.target.value);
                                         }}
@@ -565,6 +581,7 @@ const Users = () => {
                                         City
                                       </label>
                                       <input
+                                        value={cityUpdated}
                                         onChange={(e) => {
                                           setCityUpdated(e.target.value);
                                         }}

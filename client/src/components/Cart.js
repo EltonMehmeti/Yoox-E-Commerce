@@ -212,7 +212,7 @@ const Cart = () => {
               </div>
 
               <hr className=" border-dashed m-2   border-2"></hr>
-              <div>
+              <div className="p-2">
                 <h4>
                   Total: $
                   {getTotalCost(checkoutItems, productsTable).toFixed(2)}

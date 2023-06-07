@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../img/logo1.png";
 import Cart from "./Cart";
 import Logo from "../img/logo2.png";
@@ -45,6 +45,17 @@ const Header = (props) => {
   const handleMouseLeave = () => {
     setIsDropdownOpen(false);
   };
+
+  const [username, setUsername] = useState("");
+  useEffect(() => {
+    axios.get("http://localhost:3001/api/loginStatus").then((response) => {
+      if (response.data.loggedIn === true) {
+        console.log(response.data.user[0].Name);
+        setUsername(response.data.user[0].Name);
+        console.log(username);
+      }
+    });
+  }, []);
   return (
     <nav class="bg-[#24292F] top-0   border-gray-200 dark:bg-gray-900 sticky z-50">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
@@ -119,7 +130,7 @@ const Header = (props) => {
               </a>
             </li>
             <li>
-              {props.username ? (
+              {username ? (
                 <div className="relative">
                   <button
                     id="dropdownDelayButton"
@@ -128,7 +139,7 @@ const Header = (props) => {
                     onClick={handleToggleDropdown}
                     onMouseEnter={handleMouseEnter}
                   >
-                    {props.username}{" "}
+                    {username}{" "}
                     <svg
                       className="w-4 h-4 ml-2"
                       aria-hidden="true"

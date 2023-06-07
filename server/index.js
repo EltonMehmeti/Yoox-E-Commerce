@@ -10,6 +10,7 @@ const session = require("express-session");
 const path = require("path");
 
 const multer = require("multer");
+const nodemailer = require("nodemailer");
 
 app.use(express.json());
 app.use(
@@ -599,6 +600,7 @@ server.listen(3002, () => {
 const stripe = require("stripe")(
   "sk_test_51NBiUGDbbGVWjFGzO8hy2eeRGzMqDMSG6I4UX9iLF6WDQPE9ME0nLfDOkd1wF7XvSM1h9G92tZlathSUN7Cg3weZ00hgf7QWUP"
 );
+
 // Stripe checkout functionality
 app.post("/checkout", async (req, res) => {
   const { items, customerEmail, address } = req.body; // Retrieve items and customerEmail from the request body
@@ -856,11 +858,9 @@ app.get("/mostsold", (req, res) => {
   db.query(q, (err, results) => {
     if (err) {
       console.error(err);
-      return res
-        .status(500)
-        .json({
-          error: "An error occurred while fetching the most sold product.",
-        });
+      return res.status(500).json({
+        error: "An error occurred while fetching the most sold product.",
+      });
     }
 
     if (results.length === 0) {

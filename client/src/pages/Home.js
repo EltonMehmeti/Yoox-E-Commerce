@@ -21,6 +21,8 @@ import { EffectCube, Pagination } from "swiper";
 import Page404 from "../components/404";
 import Chat from "../components/Chat";
 import Footer from "../components/Footer";
+import { AiFillEye } from "react-icons/ai";
+
 const Home = () => {
   const [username, setUsername] = useState("");
   useEffect(() => {
@@ -39,7 +41,8 @@ const Home = () => {
     axios
       .get("http://localhost:3001/admin/products")
       .then((response) => {
-        setProductsTable(response.data);
+        const limitedProducts = response.data.slice(0, 5);
+        setProductsTable(limitedProducts);
       })
       .catch((error) => {
         console.log(error);
@@ -56,13 +59,13 @@ const Home = () => {
       });
   }, []);
   //
-  const handleCar = (CatId) => {
-    setProductsTable(
-      productsTable.filter((product) => product.CategoryId === CatId)
-    );
+  const handleCar = (Cat) => {
+    setCategory(Cat);
+
+    console.log(category);
   };
   const [search, setSearch] = useState("");
-
+  const [category, setCategory] = useState("");
   return (
     <div>
       <div className="top-0 z-50 sticky">
@@ -221,29 +224,25 @@ const Home = () => {
         >
           {productsTable.length > 0 ? (
             productsTable
-              ?.filter((val) => {
-                if (search == "") {
-                  return val;
-                } else if (
-                  val.Name.toLowerCase().includes(search.toLowerCase())
-                ) {
-                  return val;
-                }
+              .filter((val) => {
+                const isNameMatch =
+                  search === "" ||
+                  val.Name.toLowerCase().includes(search.toLowerCase());
+                const isCategoryMatch =
+                  category === "" || val.CategoryId === category;
+                return isNameMatch && isCategoryMatch;
               })
-              .map((product, i) => {
-                return (
-                  // <Link to={`/product/${product.Id}`}>
-                  <ProductsTemplate
-                    id={product.Id}
-                    name={product.Name}
-                    desc={product.Description}
-                    price={product.Price}
-                    img={`http://localhost:3001${product.Img1}`}
-                    stock={product.Stock}
-                  />
-                  // </Link>
-                );
-              })
+              .map((product, i) => (
+                <ProductsTemplate
+                  key={i}
+                  id={product.Id}
+                  name={product.Name}
+                  desc={product.Description}
+                  price={product.Price}
+                  img={`http://localhost:3001${product.Img1}`}
+                  stock={product.Stock}
+                />
+              ))
           ) : (
             <Page404 />
           )}
@@ -270,6 +269,15 @@ const Home = () => {
             </button>
           </ScrollToTop>
         </div>
+        <Link to={"/allproducts"}>
+          <button
+            type="button"
+            class="text-white absolute right-6 gap-2 self-end justify-self-end bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mr-2 mb-2"
+          >
+            <AiFillEye />
+            View More
+          </button>
+        </Link>
       </div>
       <div className="sticky ml-4 bottom-4">
         <Chat />

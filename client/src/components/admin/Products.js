@@ -516,7 +516,7 @@ const Products = () => {
                       )}
                     </td>
 
-                    <td className="px-6 py-2">{product.Price}</td>
+                    <td className="px-6 py-2">${product.Price}</td>
                     <td className="px-6 py-2">{product.Stock}</td>
                     <td className="px-6 py-2">{product.CategoryId}</td>
                     <td className="px-6 py-2 text-right">

@@ -4,6 +4,7 @@ import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
+import Contact from "./pages/Contact";
 import Postman from "./components/admin/Postman";
 import Category from "./components/admin/Category";
 import Delivery from "./components/admin/Delivery";
@@ -40,6 +41,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/aboutus" element={<AboutUs />} />
+            <Route path="/contact" element={<Contact/>} />
             <Route path="/shipping" element={<ShippingPostman />} />
             <Route path="/delivery" element={<Delivery />} />
             <Route path="/trackorder" element={<TrackOrders />} />

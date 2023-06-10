@@ -2,14 +2,9 @@ import React, { useEffect, useState } from "react";
 import Header from "./Header";
 import { useModal } from "react-hooks-use-modal";
 import Delivery from "../components/admin/Delivery";
-import CanvasJSReact from "@canvasjs/react-charts";
 import { AiOutlineClose } from "react-icons/ai";
 import { AiTwotoneMail } from "react-icons/ai";
-import { IoMdMore } from "react-icons/io";
-import { BsSortNumericDown } from "react-icons/bs";
-import { BsCurrencyDollar } from "react-icons/bs";
-import { BsBoxFill } from "react-icons/bs";
-import { MdOutlineAccountBalanceWallet } from "react-icons/md";
+
 import axios from "axios";
 const TrackOrders = () => {
   const [orders, setOrders] = useState([]);
@@ -136,148 +131,73 @@ const TrackOrders = () => {
           </h1>
         </div>
         <div class="flex flex-wrap flex-row p-10 items-center justify-center mt-20overflow-y-scroll gap-6 w-3/4">
-          {orders
-            .filter((val) => {
-              if (search == "") {
-                return val;
-              } else if (
-                val.customer_email.toLowerCase().includes(search.toLowerCase())
-              ) {
-                return val;
-              }
-            })
-            .map((order, i) => {
-              return (
-                <div
-                  key={i}
-                  className="h-72 w-72 pt-4 px-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden flex flex-col"
-                >
-                  {/* Content */}
-                  <div className="mb-auto">
-                    <h1 className="font-bold text-lg">
-                      Order ID: {order.order_id}
-                    </h1>
-                    <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-                      {order.item_name}
-                    </h5>
+          {orders?.map((order, i) => {
+            return (
+              <div
+                key={i}
+                className="h-72 w-72 pt-4 px-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 overflow-hidden flex flex-col"
+              >
+                {/* Content */}
+                <div className="mb-auto">
+                  <h1 className="font-bold text-lg">
+                    Order ID: {order.order_id}
+                  </h1>
+                  <h5 className="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                    {order.item_name}
+                  </h5>
 
-                    <p className="mb-2 font-bold text-gray-700 dark:text-gray-400 text-sm">
-                      {order.item_names.join(" | ")}
-                    </p>
-                    <p className="mb-2 font-normal text-gray-700 dark:text-gray-400 text-sm">
-                      {new Date(order.order_date).toLocaleDateString([], {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}{" "}
-                      {new Date(order.order_date).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })}
-                    </p>
-                    <p className="mb-2 font-normal text-gray-700 dark:text-gray-400 text-sm">
-                      ${order.total_price}
-                    </p>
-                    <button
-                      onClick={() => {
-                        open();
-                        handleOrder(order.order_id);
-                      }}
-                      className="inline-flex mt-10 items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  <p className="mb-2 font-bold text-gray-700 dark:text-gray-400 text-sm">
+                    {order.item_names.join(" | ")}
+                  </p>
+                  <p className="mb-2 font-normal text-gray-700 dark:text-gray-400 text-sm">
+                    {new Date(order.order_date).toLocaleDateString([], {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}{" "}
+                    {new Date(order.order_date).toLocaleTimeString([], {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                  <p className="mb-2  font-bold text-gray-700 dark:text-gray-400 text-sm">
+                    ${order.total_price}
+                  </p>
+                  <button
+                    onClick={() => {
+                      open();
+                      handleOrder(order.order_id);
+                    }}
+                    className="inline-flex mt-10 items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  >
+                    Track
+                    <svg
+                      aria-hidden="true"
+                      className="w-4 h-4 ml-2 -mr-1"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      Track
-                      <svg
-                        aria-hidden="true"
-                        className="w-4 h-4 ml-2 -mr-1"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          fillRule="evenodd"
-                          d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
-                    </button>
-                  </div>
-
-                  {/* Label */}
-                  <div
-                    className={`w-full  rounded-tr-xl rounded-tl-xl h-2 ${
-                      order.shipping_status.toLowerCase() == "delivered"
-                        ? "bg-green-500"
-                        : "bg-[#fea41f]"
-                    }`}
-                  ></div>
+                      <path
+                        fillRule="evenodd"
+                        d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
+                        clipRule="evenodd"
+                      ></path>
+                    </svg>
+                  </button>
                 </div>
 
-                // <tr
-                //   class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
-                //   key={order.order_id}
-                // >
-                //   <td class="px-2 py-2">
-                //     <span class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
-                //       {order.customer_email}
-                //     </span>
-                //   </td>
-                //   <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                //     <div className="flex items-center">
-                //       {new Date(order.order_date).toLocaleDateString([], {
-                //         year: "numeric",
-                //         month: "long",
-                //         day: "numeric",
-                //       })}{" "}
-                //       {new Date(order.order_date).toLocaleTimeString([], {
-                //         hour: "2-digit",
-                //         minute: "2-digit",
-                //       })}
-                //     </div>
-                //   </td>
-                //   <td className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                //     {order.item_names.join("| ")}
-                //   </td>
-                //   <td className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                //     {order.item_quantity.join(", ")}
-                //   </td>
-                //   <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                //     {order.total_quantity}
-                //   </td>
-                //   <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                //     ${order.total_price}
-                //   </td>
-                //   <td className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                //     {order.shipping_status === "Delivered" ? (
-                //       <span className="inline-flex items-center bg-green-100 text-green-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-green-900 dark:text-green-300">
-                //         <span className="w-2 h-2 mr-1 bg-green-500 rounded-full"></span>
-                //         Delivered
-                //       </span>
-                //     ) : order.shipping_status === "Packing" ? (
-                //       <span className="inline-flex items-center bg-yellow-100 text-yellow-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-yellow-900 dark:text-yellow-300">
-                //         <span className="w-2 h-2 mr-1 bg-yellow-500 rounded-full"></span>
-                //         Packing
-                //       </span>
-                //     ) : (
-                //       <span className="inline-flex items-center bg-red-100 text-red-800 text-xs font-medium mr-2 px-2.5 py-0.5 rounded-full dark:bg-red-900 dark:text-red-300">
-                //         <span className="w-2 h-2 mr-1 bg-red-500 rounded-full"></span>
-                //         Pending
-                //       </span>
-                //     )}
-                //   </td>
-
-                //   <td>
-                //     <button
-                //       onClick={() => {
-                //         open();
-                //         handleOrder(order.order_id);
-                //       }}
-                //     >
-                //       <IoMdMore />
-                //     </button>
-                //   </td>
-                // </tr>
-              );
-            })}
+                {/* Label */}
+                <div
+                  className={`w-full  rounded-tr-xl rounded-tl-xl h-2 ${
+                    order.shipping_status.toLowerCase() == "delivered"
+                      ? "bg-green-500"
+                      : "bg-[#fea41f]"
+                  }`}
+                ></div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

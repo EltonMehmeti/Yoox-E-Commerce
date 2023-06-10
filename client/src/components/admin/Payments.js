@@ -108,6 +108,12 @@ const Payments = () => {
   const calculateTotalEarnings = () => {
     return orders?.reduce((total, order) => total + order.total_price, 0);
   };
+  const handleDelete = () => {
+    axios.delete("http://localhost:3001/deleteorders").then((response) => {
+      console.log(response);
+    });
+    window.location.reload();
+  };
   return (
     <div className="flex items-center bg-[#fafbfb]  h-screen">
       <Sidebar />
@@ -163,6 +169,12 @@ const Payments = () => {
             placeholder="Search By Email"
             required
           />
+          <button
+            class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
+            onClick={handleDelete}
+          >
+            Delete older orders
+          </button>
         </div>
         <div class="max-h-64 overflow-y-auto">
           <table class="w-2/3 text-xs text-left text-gray-500 dark:text-gray-400">

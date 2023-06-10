@@ -48,37 +48,18 @@ const AllProducts = () => {
         {categoriesTable?.map((category, i) => {
           console.log(category);
           return (
-            // <div
-            //   key={i}
-            //   className=" flex p-2 cursor-pointer border-b-2 items-center justify-center w-50 h-16 text-center  left-1/4 "
-            // >
-            //   <img src="" />
-            //   <span
-            //     onClick={() => {
-            //       handleCar(category.Id);
-            //     }}
-            //     className=" text-black text-xl font-bold text-center"
-            //   >
-            //     <h1>
-            //       {category.Id} - {category.Name}
-            //     </h1>
-            //   </span>
-            // </div>
-            <a
-              href="#"
-              class="flex flex-col items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+            <span
+              onClick={() => {
+                handleCar(category.Id);
+              }}
+              class="flex flex-col cursor-pointer items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
             >
-              <img
-                class="object-cover w-full rounded-t-lg h-96 md:h-auto md:w-48 md:rounded-none md:rounded-l-lg"
-                src="/docs/images/blog/image-4.jpg"
-                alt=""
-              />
               <div class="flex flex-col justify-between p-4 leading-normal">
                 <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {category.Name}
                 </h5>
               </div>
-            </a>
+            </span>
           );
         })}
       </div>
@@ -113,7 +94,7 @@ const AllProducts = () => {
               type="text"
               id="voice-search"
               class="bg-gray-50 border w-72 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              placeholder="Search Mockups, Logos, Design Templates..."
+              placeholder="Search Products"
               required
             />
           </div>

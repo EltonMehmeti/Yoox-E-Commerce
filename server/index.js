@@ -714,6 +714,36 @@ app.get("/api/orders", (req, res) => {
     res.json(orders);
   });
 });
+// delete all orders
+app.delete("/deleteorders", (req, res) => {
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+  // MySQL query to delete orders older than one week and their associated order items
+  const formattedDate = oneWeekAgo.toISOString().slice(0, 19).replace("T", " ");
+  const query = `
+    DELETE Orders, OrderItems
+    FROM Orders
+    LEFT JOIN OrderItems ON Orders.id = OrderItems.order_id
+    WHERE Orders.order_date < '${formattedDate}'
+  `;
+
+  // Execute the query
+  db.query(query, (error, results) => {
+    if (error) {
+      console.error("Error deleting orders:", error);
+      res
+        .status(500)
+        .json({ error: "An error occurred while deleting orders" });
+    } else {
+      console.log("Orders and order items deleted successfully");
+      res
+        .status(200)
+        .json({ message: "Orders and order items deleted successfully" });
+    }
+  });
+});
+
 // single order
 app.get("/api/orders/:id", (req, res) => {
   const orderId = req.params.id;

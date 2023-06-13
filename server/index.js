@@ -212,11 +212,12 @@ app.use(
   "/images",
   express.static(path.join(__dirname, "..", "client", "src", "img"))
 );
-
+require("dotenv").config();
+const ImgPath = process.env.IMG_PATH;
 // Set up multer storage configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "C:\\Users\\px\\Desktop\\Lab-Project-Repo\\client\\src\\img");
+    cb(null, ImgPath);
   },
   filename: (req, file, cb) => {
     const { originalname } = file;

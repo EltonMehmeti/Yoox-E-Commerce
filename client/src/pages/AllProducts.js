@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import axios from "axios";
 import ProductsTemplate from "../components/ProductsTemplate";
 import ScrollToTop from "react-scroll-up";
-
+import Pagination from "../components/Pagination";
 import Page404 from "../components/404";
 import Footer from "../components/Footer";
 
@@ -41,32 +41,23 @@ const AllProducts = () => {
   };
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [productsPerPage] = useState(8);
+  const indexOfLastPost = currentPage * productsPerPage;
+  const indexOfFirstPost = indexOfLastPost - productsPerPage;
+  const currentProducts = productsTable.slice(
+    indexOfFirstPost,
+    indexOfLastPost
+  );
+  // change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <div>
       <Header />
       <div className="mt-10  flex w-full p-2 bg-gray-100   border-b-2 items-center flex-wrap justify-center flex-row gap-4">
-        {categoriesTable?.map((category, i) => {
-          console.log(category);
-          return (
-            <span
-              onClick={() => {
-                handleCar(category.Id);
-              }}
-              class="flex flex-col cursor-pointer items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
-            >
-              <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                  {category.Name}
-                </h5>
-              </div>
-            </span>
-          );
-        })}
-      </div>
-
-      <div className=" px-32 bg-gray-100 py-20">
         <div className="p-10">
-          <h1 className="text-[#24292F] text-[49px]">New Arrivals</h1>
+          <h1 className="text-[#24292F] text-[49px]"></h1>
 
           <label for="voice-search" class="sr-only">
             Search
@@ -99,12 +90,32 @@ const AllProducts = () => {
             />
           </div>
         </div>
+        {categoriesTable?.map((category, i) => {
+          console.log(category);
+          return (
+            <span
+              onClick={() => {
+                handleCar(category.Id);
+              }}
+              class="flex flex-col cursor-pointer items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+            >
+              <div class="flex flex-col justify-between p-4 leading-normal">
+                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                  {category.Name}
+                </h5>
+              </div>
+            </span>
+          );
+        })}
+      </div>
+
+      <div className=" px-32 bg-gray-100 py-20">
         <div
           id="products"
           className="flex flex-row items-center justify-center flex-wrap gap-6"
         >
-          {productsTable.length > 0 ? (
-            productsTable
+          {currentProducts.length > 0 ? (
+            currentProducts
               .filter((val) => {
                 const isNameMatch =
                   search === "" ||
@@ -149,6 +160,13 @@ const AllProducts = () => {
               <span class="sr-only">Icon description</span>
             </button>
           </ScrollToTop>
+        </div>
+        <div className="mt-[5rem] ml-20">
+          <Pagination
+            productsPerPage={productsPerPage}
+            totalProducts={productsTable.length}
+            paginate={paginate}
+          />
         </div>
       </div>
       <Footer />

@@ -39,7 +39,7 @@ const CartProduct = (props) => {
           </div>
           <div>
             <p className="font-light text-gray-500">
-              Total: {(quantity * productData.Price).toFixed(2)}
+              Total: ${(quantity * productData.Price).toFixed(2)}
             </p>
 
             {/* <hr></hr> */}

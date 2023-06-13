@@ -107,9 +107,15 @@ const Products = () => {
     formData.append("priceU", priceU);
     formData.append("stockU", stockU);
     formData.append("categoryU", categoryU);
-    formData.append("images", img1U);
-    formData.append("images", img2U);
-    formData.append("images", img3U);
+    if (img1U) {
+      formData.append("images", img1U);
+    }
+    if (img2U) {
+      formData.append("images", img2U);
+    }
+    if (img3U) {
+      formData.append("images", img3U);
+    }
 
     axios
       .put(`http://localhost:3001/api/updateProduct/${id}`, formData, {
@@ -128,7 +134,7 @@ const Products = () => {
         window.location.reload();
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
         Swal.fire({
           position: "top",
           icon: "error",
@@ -138,7 +144,7 @@ const Products = () => {
         });
       });
   };
-
+  console.log(productsTable);
   let [productId, setProductId] = useState(null);
   // update modal
 
@@ -623,7 +629,7 @@ const Products = () => {
                                       </label>
                                       <input
                                         onChange={(e) => {
-                                          setImg1U(e.target.value);
+                                          setImg1U(e.target.files[0]);
                                         }}
                                         type="file"
                                         name="img1U"
@@ -642,7 +648,7 @@ const Products = () => {
                                       </label>
                                       <input
                                         onChange={(e) => {
-                                          setImg2U(e.target.value);
+                                          setImg2U(e.target.files[0]);
                                         }}
                                         type="file"
                                         name="img2U"
@@ -661,7 +667,7 @@ const Products = () => {
                                       </label>
                                       <input
                                         onChange={(e) => {
-                                          setImg3U(e.target.value);
+                                          setImg3U(e.target.files[0]);
                                         }}
                                         type="file"
                                         name="img3U"

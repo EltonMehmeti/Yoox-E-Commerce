@@ -159,7 +159,7 @@ const Home = () => {
           </Swiper>
         </div>
       </div>
-      <div className="mt-10  flex w-full p-2 bg-gray-100   border-b-2 items-center flex-wrap justify-center flex-row gap-4">
+      {/* <div className="mt-10  flex w-full p-2 bg-gray-100   border-b-2 items-center flex-wrap justify-center flex-row gap-4">
         {categoriesTable?.map((category, i) => {
           console.log(category);
           return (
@@ -181,7 +181,7 @@ const Home = () => {
             </div>
           );
         })}
-      </div>
+      </div> */}
 
       <div className=" px-32 bg-gray-100 py-20">
         <div className="p-10">

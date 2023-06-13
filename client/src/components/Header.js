@@ -50,7 +50,6 @@ const Header = (props) => {
   useEffect(() => {
     axios.get("http://localhost:3001/api/loginStatus").then((response) => {
       if (response.data.loggedIn === true) {
-        console.log(response.data.user[0].Name);
         setUsername(response.data.user[0].Name);
         console.log(username);
       }

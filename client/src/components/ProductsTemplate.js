@@ -27,7 +27,7 @@ const ProductsTemplate = ({ id, name, desc, img, price, stock }) => {
             </div>
           </div>
         </Link>
-        <div class="px-5 pb-5">
+        <div class="px-5 h-64 pb-5">
           <TbBoxMultiple3 />
           <a href="#">
             <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">

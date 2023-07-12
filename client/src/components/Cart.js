@@ -137,34 +137,6 @@ const Cart = () => {
               <hr></hr>
 
               <div className="overflow-y-scroll h-3/4 ">
-                {/* <div className="flex items-center mt-4">
-                  <div>
-                    <img
-                      src="https://storage.googleapis.com/alpine-inkwell-325917.appspot.com/devices/macbook-pro-m1-14-header.png"
-                      className="w-36 h-36 rounded-lg object-cover"
-                    />
-                  </div>
-                  <div className="flex-1">
-                    <div>
-                      <h1 className="font-light text-gray-500 truncate">
-                        Relaxed Fit T-Shirte
-                      </h1>
-                      <p className="font-light text-gray-500">
-                        $12.99 |{" "}
-                        <span className="font-bold text-green-500">
-                          In Stock
-                        </span>
-                      </p>
-                      <h3 className="font-light text-gray-500">Qty: 2</h3>
-                    </div>
-                    <div>
-                      <p className="font-light text-gray-500">Total: $24.99</p>
-                      <button className="font-light flex flex-row items-center justify-center ml-32 text-gray-600">
-                        <AiFillDelete /> Delete
-                      </button>
-                    </div>
-                  </div>
-                </div> */}
                 {cart.items.map((element, idx) => (
                   <CartProduct
                     key={idx}

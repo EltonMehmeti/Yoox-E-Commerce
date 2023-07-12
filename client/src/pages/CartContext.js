@@ -1,6 +1,5 @@
 import { createContext, useState } from "react";
-import { productData } from "./Home";
-import axios from "axios";
+
 import { getProductData } from "../components/ProductsData";
 
 export const CartContext = createContext({
@@ -114,8 +113,3 @@ export function CartProvider({ children }) {
 }
 
 export default CartProvider;
-
-// CODE DOWN HERE
-
-// Context (cart, addToCart, removeCart)
-// Provider -> gives your React app access to all the things in your context

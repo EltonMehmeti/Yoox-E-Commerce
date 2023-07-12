@@ -21,9 +21,12 @@ const Products = () => {
     closeOnOverlayClick: false,
   });
   const [productsTable, setProductsTable] = useState([]);
+  const [categoryTable, setCategoryTable] = useState([]);
   axios.defaults.withCredentials = true;
-  const navigate = useNavigate();
   const [mostSold, setMostSold] = useState({});
+
+  const navigate = useNavigate();
+
   useEffect(() => {
     axios
       .get("http://localhost:3001/admin/products")
@@ -38,6 +41,15 @@ const Products = () => {
       setMostSold(response.data);
       console.log(mostSold);
     });
+
+    axios
+      .get("http://localhost:3001/admin/category")
+      .then((response) => {
+        setCategoryTable(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }, []);
   // delete product function
   const deleteProduct = (id) => {
@@ -144,7 +156,9 @@ const Products = () => {
         });
       });
   };
-  console.log(productsTable);
+
+  useEffect(() => {}, []);
+
   let [productId, setProductId] = useState(null);
   // update modal
 
@@ -406,17 +420,20 @@ const Products = () => {
                       >
                         Category
                       </label>
-                      <input
-                        type="number"
-                        name="category"
-                        id="position"
+                      <select
+                        onChange={(e) =>
+                          setCategory(e.target.value.split("-")[0])
+                        }
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="Category"
-                        required=""
-                        onChange={(e) => {
-                          setCategory(e.target.value);
-                        }}
-                      />
+                      >
+                        {categoryTable?.map((category) => {
+                          return (
+                            <option class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                              {category.Id} - {category.Name}
+                            </option>
+                          );
+                        })}{" "}
+                      </select>
                     </div>
                   </div>
                 </form>
@@ -545,7 +562,15 @@ const Products = () => {
                           setPriceU((priceU = product.Price));
                           setStockU((stockU = product.Stock));
                           setCategoryU((categoryU = product.CategoryId));
-                          // console.log(userId);
+                          setImg1U(
+                            (img1U = `http://localhost:3001${product.Img1}`)
+                          );
+                          setImg2U(
+                            (img1U = `http://localhost:3001${product.Img2}`)
+                          );
+                          setImg3U(
+                            (img1U = `http://localhost:3001${product.Img3}`)
+                          );
                           open();
                         }}
                       >
@@ -631,12 +656,17 @@ const Products = () => {
                                         onChange={(e) => {
                                           setImg1U(e.target.files[0]);
                                         }}
+                                        value={img1U && ""}
                                         type="file"
                                         name="img1U"
                                         id="price"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         placeholder="Image"
                                         required=""
+                                      />
+                                      <img
+                                        src={img1U}
+                                        className="rounded-full w-10"
                                       />
                                     </div>
                                     <div className="w-full">
@@ -650,12 +680,17 @@ const Products = () => {
                                         onChange={(e) => {
                                           setImg2U(e.target.files[0]);
                                         }}
+                                        value={img2U && ""}
                                         type="file"
                                         name="img2U"
                                         id="price"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         placeholder="Image"
                                         required=""
+                                      />
+                                      <img
+                                        src={img2U}
+                                        className="rounded-full w-10"
                                       />
                                     </div>
                                     <div>
@@ -669,11 +704,16 @@ const Products = () => {
                                         onChange={(e) => {
                                           setImg3U(e.target.files[0]);
                                         }}
+                                        value={img3U && ""}
                                         type="file"
                                         name="img3U"
                                         placeholder="Image"
                                         id="category"
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                      />
+                                      <img
+                                        src={img3U}
+                                        className="rounded-full w-10"
                                       />
                                     </div>
                                     <div>

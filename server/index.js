@@ -903,6 +903,35 @@ app.get("/mostsold", (req, res) => {
   });
 });
 
+app.get("/categoriesStats", (req, res) => {
+  const q = `SELECT
+  c.Id AS CategoryId,
+  c.Name AS CategoryName,
+  COALESCE(SUM(oi.quantity), 0) AS TotalSold
+FROM
+  Category c
+LEFT JOIN
+  Product p ON c.Id = p.CategoryId
+LEFT JOIN
+  OrderItems oi ON p.Id = oi.item_id
+GROUP BY
+  c.Id, c.Name
+ORDER BY
+  TotalSold DESC;
+`;
+  db.query(q, (err, results) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({
+        error: "An error occurred while fetching!",
+      });
+    }
+    if (results.length === 0) {
+      return res.status(404).json({ error: "No data found." });
+    }
+    res.send(results);
+  });
+});
 app.listen(3001, () => {
   console.log("Running server");
 });

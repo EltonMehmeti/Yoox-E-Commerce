@@ -1,103 +1,98 @@
-const db = require("../Config/dbConfig");
-const bcrypt = require("../utils/bcryptUtils");
-
-const userModel = {
-  getUsers: (callback) => {
-    const query = "SELECT * FROM Users";
-    db.query(query, callback);
-  },
-
-  createUser: (userData, callback) => {
-    const { name, email, password, address, city, phone, userType } = userData;
-    const query =
-      "INSERT INTO Users (Name, Email, Password, Address, City, Phone, User_Type) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    const values = [name, email, password, address, city, phone, userType];
-    db.query(query, values, callback);
-  },
-
-  deleteUser: (userId, callback) => {
-    const query = "DELETE FROM Users WHERE Id = ?";
-    db.query(query, [userId], callback);
-  },
-
-  updateUser: (userId, userData, callback) => {
-    const { name, email, password, address, city, phone, userType } = userData;
-    const query =
-      "UPDATE Users SET Name = ?, Email = ?, Password = ?, Address = ?, City = ?, Phone = ?, User_Type = ? WHERE Id = ?";
-    const values = [
-      name,
-      email,
-      password,
-      address,
-      city,
-      phone,
-      userType,
-      userId,
-    ];
-    db.query(query, values, callback);
-  },
-
-  getUserByEmail: (email, callback) => {
-    const query = "SELECT * FROM Users WHERE Email = ?";
-    db.query(query, [email], callback);
-  },
-};
-
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
 // Register User
-const register = async (req, res) => {
+exports.register = async (req, res, db) => {
   try {
-    const { name, email, password, address, city, phone } = req.body;
-    const hashedPassword = await bcrypt.hash(password);
+    const { name, email, password, address, city, phone, countryId } = req.body;
 
-    const result = await userModel.createUser({
-      name,
-      email,
-      password: hashedPassword,
-      address,
-      city,
-      phone,
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) {
+        console.log(err);
+        return res.sendStatus(500);
+      }
+
+      const sqlInsert = `
+        INSERT INTO Users (Name, Email, Password, Address, City, Phone, CountryId)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+      `;
+
+      db.query(
+        sqlInsert,
+        [name, email, hash, address, city, phone, countryId],
+        (err, result) => {
+          if (err) {
+            console.error(err);
+            return res.sendStatus(500);
+          }
+
+          console.log(result);
+          return res.sendStatus(200);
+        }
+      );
     });
-
-    console.log(result);
-
-    res.sendStatus(200);
   } catch (err) {
     console.error(err);
-    res.sendStatus(500);
+    return res.sendStatus(500);
+  }
+};
+
+// Check if user is logged in
+exports.loginStatus = (req, res) => {
+  if (req.session.user) {
+    res.send({ loggedIn: true, user: req.session.user });
+  } else {
+    res.send({ loggedIn: false });
   }
 };
 
 // Login User
-const login = (req, res) => {
+exports.login = (req, res, db) => {
   const email = req.body.email;
   const password = req.body.password;
 
-  userModel.getUserByEmail(email, async (err, result) => {
+  console.log(email, password);
+  const sqlQuery = "SELECT * FROM Users WHERE Email = ?";
+  const values = [email];
+
+  db.query(sqlQuery, values, (err, result) => {
     if (err) {
       console.error(err);
-      res.sendStatus(500);
-    } else {
-      if (result.length > 0) {
-        const isPasswordMatched = await bcrypt.compare(
-          password,
-          result[0].password
-        );
+      return res.sendStatus(500);
+    }
 
-        if (isPasswordMatched) {
-          req.session.user = result;
-          res.send(result);
-        } else {
-          res.send({ message: "Wrong username/password combination!" });
+    if (result.length > 0) {
+      bcrypt.compare(password, result[0].Password, (error, response) => {
+        if (error) {
+          console.error(error);
+          return res.sendStatus(500);
         }
-      } else {
-        res.send({ message: "User doesn't exist" });
-      }
+
+        if (response) {
+          req.session.user = result;
+          return res.send(result);
+        } else {
+          return res.send({ message: "Wrong username/password combination!" });
+        }
+      });
+    } else {
+      return res.send({ message: "User doesn't exist" });
     }
   });
 };
 
-module.exports = {
-  userModel,
-  register,
-  login,
+// Logout
+exports.logout = (req, res) => {
+  if (req.session.user) {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error(err);
+        return res.send({ message: "Error logging out" });
+      } else {
+        res.clearCookie("userId");
+        return res.send({ message: "Logged out successfully" });
+      }
+    });
+  } else {
+    return res.send({ message: "No user logged in" });
+  }
 };

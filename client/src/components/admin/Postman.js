@@ -26,7 +26,7 @@ const Postman = () => {
   const [postmanList, setPostmanList] = useState([]);
   useEffect(() => {
     axios
-      .get("http://localhost:3001/postman")
+      .get("http://localhost:3001/api/postman/get")
       .then((response) => {
         setPostmanList(response.data);
       })
@@ -43,7 +43,7 @@ const Postman = () => {
     console.log(name, lastname, phonenumber);
     // e.preventDefault(();
     axios
-      .post("http://localhost:3001/create", {
+      .post("http://localhost:3001/api/postman/create", {
         name: name,
         lastname: lastname,
         phonenumber: phonenumber,
@@ -66,7 +66,7 @@ const Postman = () => {
   const Swal = require("sweetalert2");
   const updatePostman = (id) => {
     axios
-      .put(`http://localhost:3001/api/updatePostman/${id}`, {
+      .put(`http://localhost:3001/api/postman/update/${id}`, {
         nameU: nameU,
         lastnameU: lastnameU,
         phonenumberU: phonenumberU,
@@ -95,7 +95,7 @@ const Postman = () => {
   //delete postman
   const deletePostman = (id) => {
     axios
-      .delete(`http://localhost:3001/deletePostman/${id}`)
+      .delete(`http://localhost:3001/api/postman/delete/${id}`)
       .then((response) => {
         setPostmanList(postmanList.filter((postman) => postman.id !== id));
         window.location.reload();

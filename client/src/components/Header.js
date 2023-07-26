@@ -3,7 +3,7 @@ import logo from "../img/logo1.png";
 import Cart from "./Cart";
 import Logo from "../img/logo2.png";
 import { AiOutlineLogin } from "react-icons/ai";
-import { CartContext } from "../pages/CartContext";
+import { CartContext } from "../pages/client/CartContext";
 import { useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";

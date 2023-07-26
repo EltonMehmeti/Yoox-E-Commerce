@@ -12,7 +12,7 @@ const Users = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/admin/users")
+      .get("http://localhost:3001/api/users/getusers")
       .then((response) => {
         setUsersTable(response.data);
       })
@@ -22,10 +22,12 @@ const Users = () => {
   }, []);
   // delete user function
   const deleteUser = (id) => {
-    axios.delete(`http://localhost:3001/api/delete/${id}`).then((response) => {
-      setUsersTable(usersTable.filter((val) => val.id !== id));
-      window.location.reload();
-    });
+    axios
+      .delete(`http://localhost:3001/api/users/delete/${id}`)
+      .then((response) => {
+        setUsersTable(usersTable.filter((val) => val.id !== id));
+        window.location.reload();
+      });
   };
 
   //
@@ -40,7 +42,7 @@ const Users = () => {
   //
   const insertUser = () => {
     axios
-      .post(`http://localhost:3001/api/insert`, {
+      .post(`http://localhost:3001/api/users/insert`, {
         name: name,
         email: email,
         password: password,
@@ -72,7 +74,7 @@ const Users = () => {
   let Swal = require("sweetalert2");
   let updateUser = (id) => {
     axios
-      .put(`http://localhost:3001/api/update/${id}`, {
+      .put(`http://localhost:3001/api/users/update/${id}`, {
         nameU: nameUpdated,
         emailU: emailUpdated,
         passwordU: passwordUpdated,
@@ -348,6 +350,9 @@ const Users = () => {
                 Password
               </th>
               <th scope="col" className="px-6 py-3">
+                Country
+              </th>
+              <th scope="col" className="px-6 py-3">
                 Address
               </th>
               <th scope="col" className="px-6 py-3">
@@ -391,6 +396,7 @@ const Users = () => {
                     <td className="px-2  h-[70px] truncate w-1/2 py-2">
                       {user.Password.slice(0, 6)}
                     </td>
+                    <td className="px-6 h-[70px] py-2">{user.CountryId}</td>
                     <td className="px-6 h-[70px] py-2">{user.Address}</td>
                     <td className="px-6 h-[70px] py-2">{user.City}</td>
                     <td className="px-6 h-[70px] py-2">{user.Phone}</td>

@@ -10,6 +10,7 @@ import { MdProductionQuantityLimits } from "react-icons/md";
 import { MdEmojiTransportation } from "react-icons/md";
 import { MdSupportAgent } from "react-icons/md";
 import { GiShoppingBag } from "react-icons/gi";
+import { MdOutlineAdminPanelSettings } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -17,6 +18,7 @@ const Sidebar = (props) => {
   const navigate = useNavigate();
   const menus = [
     { name: "Dashboard", link: "/admin", icon: BsHouse },
+    { name: "Admin", link: "/admintable", icon: MdOutlineAdminPanelSettings },
     { name: "Users", link: "/users", icon: HiOutlineUsers },
     { name: "Orders", link: "/orders", icon: GiShoppingBag },
     { name: "Products", link: "/products", icon: MdProductionQuantityLimits },
@@ -70,7 +72,12 @@ const Sidebar = (props) => {
               }}
               className="flex cursor-pointer items-center text-sm gap-3.5 font-medium p-2 hover:bg-gray-800 rounded-md"
             >
-              <div>{React.createElement(menu?.icon, { size: "20" })} </div>
+              <div>
+                {React.createElement(menu?.icon, {
+                  size: "20",
+                  color: "white",
+                })}
+              </div>
               <h2>{menu?.name}</h2>
             </ul>
           ))}

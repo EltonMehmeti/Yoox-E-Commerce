@@ -45,7 +45,7 @@ const db = mysql.createConnection({
 // Register User
 app.post("/api/register", async (req, res) => {
   try {
-    const { name, email, password, address, city, phone } = req.body;
+    const { name, email, password, address, city, phone, countryId } = req.body;
 
     bcrypt.hash(password, saltRounds, (err, hash) => {
       if (err) {
@@ -53,8 +53,8 @@ app.post("/api/register", async (req, res) => {
       }
 
       const sqlInsert = `
-        INSERT INTO Users (Name, Email, Password, Address, City, Phone)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO Users (Name, Email, Password, Address, City, Phone,CountryId)
+        VALUES (?, ?, ?, ?, ?, ?,?)
       `;
 
       const result = db.query(sqlInsert, [
@@ -64,6 +64,7 @@ app.post("/api/register", async (req, res) => {
         address,
         city,
         phone,
+        countryId,
       ]);
 
       console.log(result);
@@ -205,8 +206,226 @@ app.put("/api/update/:id", (req, res) => {
     );
   });
 });
+// admin login signup
+// Register Admin
+app.post("/api/admin/register", async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
 
-//
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) {
+        console.log(err);
+        return res.sendStatus(500);
+      }
+
+      const sqlInsert = `
+        INSERT INTO Admin (username, email, password)
+        VALUES (?, ?, ?)
+      `;
+
+      db.query(sqlInsert, [username, email, hash], (error, result) => {
+        if (error) {
+          console.log(error);
+          return res.sendStatus(500);
+        }
+
+        console.log(result);
+        return res.sendStatus(200);
+      });
+    });
+  } catch (err) {
+    console.error(err);
+    res.sendStatus(500);
+  }
+});
+
+// Check if admin is logged in
+app.get("/api/admin/loginStatus", (req, res) => {
+  if (req.session.admin) {
+    res.send({ loggedIn: true, admin: req.session.admin });
+  } else {
+    res.send({ loggedIn: false });
+  }
+});
+
+// Login Admin
+app.post("/api/admin/login", (req, res) => {
+  const email = req.body.email;
+  const password = req.body.password;
+
+  db.query("SELECT * FROM Admin WHERE email = ?;", email, (err, result) => {
+    if (err) {
+      res.send({ err: err });
+    }
+
+    if (result.length > 0) {
+      bcrypt.compare(password, result[0].password, (error, response) => {
+        if (response) {
+          req.session.admin = result[0];
+          res.send(result[0]);
+        } else {
+          res.send({ message: "Wrong email/password combination!" });
+        }
+      });
+    } else {
+      res.send({ message: "Admin doesn't exist" });
+    }
+  });
+});
+
+// Logout Admin
+app.post("/api/admin/logout", (req, res) => {
+  if (req.session.admin) {
+    req.session.destroy((err) => {
+      if (err) {
+        res.send({ message: "Error logging out" });
+      } else {
+        res.clearCookie("adminId");
+        res.send({ message: "Logged out successfully" });
+      }
+    });
+  } else {
+    res.send({ message: "No admin logged in" });
+  }
+});
+// Admin Crud
+// Fetch the admins
+app.get("/api/admins", (req, res) => {
+  db.query("SELECT * FROM Admin", (err, result) => {
+    if (err) {
+      res.status(500).send({ error: "Error fetching admins" });
+    } else {
+      res.status(200).send(result);
+    }
+  });
+});
+
+// Insert Admin
+app.post("/api/admin/insert", async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
+
+    bcrypt.hash(password, saltRounds, (err, hash) => {
+      if (err) {
+        console.log(err);
+      }
+
+      const sqlInsert = `
+        INSERT INTO Admin (Username, Email, Password)
+        VALUES (?, ?, ?)
+      `;
+
+      db.query(sqlInsert, [username, email, hash], (err, result) => {
+        if (err) {
+          res.status(500).send({ error: "Error inserting admin" });
+        } else {
+          res.sendStatus(200);
+        }
+      });
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send({ error: "Error inserting admin" });
+  }
+});
+
+// Delete Admin
+app.delete("/api/admin/delete/:id", (req, res) => {
+  const id = Number(req.params.id);
+  db.query("DELETE FROM Admin WHERE admin_id=?", id, (err, result) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send({ error: "Error deleting admin" });
+    } else {
+      console.log(`Deleted admin with ID ${id}`);
+      res.sendStatus(200);
+    }
+  });
+});
+
+// Update Admin
+app.put("/api/admin/update/:id", (req, res) => {
+  const id = Number(req.params.id);
+  const { username, email, password } = req.body;
+  bcrypt.hash(password, saltRounds, (err, hash) => {
+    if (err) {
+      console.log(err);
+    }
+
+    const sqlUpdate = `
+      UPDATE Admin SET Username=?, Email=?, Password=? WHERE admin_id=?
+    `;
+
+    db.query(sqlUpdate, [username, email, hash, id], (err, result) => {
+      if (err) {
+        console.log(err);
+        res.status(500).send({ error: "Error updating admin" });
+      } else {
+        res.sendStatus(200);
+      }
+    });
+  });
+});
+
+// Postman login register
+
+app.post("/api/postman/register", (req, res) => {
+  const { name, lastname, phonenumber } = req.body;
+
+  const sqlInsert = `
+    INSERT INTO Postman (Name, LastName, phonenumber)
+    VALUES (?, ?, ?)
+  `;
+
+  db.query(sqlInsert, [name, lastname, phonenumber], (error, result) => {
+    if (error) {
+      console.log(error);
+      return res.sendStatus(500);
+    }
+
+    console.log(result);
+    return res.sendStatus(200);
+  });
+});
+
+//loginadmin
+app.post("/api/postman/login", (req, res) => {
+  const { name, phonenumber } = req.body;
+
+  db.query(
+    "SELECT * FROM Postman WHERE Name = ? and phonenumber = ?;",
+    [name, phonenumber],
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      }
+
+      if (result.length > 0) {
+        req.session.postman = result[0];
+        res.send(result[0]);
+      } else {
+        res.send({ message: "Postman doesn't exist" });
+      }
+    }
+  );
+});
+
+app.post("/api/postman/logout", (req, res) => {
+  if (req.session.postman) {
+    req.session.destroy((err) => {
+      if (err) {
+        res.send({ message: "Error logging out" });
+      } else {
+        res.clearCookie("postmanId");
+        res.send({ message: "Logged out successfully" });
+      }
+    });
+  } else {
+    res.send({ message: "No postman logged in" });
+  }
+});
+// -===================================================
+
 // Set up static file serving for images
 app.use(
   "/images",
@@ -345,6 +564,17 @@ app.get("/api/totalUsers", (req, res) => {
       res.send({ err });
       console.log(err);
     }
+    res.send(result);
+  });
+});
+app.get("/getCountries", (req, res) => {
+  const q = "Select * from country;";
+  db.query(q, (err, result) => {
+    if (err) {
+      res.send({ err });
+      console.log(err);
+    }
+
     res.send(result);
   });
 });
@@ -932,6 +1162,7 @@ ORDER BY
     res.send(results);
   });
 });
+
 app.listen(3001, () => {
   console.log("Running server");
 });

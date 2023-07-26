@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import Swal from "sweetalert2";
 import axios from "axios";
-import { CartContext } from "../pages/CartContext";
+import { CartContext } from "../pages/client/CartContext";
 import { useContext } from "react";
 import CartProduct from "./CartProduct";
 import { ProductsData, getProductData } from "./ProductsData";

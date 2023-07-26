@@ -14,7 +14,7 @@ const Category = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/admin/category")
+      .get("http://localhost:3001/api/category/getcategories")
       .then((response) => {
         setCategoryTable(response.data);
       })
@@ -26,7 +26,7 @@ const Category = () => {
   // delete category function
   const deleteCategory = (id) => {
     axios
-      .delete(`http://localhost:3001/api/deleteCategory/${id}`)
+      .delete(`http://localhost:3001/api/category/delete/${id}`)
       .then((response) => {
         setCategoryTable(categoryTable.filter((val) => val.id !== id));
         window.location.reload();
@@ -40,7 +40,7 @@ const Category = () => {
   // insert category function
   const insertCategory = () => {
     axios
-      .post(`http://localhost:3001/api/insertCategory`, {
+      .post(`http://localhost:3001/api/category/create`, {
         name: name,
         img: img,
       })
@@ -63,7 +63,7 @@ const Category = () => {
   const Swal = require("sweetalert2");
   const updateCategory = (id) => {
     axios
-      .put(`http://localhost:3001/api/updateCategory/${id}`, {
+      .put(`http://localhost:3001/api/category/update/${id}`, {
         nameU: nameU,
         imgU: imgU,
       })

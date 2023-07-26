@@ -1,7 +1,7 @@
 import React from "react";
 import Logo from "../img/nothingW.webp";
 import { TbBoxMultiple3 } from "react-icons/tb";
-import { CartContext } from "../pages/CartContext";
+import { CartContext } from "../pages/client/CartContext";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { BsFillTrashFill } from "react-icons/bs";

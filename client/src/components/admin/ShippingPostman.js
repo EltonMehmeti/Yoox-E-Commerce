@@ -1,47 +1,139 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useModal } from "react-hooks-use-modal";
+import { useNavigate } from "react-router-dom";
 
 const ShippingPostman = () => {
   const [orders, setOrders] = useState([]);
   const [deliveredOrders, setDeliveredOrders] = useState([]);
-
   const [selectedStatus, setSelectedStatus] = useState({});
-  const [Modal, open, close, isOpen] = useModal("root", {
-    preventScroll: true,
-    closeOnOverlayClick: false,
-  });
+  const [postmanId, setPostmanId] = useState(null); // Moved postmanId to the top-level
+  const [firstname, setFirstName] = useState("");
+  const [lastname, setLastName] = useState("");
+  const [phonenumber, setPhoneNumber] = useState("");
+  const [status, setStatus] = useState("");
+  const [postmanStatus, setPostmanStatus] = useState("");
+  const navigate = useNavigate();
 
+  // Fetch all orders when the component mounts
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/orders")
+      .get("http://localhost:3001/api/postmanAuth/loginStatus")
       .then((response) => {
-        setOrders(
-          response.data.filter((data) => data.shipping_status === "Pending")
-        );
-        setDeliveredOrders(
-          response.data.filter((data) => data.shipping_status === "Delivered")
-        );
-      })
-      .catch((error) => {
-        console.error(error);
+        if (response.data.loggedIn === true) {
+          setPostmanId(response.data.user.Id); // Set the postmanId once
+          setFirstName(response.data.user.Name); // Set the postmanId once
+          setLastName(response.data.user.LastName); // Set the postmanId once
+          setPhoneNumber(response.data.user.phonenumber); // Set the postmanId once
+          setStatus(response.data.user.status); // Set the postmanId once
+        } else {
+          // Handle the case where there is no user email
+          console.log("No user email available!");
+          // Display a message or take appropriate action
+          navigate("/pmlogin");
+        }
       });
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once on mount
 
+  // Fetch orders whenever postmanId changes
+  useEffect(() => {
+    if (postmanId !== null) {
+      axios
+        .post("http://localhost:3001/api/postman/orders", {
+          postmanId: postmanId,
+        })
+        .then((response) => {
+          setOrders(
+            response.data.filter((data) => data.shipping_status === "Pending")
+          );
+          setDeliveredOrders(
+            response.data.filter((data) => data.shipping_status === "Delivered")
+          );
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  }, [postmanId]); // Fetch whenever postmanId changes
   const updateShippingStatus = (orderId, shippingStatus) => {
     axios
       .put(`http://localhost:3001/api/orders/${orderId}`, { shippingStatus })
       .then((response) => {
-        console.log("Shipping status updated successfully");
+        alert("Shipping status updated successfully");
       })
       .catch((error) => {
         console.error("Failed to update shipping status", error);
       });
   };
+  const updatePostmanStatus = () => {
+    axios
+      .put(`http://localhost:3001/api/postman/updateStatus`, {
+        postmanId: postmanId,
+        status: postmanStatus,
+      })
+      .then((response) => {
+        alert("Postman status updated successfully");
+      })
+      .catch((error) => {
+        console.error("Failed to update postman status", error);
+      });
+  };
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    <div className="flex items-center  h-screen">
+      <div className="border-1 flex flex-col items-center justify-center p-10 m-2 w-1/5 backdrop-filter backdrop-blur-md border-2   bg-opacity-5 h-full rounded-lg ">
+        <div className="p-4 flex flex-row flex-wrap w-full   gap-6">
+          <h1 className="font-bold text-xl ">Postman logged in:</h1>
+          <div>
+            <h1 className="font-semibold text-gray-600">FirstName: </h1>
+            <h1 className="font-bold text-gray-800 mb-8 text-lg">
+              {firstname}
+            </h1>
+            <h1 className="font-semibold text-gray-600">LastName: </h1>
+            <h1 className="font-bold text-gray-800 text-lg">{lastname}</h1>
+          </div>
+          <div>
+            <h1 className="font-semibold text-gray-600">Phone Number: </h1>
+            <h1 className="font-bold text-gray-800 mb-8 text-lg">
+              {phonenumber}
+            </h1>
+
+            <h1 className="font-semibold text-gray-600">Status: </h1>
+            <h1
+              className={`font-bold ${
+                status == "available" ? "text-green-500" : "text-red-500"
+              } text-lg `}
+            >
+              {status}
+            </h1>
+          </div>
+          <div class="col-span-6 sm:col-span-3">
+            <label
+              for="position"
+              class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Set Status
+            </label>
+            <select
+              onChange={(e) => {
+                setPostmanStatus(e.target.value.split("-")[0]);
+              }}
+              class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+            >
+              <option>Available</option>
+              <option>Not Available</option>
+            </select>
+            <button
+              className="text-white bg-gradient-to-r mt-4 from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              onClick={() => updatePostmanStatus()}
+            >
+              Submit
+            </button>
+          </div>
+        </div>
+      </div>
       <div className="overflow-x-auto flex flex-col gap-20 justify-center ml-10">
+        <h1 className=" text-gray-700  font-bold">Incoming Orders</h1>
         <table className="w-1/3 text-xs text-left text-gray-500 overflow-y-scroll dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -130,7 +222,7 @@ const ShippingPostman = () => {
           </tbody>
         </table>
 
-        <div className="p-2 border rounded-lg  justify-end w-[35%] ">
+        <div className="p-2 border rounded-lg  justify-end w-auto ">
           <h1>Delivered Orders</h1>
           <table className="w-1/4 text-xs text-left text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">

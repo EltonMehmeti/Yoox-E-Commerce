@@ -26,10 +26,18 @@ const Products = () => {
   const [mostSold, setMostSold] = useState({});
 
   const navigate = useNavigate();
+  const [countries, setCountries] = useState([]);
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/admin/products")
+      .get("http://localhost:3001/api/widgets/getCountries")
+      .then((response) => {
+        setCountries(response.data);
+      });
+  }, []);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/api/products/getproducts")
       .then((response) => {
         setProductsTable(response.data);
         console.log(response.data);
@@ -37,13 +45,13 @@ const Products = () => {
       .catch((error) => {
         console.log(error);
       });
-    axios.get("http://localhost:3001/mostsold").then((response) => {
+    axios.get("http://localhost:3001/api/widgets/mostsold").then((response) => {
       setMostSold(response.data);
       console.log(mostSold);
     });
 
     axios
-      .get("http://localhost:3001/admin/category")
+      .get("http://localhost:3001/api/category/getcategories")
       .then((response) => {
         setCategoryTable(response.data);
       })
@@ -54,7 +62,7 @@ const Products = () => {
   // delete product function
   const deleteProduct = (id) => {
     axios
-      .delete(`http://localhost:3001/api/deleteProduct/${id}`)
+      .delete(`http://localhost:3001/api/products/delete/${id}`)
       .then((response) => {
         setProductsTable(productsTable.filter((val) => val.id !== id));
         window.location.reload();
@@ -63,6 +71,7 @@ const Products = () => {
 
   //
   const [name, setName] = useState("");
+  const [brand, setBrand] = useState("");
   const [desc, setDesc] = useState("");
   const [img1, setImg1] = useState("");
   const [img2, setImg2] = useState("");
@@ -70,22 +79,24 @@ const Products = () => {
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
   const [category, setCategory] = useState("");
-
+  const [countryId, setCountryId] = useState("");
   // insert product function
   // insert product function
   const insertProduct = () => {
     const formData = new FormData();
     formData.append("name", name);
+    formData.append("brand", brand);
     formData.append("desc", desc);
     formData.append("price", price);
     formData.append("stock", stock);
-    formData.append("category", category);
+    formData.append("category", Number(category));
+    formData.append("countryId", Number(countryId));
     formData.append("images", img1);
     formData.append("images", img2);
     formData.append("images", img3);
 
     axios
-      .post(`http://localhost:3001/api/insertProduct`, formData, {
+      .post(`http://localhost:3001/api/products/insert`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -130,7 +141,7 @@ const Products = () => {
     }
 
     axios
-      .put(`http://localhost:3001/api/updateProduct/${id}`, formData, {
+      .put(`http://localhost:3001/api/products/update/${id}`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -301,6 +312,25 @@ const Products = () => {
                     </div>
                     <div class="col-span-6 sm:col-span-3">
                       <label
+                        for="brand"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Brand
+                      </label>
+                      <input
+                        type="text"
+                        name="brand"
+                        id="brand"
+                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        placeholder="Brand"
+                        required=""
+                        onChange={(e) => {
+                          setBrand(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <div class="col-span-6 sm:col-span-3">
+                      <label
                         for="email"
                         class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
@@ -433,6 +463,34 @@ const Products = () => {
                             </option>
                           );
                         })}{" "}
+                      </select>
+                    </div>
+                    <div class="col-span-6 sm:col-span-3">
+                      <label
+                        for="position"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Country
+                      </label>
+                      <select
+                        onChange={(e) =>
+                          setCountryId(e.target.value.split("-")[0])
+                        }
+                        name="country"
+                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        type="text"
+                        placeholder="Country"
+                        required
+                        aria-describedby="cidnote"
+                        id="country"
+                      >
+                        {countries?.map((country) => {
+                          return (
+                            <option>
+                              {country.Id} - {country.Name}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
                   </div>

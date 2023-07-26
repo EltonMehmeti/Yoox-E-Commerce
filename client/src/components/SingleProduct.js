@@ -8,7 +8,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { Autoplay, Pagination, Navigation } from "swiper";
 import Swal from "sweetalert2";
-import { CartContext } from "../pages/CartContext";
+import { CartContext } from "../pages/client/CartContext";
 
 const SingleProduct = () => {
   const location = useLocation();
@@ -44,7 +44,6 @@ const SingleProduct = () => {
   }, []);
 
   const productQuantity = cart.getProductQuantity(id);
-
   return (
     <>
       <Header />
@@ -162,7 +161,7 @@ const SingleProduct = () => {
               <div className="flex  flex-col justify-evenly">
                 <button
                   onClick={() => {
-                    cart.addOneToCart(id);
+                    cart.addOneToCart(2);
                   }}
                   className="text-white w-[3rem] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >

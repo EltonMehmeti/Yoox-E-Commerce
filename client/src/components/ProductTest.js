@@ -6,7 +6,7 @@ const ProductTest = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/admin/products")
+      .get("http://localhost:3001/api/products/getproducts")
       .then((response) => {
         setProductsTable(response.data);
         console.log(response.data);

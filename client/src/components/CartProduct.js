@@ -1,5 +1,5 @@
 import React from "react";
-import { CartContext } from "../pages/CartContext";
+import { CartContext } from "../pages/client/CartContext";
 import { useContext } from "react";
 import { getProductData } from "./ProductsData";
 import { BsFillTrash3Fill } from "react-icons/bs";

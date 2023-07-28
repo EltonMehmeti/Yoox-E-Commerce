@@ -34,6 +34,7 @@ const getTotalCost = (cartProducts, productsTable) => {
 const Cart = () => {
   const [customerEmail, setCustomerEmail] = useState("");
   const [address, setAddress] = useState("");
+  const [userId, setUserId] = useState(null);
   const [couponCode, setCouponCode] = useState("");
 
   useEffect(() => {
@@ -42,7 +43,7 @@ const Cart = () => {
         // Set the customer's email
         setCustomerEmail(response.data.user[0].Email);
         setAddress(response.data.user[0].Address);
-
+        setUserId(response.data.user[0].Id);
         // Call the checkout function with the customer's email
       }
     });
@@ -78,6 +79,7 @@ const Cart = () => {
         items: checkoutItems,
         customerEmail: customerEmail,
         address: address,
+        userId: userId,
         couponCode: couponCode, // Include the coupon code in the request body
       }),
     });

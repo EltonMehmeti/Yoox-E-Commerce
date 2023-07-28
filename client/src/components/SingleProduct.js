@@ -44,6 +44,50 @@ const SingleProduct = () => {
   }, []);
 
   const productQuantity = cart.getProductQuantity(id);
+  const [user_id, setUserId] = useState(null);
+  useEffect(() => {
+    axios.get("http://localhost:3001/api/loginStatus").then((response) => {
+      if (response.data.loggedIn === true) {
+        setUserId(response.data.user[0].Id);
+      }
+    });
+  }, []);
+  // Function to submit the rating to the server
+  const submitRating = () => {
+    // Make an API request to your server to submit the rating
+    console.log(user_id, Number(id), selectedRating);
+    if (user_id != null) {
+      axios
+        .post("http://localhost:3001/product/ratings", {
+          user_id: user_id,
+          productId: Number(id),
+          rating: selectedRating, // Use the selectedRating state value here
+        })
+        .then((response) => {
+          // Rating submitted successfully, you can show a success message or handle any other feedback to the user
+          Swal.fire("Success", "Rating submitted successfully!", "success");
+          // Optionally, you can also update the state or perform any other actions after successful submission
+        })
+        .catch((error) => {
+          // Handle the error, e.g., display an error message
+          console.log(error);
+          Swal.fire("Error", "Failed to submit rating.", "error");
+        });
+    } else {
+      alert("You need to sign in first! So we now who is rating :)");
+    }
+  };
+  const [selectedRating, setSelectedRating] = useState(0);
+
+  // Function to handle clicking on a star
+  const handleStarClick = (rating) => {
+    setSelectedRating(rating);
+  };
+  console.log(selectedRating);
+  // Function to reset the rating
+  const resetRating = () => {
+    setSelectedRating(0);
+  };
   return (
     <>
       <Header />
@@ -186,6 +230,45 @@ const SingleProduct = () => {
               Add to cart
             </button>
           )}
+          <div className="flex items-center space-x-2 mb-5">
+            {[1, 2, 3, 4, 5].map((rating) => (
+              <svg
+                key={rating}
+                className={`w-6 h-6 ${
+                  rating <= selectedRating ? "text-yellow-300" : "text-gray-300"
+                }`}
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 22 20"
+                onClick={() => handleStarClick(rating)}
+              >
+                <path d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z" />
+              </svg>
+            ))}
+            <button
+              onClick={submitRating}
+              type="button"
+              class="text-white  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+              <svg
+                class="w-4 h-4"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 14 10"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M1 5h12m0 0L9 1m4 4L9 9"
+                />
+              </svg>
+              <span class="sr-only"></span>
+            </button>
+          </div>
         </div>
       </div>
     </>

@@ -26,6 +26,7 @@ import AdminSignup from "./pages/admin/AdminSignup";
 import AdminTable from "./components/admin/AdminTable";
 import PMLogin from "./pages/postman/PMLogin";
 import PMSignup from "./pages/postman/PMSignup";
+import MapComponent from "./MapComponent";
 
 function App() {
   return (
@@ -61,6 +62,7 @@ function App() {
           </Routes>
         </Router>
       </CartProvider>
+      <MapComponent />
     </>
   );
 }

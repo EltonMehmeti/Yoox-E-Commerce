@@ -22,15 +22,15 @@ function findAvailablePostman(callback) {
   });
 }
 
-function insertOrderData(customerEmail, address, items) {
-  const insertOrderQuery = `INSERT INTO Orders (customer_email, address, postman_id) VALUES (?, ?, ?)`;
+function insertOrderData(customerEmail, address, items, userId) {
+  const insertOrderQuery = `INSERT INTO Orders (customer_email, address, UserId, postman_id) VALUES (?, ?, ?, ?)`;
 
   // Call the function to find an available postman
   findAvailablePostman((postmanId) => {
     // postmanId contains the available postman_id if available, or null if not available
 
     // If no available postman found, postmanId will be null, so set it as NULL in the order data
-    const orderData = [customerEmail, address, postmanId];
+    const orderData = [customerEmail, address, userId, postmanId];
 
     // Insert the order data into the Orders table
     db.query(insertOrderQuery, orderData, (err, orderResult) => {

@@ -117,4 +117,36 @@ router.get("/categoriesStats", (req, res) => {
   });
 });
 
+// get highest rated product
+router.get("/topproduct", (req, res) => {
+  const q = `SELECT
+  product.*,
+  AVG(product_ratings.rating) AS average_rating
+FROM
+  product
+LEFT JOIN
+  product_ratings ON product.Id = product_ratings.product_id
+GROUP BY
+  product.Id
+ORDER BY
+  average_rating DESC;
+`;
+
+  db.query(q, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "An error occurred" });
+      return;
+    }
+    const productsWithRatingsAndImages = results.map((product) => {
+      return {
+        ...product,
+        Img1: `/images/${product.Img1}`,
+        Img2: `/images/${product.Img2}`,
+        Img3: `/images/${product.Img3}`,
+      };
+    });
+    res.send(productsWithRatingsAndImages);
+  });
+});
+
 module.exports = router;

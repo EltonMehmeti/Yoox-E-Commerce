@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useModal } from "react-hooks-use-modal";
 import { useNavigate } from "react-router-dom";
+import { FaMapMarkedAlt } from "react-icons/fa";
+// import { useModal } from "react-hooks-use-modal";
+import MapComponent from "../../MapComponent";
 
 const ShippingPostman = () => {
   const [orders, setOrders] = useState([]);
@@ -46,6 +49,7 @@ const ShippingPostman = () => {
           setOrders(
             response.data.filter((data) => data.shipping_status === "Pending")
           );
+          console.log(orders);
           setDeliveredOrders(
             response.data.filter((data) => data.shipping_status === "Delivered")
           );
@@ -66,6 +70,7 @@ const ShippingPostman = () => {
       });
   };
   const updatePostmanStatus = () => {
+    console.log(postmanStatus);
     axios
       .put(`http://localhost:3001/api/postman/updateStatus`, {
         postmanId: postmanId,
@@ -78,7 +83,11 @@ const ShippingPostman = () => {
         console.error("Failed to update postman status", error);
       });
   };
-
+  const [Modal, open, close, isOpen] = useModal("root", {
+    preventScroll: true,
+    closeOnOverlayClick: false,
+  });
+  let [placeName, setPlaceName] = useState("");
   return (
     <div className="flex items-center  h-screen">
       <div className="border-1 flex flex-col items-center justify-center p-10 m-2 w-1/5 backdrop-filter backdrop-blur-md border-2   bg-opacity-5 h-full rounded-lg ">
@@ -140,6 +149,7 @@ const ShippingPostman = () => {
               <th scope="col" className="px-2 py-2">
                 Customer
               </th>
+              <th>Address</th>
               <th scope="col" className="px-2 py-2">
                 Order At
               </th>
@@ -170,6 +180,11 @@ const ShippingPostman = () => {
                   <td className="px-2 py-1">
                     <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
                       {order.customer_email}
+                    </span>
+                  </td>
+                  <td className="px-2 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                    <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
+                      {order.address}
                     </span>
                   </td>
                   <td className="px-2 py-1 font-medium text-gray-900 whitespace-nowrap dark:text-white">
@@ -216,12 +231,29 @@ const ShippingPostman = () => {
                       <option value="Delivered">Delivered</option>
                     </select>
                   </td>
+                  <td>
+                    <span
+                      onClick={() => {
+                        open();
+                        setPlaceName((placeName = order.address));
+                      }}
+                      className=" cursor-pointer m-2 ml-4"
+                    >
+                      <FaMapMarkedAlt size={18} />
+                    </span>
+                  </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
+        <Modal>
+          <div className="bg-white p-14  w-[80vh] rounded-xl">
+            <button onClick={close}>X</button>
 
+            <MapComponent placeName={placeName} />
+          </div>
+        </Modal>
         <div className="p-2 border rounded-lg  justify-end w-auto ">
           <h1>Delivered Orders</h1>
           <table className="w-1/4 text-xs text-left text-gray-500 dark:text-gray-400">

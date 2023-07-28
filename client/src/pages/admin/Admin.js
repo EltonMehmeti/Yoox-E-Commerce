@@ -14,7 +14,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/admin/Sidebar";
-import Widgets from "../../components/admin/Widgets";
+import Widgets, { SideWidget } from "../../components/admin/Widgets";
 const Admin = () => {
   axios.defaults.withCredentials = true;
   const [username, setUsername] = useState("");
@@ -38,19 +38,24 @@ const Admin = () => {
   const [totalUsers, setTotalUsers] = useState(0);
   const [totalProducts, setTotalProducts] = useState(0);
   const [newUsers, setNewUsers] = useState(0);
+  const [topProducts, setTopProducts] = useState([]);
 
   useEffect(() => {
     Promise.all([
       axios.get("http://localhost:3001/api/widgets/totalUsers"),
       axios.get("http://localhost:3001/api/widgets/totalProducts"),
       axios.get("http://localhost:3001/api/widgets/newUsers"),
-    ]).then(([totalUsersResponse, ordersResponse, newUsersTotal]) => {
-      setTotalUsers(totalUsersResponse.data[0].total_users);
+      axios.get("http://localhost:3001/api/widgets/topproduct"),
+    ]).then(
+      ([totalUsersResponse, ordersResponse, newUsersTotal, topProductsRes]) => {
+        setTotalUsers(totalUsersResponse.data[0].total_users);
 
-      setTotalProducts(ordersResponse.data[0].total_products);
+        setTotalProducts(ordersResponse.data[0].total_products);
 
-      setNewUsers(newUsersTotal.data.count);
-    });
+        setNewUsers(newUsersTotal.data.count);
+        setTopProducts(topProductsRes.data);
+      }
+    );
   }, []);
 
   const navigate = useNavigate();
@@ -59,7 +64,7 @@ const Admin = () => {
       .get("http://localhost:3001/api/admin/loginStatus")
       .then((response) => {
         if (!response.data.loggedIn) {
-          navigate("/signin");
+          navigate("/adminlogin");
         }
       });
   }, []);
@@ -78,16 +83,24 @@ const Admin = () => {
           newUsers={newUsers}
         />
         <h1>Categories Stats</h1>
-        <ResponsiveContainer width="50%" height={300}>
-          <BarChart data={data}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="totalSold" fill="#8884d8" />
-          </BarChart>
-        </ResponsiveContainer>
+        <div className="flex flex-row gap-4 justify-center items-center w-full">
+          <ResponsiveContainer width="50%" height={300}>
+            <BarChart data={data}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Bar dataKey="totalSold" fill="#8884d8" />
+            </BarChart>
+          </ResponsiveContainer>
+          <div>
+            <h1 className="mb-4 font-bold text-lg text-gray-600">
+              Top Rated Products
+            </h1>
+            <SideWidget products={topProducts} />
+          </div>
+        </div>
       </div>
     </div>
   );

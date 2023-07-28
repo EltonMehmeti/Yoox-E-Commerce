@@ -127,10 +127,12 @@ const AllProducts = () => {
                   key={i}
                   id={product.Id}
                   name={product.Name}
+                  brand={product.Brand}
                   desc={product.Description}
                   price={product.Price}
                   img={`http://localhost:3001${product.Img1}`}
                   stock={product.Stock}
+                  avg_rating={product.avg_rating}
                 />
               ))
           ) : (

@@ -1,14 +1,26 @@
 const db = require("../Config/dbConfig");
 const { deleteFiles } = require("../Helpers/fileUpload");
 
-// Fetch products
+// FETCH PRODUCTS
 exports.getProducts = (req, res, db) => {
-  db.query("SELECT * FROM product", (err, result) => {
+  const getProductsWithRatingsQuery = `
+    SELECT 
+      p.*,
+      IFNULL(AVG(pr.rating), 0) AS avg_rating
+    FROM 
+      product p
+    LEFT JOIN 
+      product_ratings pr ON p.Id = pr.product_id
+    GROUP BY 
+      p.Id;
+  `;
+
+  db.query(getProductsWithRatingsQuery, (err, result) => {
     if (err) {
       res.send({ err: err });
     } else {
       // Map over the result and add the image URLs
-      const productsWithImages = result.map((product) => {
+      const productsWithRatingsAndImages = result.map((product) => {
         return {
           ...product,
           Img1: `/images/${product.Img1}`,
@@ -17,7 +29,7 @@ exports.getProducts = (req, res, db) => {
         };
       });
 
-      res.send(productsWithImages);
+      res.send(productsWithRatingsAndImages);
     }
   });
 };

@@ -21,6 +21,7 @@ const postmanRoutes = require("./Routes/postmanRoutes");
 const categoryRoutes = require("./Routes/categoryRoutes");
 const productRoutes = require("./Routes/productRoutes");
 const widgetRoutes = require("./Routes/widgetRoutes");
+const productRatingController = require("./controllers/productRatingController");
 // Use middlewares
 app.use(middlewares.jsonParser);
 app.use(middlewares.corsMiddleware);
@@ -67,11 +68,11 @@ app.use("/product", singleProductRoutes);
 
 // Stripe checkout functionality
 app.post("/checkout", async (req, res) => {
-  const { items, customerEmail, address } = req.body;
+  const { items, customerEmail, address, userId } = req.body;
   try {
     const sessionUrl = await stripe.createCheckoutSession(items, customerEmail);
     // Call the insertOrderData function to add the order data to the database
-    orderController.insertOrderData(customerEmail, address, items);
+    orderController.insertOrderData(customerEmail, address, items, userId);
     res.send(JSON.stringify({ url: sessionUrl }));
   } catch (error) {
     console.error("Error creating checkout session:", error);
@@ -82,6 +83,10 @@ app.post("/checkout", async (req, res) => {
 app.use("/api/orders", orderRoutes);
 // Widget Stats
 app.use("/api/widgets", widgetRoutes);
+
+// Product rating
+app.use("/product", productRatingController);
+
 // Start the server
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

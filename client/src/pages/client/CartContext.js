@@ -29,6 +29,7 @@ export function CartProvider({ children }) {
   }
 
   function addOneToCart(id) {
+    console.log("addedd with id" + id);
     const quantity = getProductQuantity(id);
 
     if (quantity === 0) {
@@ -43,6 +44,7 @@ export function CartProvider({ children }) {
     } else {
       // product is in cart
       // [ { id: 1 , quantity: 3 }, { id: 2, quantity: 1 } ]    add to product id of 2
+      console.log(cartProducts);
       setCartProducts(
         cartProducts.map(
           (product) =>

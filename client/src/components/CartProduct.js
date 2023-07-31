@@ -2,16 +2,15 @@ import React from "react";
 import { CartContext } from "../pages/client/CartContext";
 import { useContext } from "react";
 import { getProductData } from "./ProductsData";
-import { BsFillTrash3Fill } from "react-icons/bs";
 import { AiFillDelete } from "react-icons/ai";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 const CartProduct = (props) => {
   const cart = useContext(CartContext);
   const id = props.id;
+  console.log(id);
   const quantity = props.quantity;
-
   const productData = getProductData(id);
-
+  console.log(productData);
   if (!productData) {
     // Product data is still loading or not available
     return <div>Loading...</div>;

@@ -14,7 +14,7 @@ import {
 
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../../components/admin/Sidebar";
-import Widgets, { SideWidget } from "../../components/admin/Widgets";
+import Widgets, { CountryW, SideWidget } from "../../components/admin/Widgets";
 const Admin = () => {
   axios.defaults.withCredentials = true;
   const [username, setUsername] = useState("");
@@ -39,6 +39,7 @@ const Admin = () => {
   const [totalProducts, setTotalProducts] = useState(0);
   const [newUsers, setNewUsers] = useState(0);
   const [topProducts, setTopProducts] = useState([]);
+  const [soldbycountry, setSoldByCountry] = useState([]);
 
   useEffect(() => {
     Promise.all([
@@ -46,14 +47,22 @@ const Admin = () => {
       axios.get("http://localhost:3001/api/widgets/totalProducts"),
       axios.get("http://localhost:3001/api/widgets/newUsers"),
       axios.get("http://localhost:3001/api/widgets/topproduct"),
+      axios.get("http://localhost:3001/api/widgets/bycountrysold"),
     ]).then(
-      ([totalUsersResponse, ordersResponse, newUsersTotal, topProductsRes]) => {
+      ([
+        totalUsersResponse,
+        ordersResponse,
+        newUsersTotal,
+        topProductsRes,
+        soldbycountryres,
+      ]) => {
         setTotalUsers(totalUsersResponse.data[0].total_users);
 
         setTotalProducts(ordersResponse.data[0].total_products);
 
         setNewUsers(newUsersTotal.data.count);
         setTopProducts(topProductsRes.data);
+        setSoldByCountry(soldbycountryres.data);
       }
     );
   }, []);
@@ -84,6 +93,12 @@ const Admin = () => {
         />
         <h1>Categories Stats</h1>
         <div className="flex flex-row gap-4 justify-center items-center w-full">
+          <div>
+            <h1 className="mb-4 font-bold text-lg text-gray-600">
+              Products sold by Country
+            </h1>
+            <CountryW items={soldbycountry} />
+          </div>
           <ResponsiveContainer width="50%" height={300}>
             <BarChart data={data}>
               <CartesianGrid strokeDasharray="3 3" />

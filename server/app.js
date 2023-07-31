@@ -20,6 +20,7 @@ const postmanAuthRoutes = require("./Routes/postmanAuthRoutes");
 const postmanRoutes = require("./Routes/postmanRoutes");
 const categoryRoutes = require("./Routes/categoryRoutes");
 const productRoutes = require("./Routes/productRoutes");
+const countryRoutes = require("./Routes/countryRoutes");
 const widgetRoutes = require("./Routes/widgetRoutes");
 const productRatingController = require("./controllers/productRatingController");
 // Use middlewares
@@ -66,6 +67,7 @@ app.use("/api/products", productRoutes);
 // Single Product
 app.use("/product", singleProductRoutes);
 
+app.use("/country", countryRoutes);
 // Stripe checkout functionality
 app.post("/checkout", async (req, res) => {
   const { items, customerEmail, address, userId } = req.body;

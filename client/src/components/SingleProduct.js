@@ -1,5 +1,6 @@
 import axios from "axios";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useContext } from "react";
 import { useLocation } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Header from "./Header";
@@ -19,15 +20,15 @@ const SingleProduct = () => {
   const [img3, setImg3] = useState("");
   const [price, setPrice] = useState(null);
   const [stock, setStock] = useState(null);
+  const [countryImg, setCountryImg] = useState(null);
+  const [category, setCategory] = useState(null);
   const id = location.pathname.split("/")[2];
   const cart = useContext(CartContext);
   useEffect(() => {
     const id = location.pathname.split("/")[2];
-    console.log(id);
     axios
       .get(`http://localhost:3001/product/${id}`)
       .then((response) => {
-        console.log(response.data);
         const data = response.data;
         setName(data.Name);
         setDesc(data.Description);
@@ -36,6 +37,8 @@ const SingleProduct = () => {
         setImg3(data.Img3);
         setPrice(data.Price || 0); // Set price to 0 if it's null
         setStock(data.Stock || 0); // Set stock to 0 if it's null
+        setCountryImg(data.country_image);
+        setCategory(data.category_name);
       })
       .catch((error) => {
         console.log(error);
@@ -55,7 +58,6 @@ const SingleProduct = () => {
   // Function to submit the rating to the server
   const submitRating = () => {
     // Make an API request to your server to submit the rating
-    console.log(user_id, Number(id), selectedRating);
     if (user_id != null) {
       axios
         .post("http://localhost:3001/product/ratings", {
@@ -83,7 +85,6 @@ const SingleProduct = () => {
   const handleStarClick = (rating) => {
     setSelectedRating(rating);
   };
-  console.log(selectedRating);
   // Function to reset the rating
   const resetRating = () => {
     setSelectedRating(0);
@@ -196,6 +197,11 @@ const SingleProduct = () => {
         </div>
         <div className="flex w-1/3   justify-center flex-col gap-4">
           <h1 class="text-gray-900 font-bold text-xl mb-2">{name}</h1>
+          <img
+            src={`http://localhost:3001${countryImg}`}
+            alt={countryImg}
+            className="w-6 rounded-full h-6 mr-3"
+          />
           <h3 class="text-gray-700 text-base">{desc}</h3>
           <h1 className="font-bold">{price}$</h1>
           <p class="text-gray-600">Stock: {stock}</p>
@@ -205,7 +211,7 @@ const SingleProduct = () => {
               <div className="flex  flex-col justify-evenly">
                 <button
                   onClick={() => {
-                    cart.addOneToCart(2);
+                    cart.addOneToCart(id);
                   }}
                   className="text-white w-[3rem] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >

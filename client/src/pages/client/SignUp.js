@@ -2,18 +2,13 @@ import React, { useRef, useEffect, useState } from "react";
 import logo2 from "../../img/logo2.png";
 import logoFigure from "../../img/loginFigure.png";
 import axios from "axios";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import {
   faCheck,
   faTimes,
   faInfoCircle,
-  faIcons,
 } from "@fortawesome/free-solid-svg-icons";
-import {
-  FontAwesomeIcon,
-  fontAwesomeIcon,
-} from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const user_rgx = /^[a-zA-Z][a-zA-Z0-9-_]{3,23}$/;
 const email_rgx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;

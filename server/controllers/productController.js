@@ -1,31 +1,40 @@
-const db = require("../Config/dbConfig");
 const { deleteFiles } = require("../Helpers/fileUpload");
 
 // FETCH PRODUCTS
 exports.getProducts = (req, res, db) => {
-  const getProductsWithRatingsQuery = `
+  const getProductsWithRatingsAndCountryImageQuery = `
     SELECT 
       p.*,
-      IFNULL(AVG(pr.rating), 0) AS avg_rating
+      IFNULL(AVG(pr.rating), 0) AS avg_rating,
+      c.Name AS country_name,
+      CONCAT('/images/', c.Image) AS country_image,  -- Concatenate '/images/' with the image filename to create the URL
+      cat.Name AS category_name
     FROM 
       product p
     LEFT JOIN 
       product_ratings pr ON p.Id = pr.product_id
+    LEFT JOIN
+      country c ON p.CountryId = c.Id
+    LEFT JOIN
+      category cat ON p.CategoryId = cat.Id
     GROUP BY 
       p.Id;
   `;
 
-  db.query(getProductsWithRatingsQuery, (err, result) => {
+  db.query(getProductsWithRatingsAndCountryImageQuery, (err, result) => {
     if (err) {
       res.send({ err: err });
     } else {
-      // Map over the result and add the image URLs
+      // Map over the result and add the image URLs for all three product images and country image
       const productsWithRatingsAndImages = result.map((product) => {
         return {
           ...product,
           Img1: `/images/${product.Img1}`,
           Img2: `/images/${product.Img2}`,
           Img3: `/images/${product.Img3}`,
+          country_image: product.country_image
+            ? product.country_image
+            : "/images/default_country_image.png", // If country_image is null, provide a default image URL
         };
       });
 
@@ -78,12 +87,13 @@ exports.insertProduct = (req, res, db) => {
 // Update product
 exports.updateProduct = (req, res, db) => {
   const id = Number(req.params.id);
-  const { nameU, descU, priceU, stockU, categoryU } = req.body;
+  const { nameU, descU, priceU, stockU, categoryU, countryU, brandU } =
+    req.body;
   const images = req.files.map((file) => file.filename);
 
   const updateQuery = `
-    UPDATE Product SET Name=?, Description=?, Img1=?, Img2=?, Img3=?, Price=?, Stock=?, CategoryId=?
-    WHERE Id=?
+    UPDATE Product SET Name=?, Description=?, Img1=?, Img2=?, Img3=?, Price=?, Stock=?, CategoryId=?,CountryId=?,Brand=?
+  WHERE Id=?
   `;
   const values = [
     nameU,
@@ -94,6 +104,8 @@ exports.updateProduct = (req, res, db) => {
     priceU,
     stockU,
     categoryU,
+    countryU,
+    brandU,
     id,
   ];
 

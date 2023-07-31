@@ -122,6 +122,8 @@ const Products = () => {
   let [priceU, setPriceU] = useState("");
   let [stockU, setStockU] = useState("");
   let [categoryU, setCategoryU] = useState("");
+  let [countryU, setCountryU] = useState("");
+  let [brandU, setBrandU] = useState("");
   const Swal = require("sweetalert2");
   const updateProduct = (id) => {
     const formData = new FormData();
@@ -130,6 +132,8 @@ const Products = () => {
     formData.append("priceU", priceU);
     formData.append("stockU", stockU);
     formData.append("categoryU", categoryU);
+    formData.append("countryU", countryU);
+    formData.append("brandU", brandU);
     if (img1U) {
       formData.append("images", img1U);
     }
@@ -538,6 +542,9 @@ const Products = () => {
                 Category
               </th>
               <th scope="col" className="px-6 py-3">
+                Country
+              </th>
+              <th scope="col" className="px-6 py-3">
                 <span className="sr-only">Edit</span>
               </th>
             </tr>
@@ -599,7 +606,15 @@ const Products = () => {
 
                     <td className="px-6 py-2">${product.Price}</td>
                     <td className="px-6 py-2">{product.Stock}</td>
-                    <td className="px-6 py-2">{product.CategoryId}</td>
+                    <td className="px-6 py-2">{product.category_name}</td>
+                    <td className="px-6 py-2">
+                      <img
+                        src={`http://localhost:3001${product.country_image}`}
+                        alt={product.country_image}
+                        className="w-4 rounded-full h-4 mr-3"
+                      />
+                      {product.country_name}
+                    </td>
                     <td className="px-6 py-2 text-right">
                       <button
                         onClick={() => {
@@ -620,6 +635,8 @@ const Products = () => {
                           setPriceU((priceU = product.Price));
                           setStockU((stockU = product.Stock));
                           setCategoryU((categoryU = product.CategoryId));
+                          setBrandU((brandU = product.Brand));
+                          setCountryU((countryU = product.CountryId));
                           setImg1U(
                             (img1U = `http://localhost:3001${product.Img1}`)
                           );
@@ -681,6 +698,26 @@ const Products = () => {
                                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         placeholder="Type product name"
                                         required=""
+                                      />
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
+                                      <label
+                                        for="brand"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                      >
+                                        Brand
+                                      </label>
+                                      <input
+                                        value={brandU}
+                                        type="text"
+                                        name="brand"
+                                        id="brand"
+                                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        placeholder="Brand"
+                                        required=""
+                                        onChange={(e) => {
+                                          setBrandU(e.target.value);
+                                        }}
                                       />
                                     </div>
                                     <div className="w-full">
@@ -814,25 +851,59 @@ const Products = () => {
                                         required=""
                                       />
                                     </div>
-                                    <div>
+                                    <div class="col-span-6 sm:col-span-3">
                                       <label
-                                        for="item-weight"
-                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                        for="position"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                       >
                                         Category
                                       </label>
-                                      <input
-                                        onChange={(e) => {
-                                          setCategoryU(e.target.value);
-                                        }}
-                                        value={categoryU}
-                                        type="number"
-                                        name="categoryU"
-                                        id="item-weight"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        placeholder="Category"
-                                        required=""
-                                      />
+                                      <select
+                                        onChange={(e) =>
+                                          setCategoryU(
+                                            e.target.value.split("-")[0]
+                                          )
+                                        }
+                                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                      >
+                                        {categoryTable?.map((category) => {
+                                          return (
+                                            <option class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                              {category.Id} - {category.Name}
+                                            </option>
+                                          );
+                                        })}{" "}
+                                      </select>
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
+                                      <label
+                                        for="position"
+                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                      >
+                                        Country
+                                      </label>
+                                      <select
+                                        onChange={(e) =>
+                                          setCountryU(
+                                            e.target.value.split("-")[0]
+                                          )
+                                        }
+                                        name="country"
+                                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        type="text"
+                                        placeholder="Country"
+                                        required
+                                        aria-describedby="cidnote"
+                                        id="country"
+                                      >
+                                        {countries?.map((country) => {
+                                          return (
+                                            <option>
+                                              {country.Id} - {country.Name}
+                                            </option>
+                                          );
+                                        })}
+                                      </select>
                                     </div>
                                   </div>
                                   <br></br>

@@ -119,17 +119,21 @@ router.get("/categoriesStats", (req, res) => {
 
 // get highest rated product
 router.get("/topproduct", (req, res) => {
-  const q = `SELECT
-  product.*,
-  AVG(product_ratings.rating) AS average_rating
-FROM
-  product
-LEFT JOIN
-  product_ratings ON product.Id = product_ratings.product_id
-GROUP BY
-  product.Id
-ORDER BY
-  average_rating DESC;
+  const q = `SELECT 
+  p.*,
+  IFNULL(AVG(pr.rating), 0) AS avg_rating,
+  COUNT(pr.rating) AS total_ratings
+FROM 
+  product p
+LEFT JOIN 
+  product_ratings pr ON p.Id = pr.product_id
+GROUP BY 
+  p.Id
+HAVING 
+  COUNT(pr.rating) >= 3
+ORDER BY 
+  avg_rating DESC;
+
 `;
 
   db.query(q, (err, results) => {
@@ -146,6 +150,37 @@ ORDER BY
       };
     });
     res.send(productsWithRatingsAndImages);
+  });
+});
+
+router.get("/bycountrysold", (req, res) => {
+  const q = `      SELECT 
+  c.Name AS CountryName,
+  c.Image AS CountryImg,
+  COUNT(oi.id) AS TotalProductsSold
+FROM 
+  country c
+LEFT JOIN 
+  product p ON c.Id = p.CountryId
+LEFT JOIN 
+  orderitems oi ON p.Id = oi.item_id
+GROUP BY 
+  c.Id, c.Name
+ORDER BY 
+  TotalProductsSold DESC;`;
+
+  db.query(q, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "An error occurred" });
+      return;
+    }
+    const withimages = results.map((country) => {
+      return {
+        ...country,
+        CountryImg: `/images/${country.CountryImg}`,
+      };
+    });
+    res.send(withimages);
   });
 });
 

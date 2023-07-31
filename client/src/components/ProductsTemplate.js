@@ -14,6 +14,7 @@ const ProductsTemplate = ({
   stock,
   brand,
   avg_rating,
+  countryImg,
 }) => {
   const cart = useContext(CartContext);
   const productQuantity = cart.getProductQuantity(id);
@@ -38,15 +39,24 @@ const ProductsTemplate = ({
         </Link>
         <div class="px-5 h-64 pb-5">
           <TbBoxMultiple3 />
-          <p class="tracking-tighter text-gray-500 md:text-lg dark:text-gray-400">
-            {brand}
-          </p>
-          <a href="#">
-            <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-              {name}
-            </h5>
-          </a>
-          <p>{desc.slice(0, 100)}</p>
+          <div className="flex flex-row gap-4   justify-between">
+            <div>
+              <p class="tracking-tighter text-gray-500 md:text-lg dark:text-gray-400">
+                {brand}
+              </p>
+              <a href="#">
+                <h5 class="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                  {name}
+                </h5>
+              </a>
+            </div>
+            <img
+              src={`http://localhost:3001${countryImg}`}
+              alt={countryImg}
+              className="w-6 rounded-full h-6 mr-3"
+            />
+          </div>
+          <p>{desc.slice(0, 60)}</p>
           <div class="flex items-center mt-2.5 mb-5">
             <svg
               aria-hidden="true"

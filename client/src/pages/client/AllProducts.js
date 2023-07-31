@@ -133,6 +133,7 @@ const AllProducts = () => {
                   img={`http://localhost:3001${product.Img1}`}
                   stock={product.Stock}
                   avg_rating={product.avg_rating}
+                  countryImg={product.country_image}
                 />
               ))
           ) : (

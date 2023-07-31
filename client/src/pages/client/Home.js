@@ -224,7 +224,7 @@ const Home = () => {
         >
           {productsTable.length > 0 ? (
             productsTable
-              .filter((val) => {
+              ?.filter((val) => {
                 const isNameMatch =
                   search === "" ||
                   val.Name.toLowerCase().includes(search.toLowerCase());
@@ -243,6 +243,7 @@ const Home = () => {
                   img={`http://localhost:3001${product.Img1}`}
                   stock={product.Stock}
                   avg_rating={product.avg_rating}
+                  countryImg={product.country_image}
                 />
               ))
           ) : (

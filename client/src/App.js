@@ -16,7 +16,7 @@ import ChatComponent from "./components/admin/ChatComponent";
 import CartProvider, { CartContext } from "./pages/client/CartContext";
 
 import Payments from "./components/admin/Payments";
-
+import OrderCancelled from "./components/OrderCancelled";
 import SuccessfulPayment from "./components/SuccessfulPayment";
 import ShippingPostman from "./components/admin/ShippingPostman";
 import TrackOrders from "./components/TrackOrders";
@@ -57,7 +57,7 @@ function App() {
 
             <Route path="/orders" element={<Payments />} />
             <Route path="/allproducts" element={<AllProducts />} />
-
+            <Route path="/cancel" element={<OrderCancelled />} />
             <Route path="/success" element={<SuccessfulPayment />} />
           </Routes>
         </Router>

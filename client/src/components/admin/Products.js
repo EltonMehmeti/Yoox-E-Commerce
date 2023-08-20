@@ -40,14 +40,12 @@ const Products = () => {
       .get("http://localhost:3001/api/products/getproducts")
       .then((response) => {
         setProductsTable(response.data);
-        console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
     axios.get("http://localhost:3001/api/widgets/mostsold").then((response) => {
       setMostSold(response.data);
-      console.log(mostSold);
     });
 
     axios
@@ -68,7 +66,44 @@ const Products = () => {
         window.location.reload();
       });
   };
+  const [variationOptions, setVariationOptions] = useState([]);
+  const handleVOptions = (category) => {
+    axios
+      .post("http://localhost:3001/api/products/getvariationO", {
+        categoryId: category,
+      })
+      .then((response) => {
+        console.log(response.data);
+        setVariationOptions(response.data);
+      });
+  };
+  const renderVariationSelect = () => {
+    if (variationOptions.length === 0) {
+      return null; // No variation options available, don't render anything
+    }
 
+    return (
+      <div className="col-span-6 sm:col-span-3">
+        <label
+          htmlFor="variation"
+          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >
+          Variation
+        </label>
+        <select
+          id="variation"
+          className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+        >
+          <option value="">Select a variation</option>
+          {variationOptions?.map((option) => (
+            <option key={option.Id} value={option.value}>
+              {option.value}
+            </option>
+          ))}
+        </select>
+      </div>
+    );
+  };
   //
   const [name, setName] = useState("");
   const [brand, setBrand] = useState("");
@@ -80,6 +115,7 @@ const Products = () => {
   const [stock, setStock] = useState("");
   const [category, setCategory] = useState("");
   const [countryId, setCountryId] = useState("");
+  const [selectedOptions, setSelectedOptions] = useState([]);
   // insert product function
   // insert product function
   const insertProduct = () => {
@@ -94,6 +130,8 @@ const Products = () => {
     formData.append("images", img1);
     formData.append("images", img2);
     formData.append("images", img3);
+    formData.append("variationOptions", JSON.stringify(selectedOptions));
+    // Convert selectedOptions to JSON string
 
     axios
       .post(`http://localhost:3001/api/products/insert`, formData, {
@@ -124,6 +162,9 @@ const Products = () => {
   let [categoryU, setCategoryU] = useState("");
   let [countryU, setCountryU] = useState("");
   let [brandU, setBrandU] = useState("");
+  const [selectedOptionsU, setSelectedOptionsU] = useState([]);
+  console.log(selectedOptionsU);
+
   const Swal = require("sweetalert2");
   const updateProduct = (id) => {
     const formData = new FormData();
@@ -134,6 +175,12 @@ const Products = () => {
     formData.append("categoryU", categoryU);
     formData.append("countryU", countryU);
     formData.append("brandU", brandU);
+
+    // Append the variation options as separate form data fields
+    selectedOptionsU.forEach((option) => {
+      formData.append("variationOptionsU[]", option);
+    });
+
     if (img1U) {
       formData.append("images", img1U);
     }
@@ -171,8 +218,6 @@ const Products = () => {
         });
       });
   };
-
-  useEffect(() => {}, []);
 
   let [productId, setProductId] = useState(null);
   // update modal
@@ -257,7 +302,6 @@ const Products = () => {
           <input
             type="search"
             onChange={(e) => {
-              console.log(e.target.value);
               setSearch(e.target.value);
             }}
             id="default-search"
@@ -447,26 +491,58 @@ const Products = () => {
                         }}
                       />
                     </div>
-                    <div class="col-span-6 sm:col-span-3">
+                    <div className="col-span-6 sm:col-span-3">
                       <label
-                        for="position"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        htmlFor="category"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
                         Category
                       </label>
                       <select
-                        onChange={(e) =>
-                          setCategory(e.target.value.split("-")[0])
-                        }
-                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        id="category"
+                        onChange={(e) => {
+                          setCategory(e.target.value.split("-")[0]);
+                          handleVOptions(e.target.value.split("-")[0]);
+                        }}
+                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                       >
-                        {categoryTable?.map((category) => {
-                          return (
-                            <option class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                              {category.Id} - {category.Name}
-                            </option>
+                        <option value="">Select a category</option>
+                        {categoryTable?.map((category) => (
+                          <option
+                            key={category.Id}
+                            value={`${category.Id}-${category.Name}`}
+                          >
+                            {category.Name}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                    <div className="col-span-6 sm:col-span-3">
+                      <label
+                        htmlFor="variation"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                      >
+                        Variation
+                      </label>
+                      <select
+                        id="variation"
+                        multiple
+                        value={selectedOptions} // Set the selected options from state
+                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        onChange={(e) => {
+                          const selectedOptions = Array.from(
+                            e.target.selectedOptions,
+                            (option) => option.value
                           );
-                        })}{" "}
+                          setSelectedOptions(selectedOptions);
+                        }}
+                      >
+                        <option value="">Select a variation</option>
+                        {variationOptions?.map((option) => (
+                          <option key={option.Id} value={option.Id}>
+                            {option.value}
+                          </option>
+                        ))}
                       </select>
                     </div>
                     <div class="col-span-6 sm:col-span-3">
@@ -545,6 +621,9 @@ const Products = () => {
                 Country
               </th>
               <th scope="col" className="px-6 py-3">
+                Variations
+              </th>
+              <th scope="col" className="px-6 py-3">
                 <span className="sr-only">Edit</span>
               </th>
             </tr>
@@ -615,10 +694,13 @@ const Products = () => {
                       />
                       {product.country_name}
                     </td>
+                    <td className="px-6 py-2">
+                      {product.variation_option_values}
+                    </td>
+
                     <td className="px-6 py-2 text-right">
                       <button
                         onClick={() => {
-                          console.log(product.Id);
                           deleteProduct(product.Id);
                         }}
                         type="button"
@@ -679,8 +761,8 @@ const Products = () => {
                                   Update Product with Id: {productId}
                                 </h2>
                                 <form action="">
-                                  <div className="grid gap-4 sm:grid-cols-2 sm:gap-6">
-                                    <div className="sm:col-span-2">
+                                  <div class="grid grid-cols-6 gap-6">
+                                    <div class="col-span-6 sm:col-span-3">
                                       <label
                                         for="name"
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -720,7 +802,7 @@ const Products = () => {
                                         }}
                                       />
                                     </div>
-                                    <div className="w-full">
+                                    <div class="col-span-6 sm:col-span-3">
                                       <label
                                         for="emailU"
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -740,7 +822,7 @@ const Products = () => {
                                         required=""
                                       />
                                     </div>
-                                    <div className="w-full">
+                                    <div class="col-span-6 sm:col-span-3">
                                       <label
                                         for="passwordU"
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -764,7 +846,7 @@ const Products = () => {
                                         className="rounded-full w-10"
                                       />
                                     </div>
-                                    <div className="w-full">
+                                    <div class="col-span-6 sm:col-span-3">
                                       <label
                                         for="addressU"
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -788,7 +870,7 @@ const Products = () => {
                                         className="rounded-full w-10"
                                       />
                                     </div>
-                                    <div>
+                                    <div class="col-span-6 sm:col-span-3">
                                       <label
                                         for="category"
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -811,7 +893,7 @@ const Products = () => {
                                         className="rounded-full w-10"
                                       />
                                     </div>
-                                    <div>
+                                    <div class="col-span-6 sm:col-span-3">
                                       <label
                                         for="item-weight"
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -831,7 +913,7 @@ const Products = () => {
                                         required=""
                                       />
                                     </div>
-                                    <div className="">
+                                    <div class="col-span-6 sm:col-span-3">
                                       <label
                                         for="description"
                                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -851,28 +933,70 @@ const Products = () => {
                                         required=""
                                       />
                                     </div>
-                                    <div class="col-span-6 sm:col-span-3">
+                                    <div className="col-span-6 sm:col-span-3">
                                       <label
-                                        for="position"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                        htmlFor="category"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                       >
                                         Category
                                       </label>
                                       <select
-                                        onChange={(e) =>
+                                        id="category"
+                                        onChange={(e) => {
                                           setCategoryU(
                                             e.target.value.split("-")[0]
-                                          )
-                                        }
-                                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      >
-                                        {categoryTable?.map((category) => {
-                                          return (
-                                            <option class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                              {category.Id} - {category.Name}
-                                            </option>
                                           );
-                                        })}{" "}
+                                          handleVOptions(
+                                            e.target.value.split("-")[0]
+                                          );
+                                        }}
+                                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                      >
+                                        <option value="">
+                                          Select a category
+                                        </option>
+                                        {categoryTable?.map((category) => (
+                                          <option
+                                            key={category.Id}
+                                            value={`${category.Id}-${category.Name}`}
+                                          >
+                                            {category.Name}
+                                          </option>
+                                        ))}
+                                      </select>
+                                    </div>
+                                    <div className="col-span-6 sm:col-span-3">
+                                      <label
+                                        htmlFor="variation"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                      >
+                                        Variation
+                                      </label>
+                                      <select
+                                        id="variation"
+                                        multiple
+                                        value={selectedOptionsU} // Set the selected options from state
+                                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        onChange={(e) => {
+                                          const selectedOptionsU = Array.from(
+                                            e.target.selectedOptions,
+                                            (option) => option.value
+                                          );
+                                          setSelectedOptionsU(selectedOptionsU);
+                                          console.log(selectedOptionsU);
+                                        }}
+                                      >
+                                        <option value="">
+                                          Select a variation
+                                        </option>
+                                        {variationOptions?.map((option) => (
+                                          <option
+                                            key={option.Id}
+                                            value={option.Id}
+                                          >
+                                            {option.value}
+                                          </option>
+                                        ))}
                                       </select>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
@@ -910,7 +1034,6 @@ const Products = () => {
                                   <button
                                     onClick={(e) => {
                                       e.preventDefault();
-                                      console.log(productId);
                                       updateProduct(productId);
                                     }}
                                     type="submit"

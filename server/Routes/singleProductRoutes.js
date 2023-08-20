@@ -7,17 +7,25 @@ router.get("/:id", (req, res) => {
   const id = Number(req.params.id);
   const q = `
   SELECT 
-    p.*,
-    cat.Name AS category_name,
-    c.Image AS country_image
-  FROM 
-    product p
-  LEFT JOIN 
-    category cat ON p.CategoryId = cat.Id
-  LEFT JOIN
-    country c ON p.CountryId = c.Id
-  WHERE
-    p.Id = ?;`;
+  p.*,
+  cat.Name AS category_name,
+  c.Image AS country_image,
+  GROUP_CONCAT(v.name) AS variation_names,
+  GROUP_CONCAT(vo.value) AS variation_values
+FROM 
+  product p
+LEFT JOIN 
+  category cat ON p.CategoryId = cat.Id
+LEFT JOIN
+  country c ON p.CountryId = c.Id
+LEFT JOIN
+  product_configuration pc ON p.Id = pc.ProductId
+LEFT JOIN
+  variation_option vo ON pc.VariationOptionId = vo.Id
+LEFT JOIN
+  variation v ON vo.variation_id = v.Id
+WHERE
+  p.Id = ?;`;
 
   db.query(q, [id], (err, result) => {
     if (err) {

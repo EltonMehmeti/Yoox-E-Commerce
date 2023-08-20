@@ -23,6 +23,9 @@ const productRoutes = require("./Routes/productRoutes");
 const countryRoutes = require("./Routes/countryRoutes");
 const widgetRoutes = require("./Routes/widgetRoutes");
 const productRatingController = require("./controllers/productRatingController");
+const variationRoutes = require("./Routes/variationRoutes");
+const bankaRoutes = require("./Routes/bankaRoutes");
+
 // Use middlewares
 app.use(middlewares.jsonParser);
 app.use(middlewares.corsMiddleware);
@@ -88,7 +91,9 @@ app.use("/api/widgets", widgetRoutes);
 
 // Product rating
 app.use("/product", productRatingController);
+app.use("/api/variation", variationRoutes);
 
+app.use("/banka", bankaRoutes);
 // Start the server
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

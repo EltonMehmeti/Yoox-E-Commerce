@@ -8,6 +8,10 @@ router.get("/getcategories", (req, res) => {
   categoryController.fetchCategories(req, res, db);
 });
 
+router.get("/getBanka", (req, res) => {
+  categoryController.fetchBanka(req, res, db);
+});
+
 router.post("/create", (req, res) => {
   categoryController.createCategory(req, res, db);
 });

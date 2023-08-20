@@ -23,4 +23,13 @@ router.delete("/delete/:id", (req, res) => {
   productController.deleteProduct(req, res, db);
 });
 
+// Get Variation
+router.post("/getvariationO", (req, res) => {
+  productController.getVariationOptions(req, res, db);
+});
+
+router.get("/thisweek", (req, res) => {
+  productController.getProductsOfCurrentWeek(req, res, db);
+});
+
 module.exports = router;

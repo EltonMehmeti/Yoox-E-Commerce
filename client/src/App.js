@@ -27,6 +27,8 @@ import AdminTable from "./components/admin/AdminTable";
 import PMLogin from "./pages/postman/PMLogin";
 import PMSignup from "./pages/postman/PMSignup";
 import MapComponent from "./MapComponent";
+import Banka from "./components/Banka";
+import Personi from "./components/Personi";
 
 function App() {
   return (
@@ -63,6 +65,10 @@ function App() {
         </Router>
       </CartProvider>
       <MapComponent />
+      {/* <div className="flex h-screen">
+        <Banka />
+        <Personi />
+      </div> */}
     </>
   );
 }

@@ -10,7 +10,6 @@ import CartProduct from "./CartProduct";
 import { ProductsData, getProductData } from "./ProductsData";
 import { useModal } from "react-hooks-use-modal";
 import { AiFillHome } from "react-icons/ai";
-import emailjs from "emailjs-com";
 
 const getTotalCost = (cartProducts, productsTable) => {
   let totalCost = 0;
@@ -46,53 +45,6 @@ const Cart = () => {
       }
     });
   }, []);
-  const sendEmailToCustomer = (toEmail, items, address) => {
-    const itemsList = items.map((item) => {
-      return `
-        <div style="display: flex; align-items: center; margin-bottom: 20px;">
-          <img src="${
-            item.Img1
-          }" alt="Product Image" style="width: 50px; height: 50px; margin-right: 10px;" />
-          <div>
-            <strong>${item.Name}</strong>
-            <p>Date Ordered: ${new Date().toLocaleDateString()}</p>
-          </div>
-        </div>
-      `;
-    });
-
-    const templateParams = {
-      to_email: toEmail,
-      subject: "Order Confirmation",
-      content: `
-        Hello ${toEmail},
-  
-        We are delighted you found something you like!
-  
-        Delivery address:
-       ${address}
-  
-        Your Items:
-        ${itemsList.join("")}
-  
-        Best wishes,
-        Yoox team
-      `,
-    };
-
-    const serviceID = "service_kx7ky6m"; // Replace with your actual EmailJS service ID
-    const templateID = "template_hu9z5xw"; // Replace with your actual EmailJS template ID
-    const userID = "wg2LWa4bj0S2XMk-A"; // Replace with your actual EmailJS user ID
-
-    emailjs
-      .send(serviceID, templateID, templateParams, userID)
-      .then((response) => {
-        console.log("Email sent successfully!", response);
-      })
-      .catch((error) => {
-        console.error("Error sending email:", error);
-      });
-  };
 
   const checkout = async () => {
     console.log(couponCode);
@@ -132,7 +84,6 @@ const Cart = () => {
     const responseJson = await checkoutResponse.json();
     if (responseJson.url) {
       window.location.assign(responseJson.url);
-      sendEmailToCustomer(customerEmail, checkoutItems, address); // Send the email after checkout
     }
   };
 

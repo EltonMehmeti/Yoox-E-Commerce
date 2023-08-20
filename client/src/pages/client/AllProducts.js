@@ -7,31 +7,44 @@ import ScrollToTop from "react-scroll-up";
 import Pagination from "../../components/Pagination";
 import Page404 from "../../components/404";
 import Footer from "../../components/Footer";
+import Swiper from "../../components/SwiperComponent";
+import SwiperComponent from "../../components/SwiperComponent";
 
 const AllProducts = () => {
   const [productsTable, setProductsTable] = useState([]);
   const [categoriesTable, setCategoriesTable] = useState([]);
+  const [thisWeekP, setThisWeekP] = useState([]);
+
   axios.defaults.withCredentials = true;
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/products/getproducts")
-      .then((response) => {
-        setProductsTable(response.data);
-      })
-      .catch((error) => {
+    const fetchData = async () => {
+      try {
+        const productsResponse = axios.get(
+          "http://localhost:3001/api/products/getproducts"
+        );
+        const thisWeekResponse = axios.get(
+          "http://localhost:3001/api/products/thisweek"
+        );
+        const categoriesResponse = axios.get(
+          "http://localhost:3001/api/category/getcategories"
+        );
+
+        const [productsData, thisWeekData, categoriesData] = await Promise.all([
+          productsResponse,
+          thisWeekResponse,
+          categoriesResponse,
+        ]);
+
+        setProductsTable(productsData.data);
+        setThisWeekP(thisWeekData.data);
+        setCategoriesTable(categoriesData.data);
+      } catch (error) {
         console.log(error);
-      });
-  }, []);
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/category/getcategories")
-      .then((response) => {
-        setCategoriesTable(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      }
+    };
+
+    fetchData();
   }, []);
   //
   const handleCar = (Cat) => {
@@ -53,6 +66,9 @@ const AllProducts = () => {
   return (
     <div>
       <Header />
+      <div className="mt-8">
+        <SwiperComponent products={thisWeekP} />
+      </div>
       <div className="mt-10  flex w-full p-2 bg-gray-100   border-b-2 items-center flex-wrap justify-center flex-row gap-4">
         <div className="p-10">
           <h1 className="text-[#24292F] text-[49px]"></h1>

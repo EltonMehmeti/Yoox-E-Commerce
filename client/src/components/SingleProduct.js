@@ -20,10 +20,14 @@ const SingleProduct = () => {
   const [img3, setImg3] = useState("");
   const [price, setPrice] = useState(null);
   const [stock, setStock] = useState(null);
+  const [brand, setBrand] = useState("");
   const [countryImg, setCountryImg] = useState(null);
   const [category, setCategory] = useState(null);
+  const [varVal, setVarVal] = useState([]);
+  const [varNames, setVarNames] = useState([]);
   const id = location.pathname.split("/")[2];
   const cart = useContext(CartContext);
+
   useEffect(() => {
     const id = location.pathname.split("/")[2];
     axios
@@ -39,10 +43,15 @@ const SingleProduct = () => {
         setStock(data.Stock || 0); // Set stock to 0 if it's null
         setCountryImg(data.country_image);
         setCategory(data.category_name);
+        setBrand(data.Brand);
+        const uniqueNames = Array.from(
+          new Set(data.variation_names.split(","))
+        );
+        setVarNames(uniqueNames);
+        setVarVal(data.variation_values.split(","));
       })
       .catch((error) => {
         console.log(error);
-        // Code to handle the error (e.g., display an error message)
       });
   }, []);
 
@@ -196,6 +205,7 @@ const SingleProduct = () => {
           </Swiper>
         </div>
         <div className="flex w-1/3   justify-center flex-col gap-4">
+          <h2 class="text-gray-500 font-semibold text-md mb-2">{brand}</h2>
           <h1 class="text-gray-900 font-bold text-xl mb-2">{name}</h1>
           <img
             src={`http://localhost:3001${countryImg}`}
@@ -203,6 +213,23 @@ const SingleProduct = () => {
             className="w-6 rounded-full h-6 mr-3"
           />
           <h3 class="text-gray-700 text-base">{desc}</h3>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              {varNames?.map((vari, i) => (
+                <div key={i}>
+                  <h1 className="font-bold">{vari}:</h1>
+                </div>
+              ))}
+            </div>
+            <div>
+              {varVal?.map((vari, i) => (
+                <div key={i}>
+                  <h1>{vari}</h1>
+                </div>
+              ))}
+            </div>
+          </div>
+
           <h1 className="font-bold">{price}$</h1>
           <p class="text-gray-600">Stock: {stock}</p>
           <h3>In Cart:{productQuantity}</h3>

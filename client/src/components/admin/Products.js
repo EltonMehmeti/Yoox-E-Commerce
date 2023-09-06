@@ -593,34 +593,34 @@ const Products = () => {
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 h-auto">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-2 py-3">
                 Name
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3">
                 Desc
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3">
                 Img1
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3">
                 Img2
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3">
                 Img3
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3">
                 Price
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3">
                 Stock
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3">
                 Category
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3">
                 Country
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th scope="col" className="px-4 py-3">
                 Variations
               </th>
               <th scope="col" className="px-6 py-3">
@@ -648,11 +648,11 @@ const Products = () => {
                   >
                     <th
                       scope="row"
-                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                      className="px-4 py-4  font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
                       {product.Name}
                     </th>
-                    <td className="px-6 py-2">
+                    <td className="px-4 py-2">
                       {product.Description.slice(0, 60)}
                     </td>
                     <td scope="row" class="px-6 py-2">
@@ -664,7 +664,7 @@ const Products = () => {
                         />
                       )}
                     </td>
-                    <td className="px-6 py-2">
+                    <td className="px-4 py-2">
                       {product.Img2 && (
                         <img
                           src={`http://localhost:3001${product.Img2}`}
@@ -683,10 +683,10 @@ const Products = () => {
                       )}
                     </td>
 
-                    <td className="px-6 py-2">${product.Price}</td>
-                    <td className="px-6 py-2">{product.Stock}</td>
-                    <td className="px-6 py-2">{product.category_name}</td>
-                    <td className="px-6 py-2">
+                    <td className="px-4 py-2">${product.Price}</td>
+                    <td className="px-4 py-2">{product.Stock}</td>
+                    <td className="px-4 py-2">{product.category_name}</td>
+                    <td className="px-4 py-2">
                       <img
                         src={`http://localhost:3001${product.country_image}`}
                         alt={product.country_image}

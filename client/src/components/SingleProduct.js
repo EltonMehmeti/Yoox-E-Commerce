@@ -25,7 +25,7 @@ const SingleProduct = () => {
   const [category, setCategory] = useState(null);
   const [varVal, setVarVal] = useState([]);
   const [varNames, setVarNames] = useState([]);
-  const id = location.pathname.split("/")[2];
+  const id = Number(location.pathname.split("/")[2]);
   const cart = useContext(CartContext);
 
   useEffect(() => {
@@ -103,16 +103,16 @@ const SingleProduct = () => {
       <Header />
       {/* <h1 className="absolute top-32 left-20">Home-Product-{id}</h1> */}
 
-      <nav class="flex absolute top-32 left-20" aria-label="Breadcrumb">
-        <ol class="inline-flex items-center space-x-1 md:space-x-3">
-          <li class="inline-flex items-center">
+      <nav className="flex absolute top-32 left-20" aria-label="Breadcrumb">
+        <ol className="inline-flex items-center space-x-1 md:space-x-3">
+          <li className="inline-flex items-center">
             <a
               href="http://localhost:3000/"
-              class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
+              className="inline-flex items-center text-sm font-medium text-gray-700 hover:text-blue-600 dark:text-gray-400 dark:hover:text-white"
             >
               <svg
                 aria-hidden="true"
-                class="w-4 h-4 mr-2"
+                className="w-4 h-4 mr-2"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -123,10 +123,10 @@ const SingleProduct = () => {
             </a>
           </li>
           <li>
-            <div class="flex items-center">
+            <div className="flex items-center">
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 text-gray-400"
+                className="w-6 h-6 text-gray-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -139,17 +139,17 @@ const SingleProduct = () => {
               </svg>
               <a
                 href="#"
-                class="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
+                className="ml-1 text-sm font-medium text-gray-700 hover:text-blue-600 md:ml-2 dark:text-gray-400 dark:hover:text-white"
               >
                 Product
               </a>
             </div>
           </li>
           <li aria-current="page">
-            <div class="flex items-center">
+            <div className="flex items-center">
               <svg
                 aria-hidden="true"
-                class="w-6 h-6 text-gray-400"
+                className="w-6 h-6 text-gray-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -160,7 +160,7 @@ const SingleProduct = () => {
                   clip-rule="evenodd"
                 ></path>
               </svg>
-              <span class="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
+              <span className="ml-1 text-sm font-medium text-gray-500 md:ml-2 dark:text-gray-400">
                 {name}
               </span>
             </div>
@@ -238,7 +238,7 @@ const SingleProduct = () => {
               <div className="flex  flex-col justify-evenly">
                 <button
                   onClick={() => {
-                    cart.addOneToCart(id);
+                    cart.addOneToCart(Number(id));
                   }}
                   className="text-white w-[3rem] bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
@@ -256,7 +256,7 @@ const SingleProduct = () => {
           ) : (
             <button
               onClick={() => {
-                cart.addOneToCart(id);
+                cart.addOneToCart(Number(id));
               }}
               className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >

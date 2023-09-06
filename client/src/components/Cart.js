@@ -7,7 +7,7 @@ import axios from "axios";
 import { CartContext } from "../pages/client/CartContext";
 import { useContext } from "react";
 import CartProduct from "./CartProduct";
-import { ProductsData, getProductData } from "./ProductsData";
+import { ProductsData } from "./ProductsData";
 import { useModal } from "react-hooks-use-modal";
 import { AiFillHome } from "react-icons/ai";
 
@@ -35,6 +35,8 @@ const Cart = () => {
   const [couponCode, setCouponCode] = useState("");
 
   useEffect(() => {
+    console.log(checkoutItems);
+
     axios.get("http://localhost:3001/api/loginStatus").then((response) => {
       if (response.data.loggedIn === true) {
         // Set the customer's email
@@ -47,8 +49,7 @@ const Cart = () => {
   }, []);
 
   const checkout = async () => {
-    console.log(couponCode);
-
+    console.log(checkoutItems);
     const loginStatusResponse = await axios.get(
       "http://localhost:3001/api/loginStatus"
     );
@@ -86,7 +87,6 @@ const Cart = () => {
       window.location.assign(responseJson.url);
     }
   };
-
   const navigate = useNavigate();
   const Swal = require("sweetalert2");
   const [showCart, setShowCart] = useState(false);
@@ -98,10 +98,6 @@ const Cart = () => {
   };
 
   const cart = useContext(CartContext);
-  const productsCount = cart.items.reduce(
-    (sum, product) => sum + product.quantity,
-    0
-  );
 
   const cartItemIds = cart.items.map((item) => item.id);
   const { productsTable, isLoading } = ProductsData();
@@ -149,7 +145,7 @@ const Cart = () => {
             </div>
             <div className="h-[55%] bg-white p-8 rounded-lg w-[40%]">
               <p className="font-light text-xs  text-gray-500">
-                Delivery Date: June 24,2023
+                Delivery Date: November 24,2023
               </p>
               <hr className=" border-dashed m-2   border-2"></hr>
 
@@ -192,7 +188,7 @@ const Cart = () => {
               <button
                 onClick={checkout}
                 type="button"
-                class="text-white gap-2  bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none w-full focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 mr-2 mb-2"
+                className="text-white gap-2  bg-[#050708] hover:bg-[#050708]/80 focus:ring-4 focus:outline-none w-full focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#050708]/40 dark:focus:ring-gray-600 mr-2 mb-2"
               >
                 <IoBagCheckOutline />
                 Checkout
@@ -200,7 +196,7 @@ const Cart = () => {
               <button
                 onClick={close}
                 type="button"
-                class="text-gray-900 gap-2 w-full bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 mr-2 mb-2"
+                className="text-gray-900 gap-2 w-full bg-gray-100 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-gray-500 mr-2 mb-2"
               >
                 <AiFillHome />
                 Continue Shopping

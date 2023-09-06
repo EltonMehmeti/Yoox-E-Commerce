@@ -84,29 +84,29 @@ const ChatComponent = () => {
     <div className="flex flex-col">
       <div className="flex p-4">
         <button
-          class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+          className="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
           onClick={updateRooms}
         >
           Update Rooms
         </button>
       </div>
       <div className="flex flex-row flex-wrap h-screen items-center justify-center">
-        <div class="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
-          <div class="flex items-center justify-between mb-4">
-            <h5 class="text-xl font-bold leading-none text-gray-900 dark:text-white">
+        <div className="w-full max-w-md p-4 bg-white border border-gray-200 rounded-lg shadow sm:p-8 dark:bg-gray-800 dark:border-gray-700">
+          <div className="flex items-center justify-between mb-4">
+            <h5 className="text-xl font-bold leading-none text-gray-900 dark:text-white">
               Client's Rooms
             </h5>
           </div>
           {rooms.map((room) => (
-            <div class="flow-root" key={room}>
+            <div className="flow-root" key={room}>
               <ul
                 role="list"
-                class="divide-y divide-gray-200 dark:divide-gray-700"
+                className="divide-y divide-gray-200 dark:divide-gray-700"
               >
-                <li class="py-3 sm:py-4">
-                  <div class="flex items-center space-x-4">
-                    <div class="flex-1 min-w-0">
-                      <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                <li className="py-3 sm:py-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
                         {room}
                       </p>
                       <h3
@@ -119,9 +119,9 @@ const ChatComponent = () => {
                         {roomStatus}
                       </h3>
                     </div>
-                    <div class="inline-flex items-center cursor-pointer text-base font-semibold text-gray-900 dark:text-white">
+                    <div className="inline-flex items-center cursor-pointer text-base font-semibold text-gray-900 dark:text-white">
                       <button
-                        class="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+                        className="text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 shadow-lg shadow-purple-500/50 dark:shadow-lg dark:shadow-purple-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                         onClick={() => {
                           handleJoinRoom(room);
                           open();
@@ -140,8 +140,8 @@ const ChatComponent = () => {
       <Modal>
         <div className="flex items-center justify-center">
           <div className=" w-[500px] h-[500px] bg-slate-400 border  rounded-lg">
-            <div class="flex flex-col flex-grow w-full h-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
-              <div class="flex flex-col items-center flex-grow h-0 p-4 overflow-auto">
+            <div className="flex flex-col flex-grow w-full h-full max-w-xl bg-white shadow-xl rounded-lg overflow-hidden">
+              <div className="flex flex-col items-center flex-grow h-0 p-4 overflow-auto">
                 <h3 className="p-1">{singleRoom}</h3>
                 {messageList?.map((message) => {
                   console.log(currentMessage, message.author);
@@ -155,15 +155,15 @@ const ChatComponent = () => {
                     >
                       <div>
                         <div
-                          class={
+                          className={
                             singleRoom === message.author
                               ? "bg-gray-300 p-3 rounded-r-lg rounded-bl-lg"
                               : "bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg"
                           }
                         >
-                          <p class="text-sm">{message.message}</p>
+                          <p className="text-sm">{message.message}</p>
                         </div>
-                        <span class="text-xs text-gray-500 leading-none">
+                        <span className="text-xs text-gray-500 leading-none">
                           {message.time}
                         </span>
                         <p className="text-black">{message.author}</p>
@@ -173,9 +173,9 @@ const ChatComponent = () => {
                 })}
               </div>
 
-              <div class="bg-gray-300 p-4 flex flex-row">
+              <div className="bg-gray-300 p-4 flex flex-row">
                 <input
-                  class="flex items-center h-10 w-full rounded px-3 text-sm"
+                  className="flex items-center h-10 w-full rounded px-3 text-sm"
                   type="text"
                   value={currentMessage}
                   placeholder="Type your message…"

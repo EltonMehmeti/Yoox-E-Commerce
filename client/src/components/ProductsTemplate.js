@@ -1,5 +1,4 @@
 import React from "react";
-import Logo from "../img/nothingW.webp";
 import { TbBoxMultiple3 } from "react-icons/tb";
 import { CartContext } from "../pages/client/CartContext";
 import { useContext } from "react";
@@ -57,10 +56,10 @@ const ProductsTemplate = ({
             />
           </div>
           <p>{desc.slice(0, 60)}</p>
-          <div class="flex items-center mt-2.5 mb-5">
+          <div className="flex items-center mt-2.5 mb-5">
             <svg
               aria-hidden="true"
-              class="w-5 h-5 text-yellow-300"
+              className="w-5 h-5 text-yellow-300"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -69,7 +68,7 @@ const ProductsTemplate = ({
             </svg>
             <svg
               aria-hidden="true"
-              class="w-5 h-5 text-yellow-300"
+              className="w-5 h-5 text-yellow-300"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -79,7 +78,7 @@ const ProductsTemplate = ({
             </svg>
             <svg
               aria-hidden="true"
-              class="w-5 h-5 text-yellow-300"
+              className="w-5 h-5 text-yellow-300"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -89,7 +88,7 @@ const ProductsTemplate = ({
             </svg>
             <svg
               aria-hidden="true"
-              class="w-5 h-5 text-yellow-300"
+              className="w-5 h-5 text-yellow-300"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -99,7 +98,7 @@ const ProductsTemplate = ({
             </svg>
             <svg
               aria-hidden="true"
-              class="w-5 h-5 text-yellow-300"
+              className="w-5 h-5 text-yellow-300"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
@@ -113,7 +112,7 @@ const ProductsTemplate = ({
           </div>
           <h3>In Cart:{productQuantity}</h3>
 
-          <div class="flex items-center justify-between">
+          <div className="flex items-center justify-between">
             <span class="text-3xl font-bold text-gray-900 dark:text-white">
               {price}$
             </span>

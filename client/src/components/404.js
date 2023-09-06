@@ -16,32 +16,32 @@ const Page404 = () => {
               </div>
               <div className="text-center">
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl animate-pulse">
-                  <div class="h-3.5 bg-gray-500 rounded-full dark:bg-gray-700 max-w-[640px] mb-3.5 mx-auto"></div>
+                  <div className="h-3.5 bg-gray-500 rounded-full dark:bg-gray-700 max-w-[640px] mb-3.5 mx-auto"></div>
                   <div class="h-2.5 mx-auto bg-gray-300 rounded-full dark:bg-gray-700 max-w-[540px]"></div>
                 </h1>
-                <div role="status" class="mt-3.5 space-y-2.5 animate-pulse">
-                  <div class="flex justify-center items-center w-full space-x-2">
-                    <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
-                    <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                <div role="status" className="mt-3.5 space-y-2.5 animate-pulse">
+                  <div className="flex justify-center items-center w-full space-x-2">
+                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
+                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-32"></div>
+                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
                   </div>
-                  <div class="flex justify-center items-center w-full space-x-2">
-                    <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+                  <div className="flex justify-center items-center w-full space-x-2">
+                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
                   </div>
-                  <div class="flex justify-center items-center w-full space-x-2 ">
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
-                    <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-80"></div>
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                  <div className="flex justify-center items-center w-full space-x-2 ">
+                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-80"></div>
+                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
                   </div>
-                  <div class="flex items-center w-full space-x-2">
-                    <div class="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
-                    <div class="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
+                  <div className="flex items-center w-full space-x-2">
+                    <div className="h-2.5 bg-gray-200 rounded-full dark:bg-gray-700 w-full"></div>
+                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-full"></div>
+                    <div className="h-2.5 bg-gray-300 rounded-full dark:bg-gray-600 w-24"></div>
                   </div>
-                  <span class="sr-only">Loading...</span>
+                  <span className="sr-only">Loading...</span>
                 </div>
 
                 <div className="mt-10 flex items-center justify-center gap-x-6">
@@ -53,7 +53,7 @@ const Page404 = () => {
                     href="#"
                     className="text-sm font-semibold leading-6 text-gray-900"
                   >
-                    <div class="h-4 bg-gray-700 rounded-full dark:bg-gray-600 w-40 animate-pulse"></div>
+                    <div className="h-4 bg-gray-700 rounded-full dark:bg-gray-600 w-40 animate-pulse"></div>
                   </a>
                 </div>
               </div>

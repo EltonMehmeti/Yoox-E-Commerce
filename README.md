@@ -2,7 +2,7 @@
 
 ![DALL·E 2023-03-29 23 25 21 - create a aesthetic E-commerce website logo named _YOOX_ that sells gaming tech](https://github.com/EltonMehmeti/Yoox-E-Commerce/assets/97539294/2f1976ec-7cfa-439b-a480-a43a9ae4626d)
 
-YOOX is a sophisticated and feature-rich e-commerce web app developed using React.js and Node.js Express. It offers a seamless shopping experience with a multitude of advanced features.  Real-time chat support allows customers to connect instantly with support agents, , enabling efficient communication and prompt issue resolution. This feature enhances customer satisfaction and ensures a smooth shopping journey.
+YOOX is a sophisticated and feature-rich e-commerce web app developed using React.js and Node.js Express. It offers a seamless shopping experience with a multitude of advanced features. Real-time chat support allows customers to connect instantly with support agents, , enabling efficient communication and prompt issue resolution. This feature enhances customer satisfaction and ensures a smooth shopping journey.
 
 Secure payments are facilitated through Stripe integration, providing customers with a reliable and trustworthy payment gateway. Users can confidently make purchases, knowing that their financial information is protected.
 

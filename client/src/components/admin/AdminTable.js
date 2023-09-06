@@ -126,7 +126,7 @@ const AdminTable = () => {
             Create Admin
           </button>
           <button
-            class="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mr-2 mb-2"
+            className="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mr-2 mb-2"
             onClick={() => {
               sort();
             }}
@@ -141,7 +141,7 @@ const AdminTable = () => {
               setSearch(e.target.value);
             }}
             id="default-search"
-            class=" w-1/5  h-[40px] mb-2  p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className=" w-1/5  h-[40px] mb-2  p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search By Name"
             required
           />
@@ -150,16 +150,18 @@ const AdminTable = () => {
         <div class="relative bg-white rounded-lg shadow dark:bg-gray-800 overflow-y-auto">
           <Modal2>
             <div className="bg-white p-14 rounded-xl">
-              <div class="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
-                <h3 class="text-xl font-semibold dark:text-white">Add New</h3>
+              <div className="flex items-start justify-between p-5 border-b rounded-t dark:border-gray-700">
+                <h3 className="text-xl font-semibold dark:text-white">
+                  Add New
+                </h3>
                 <button
                   type="button"
-                  class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-700 dark:hover:text-white"
+                  className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-700 dark:hover:text-white"
                   data-modal-toggle="add-user-modal"
                   onClick={close2}
                 >
                   <svg
-                    class="w-5 h-5"
+                    className="w-5 h-5"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -173,13 +175,13 @@ const AdminTable = () => {
                 </button>
               </div>
 
-              <div class="p-6 space-y-6">
+              <div className="p-6 space-y-6">
                 <form action="#">
-                  <div class="grid grid-cols-6 gap-6">
-                    <div class="col-span-6 sm:col-span-3">
+                  <div className="grid grid-cols-6 gap-6">
+                    <div className="col-span-6 sm:col-span-3">
                       <label
                         for="name"
-                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
                         Username
                       </label>

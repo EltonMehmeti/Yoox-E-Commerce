@@ -110,15 +110,15 @@ const Chat = () => {
                   >
                     <div>
                       <div
-                        class={
+                        className={
                           room === message.author
                             ? "bg-blue-600 text-white p-3 rounded-l-lg rounded-br-lg"
                             : "bg-gray-300 p-3 rounded-r-lg rounded-bl-lg"
                         }
                       >
-                        <p class="text-sm">{message.message}</p>
+                        <p className="text-sm">{message.message}</p>
                       </div>
-                      <span class="text-xs text-gray-500 leading-none">
+                      <span className="text-xs text-gray-500 leading-none">
                         {message.time}
                       </span>
                       <p className="text-black text-xs">{message.author}</p>

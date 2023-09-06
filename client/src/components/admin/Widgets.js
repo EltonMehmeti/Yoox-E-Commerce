@@ -82,33 +82,33 @@ function BoxWrapper({ children }) {
 
 export const SideWidget = ({ products }) => {
   return (
-    <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+    <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
       {products
         ?.map((product) => {
           return (
-            <li class="pb-3 sm:pb-4">
-              <div class="flex items-center space-x-4">
-                <div class="flex-shrink-0">
+            <li className="pb-3 sm:pb-4">
+              <div className="flex items-center space-x-4">
+                <div className="flex-shrink-0">
                   <img
-                    class="w-8 h-8 rounded-full"
+                    className="w-8 h-8 rounded-full"
                     src={`http://localhost:3001${product.Img1}`}
                     alt="Neil image"
                   />
                 </div>
-                <div class="flex-1 min-w-0">
-                  <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
                     {product.Name}
                   </p>
-                  <p class="text-sm text-gray-500 truncate dark:text-gray-400">
+                  <p className="text-sm text-gray-500 truncate dark:text-gray-400">
                     ${product.Price} | Total ratings: {product.total_ratings}
                   </p>
-                  <p class=" text-xs text-gray-500 truncate dark:text-gray-400"></p>
+                  <p className=" text-xs text-gray-500 truncate dark:text-gray-400"></p>
                 </div>
-                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                   {product.avg_rating}
                   <svg
                     aria-hidden="true"
-                    class="w-5 h-5 text-yellow-300"
+                    className="w-5 h-5 text-yellow-300"
                     fill="currentColor"
                     viewBox="0 0 20 20"
                     xmlns="http://www.w3.org/2000/svg"
@@ -127,25 +127,25 @@ export const SideWidget = ({ products }) => {
 
 export const CountryW = ({ items }) => {
   return (
-    <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+    <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
       {items
         ?.map((item) => {
           return (
-            <li class="pb-3 sm:pb-4">
-              <div class="flex items-center space-x-4">
-                <div class="flex-shrink-0">
+            <li className="pb-3 sm:pb-4">
+              <div className="flex items-center space-x-4">
+                <div className="flex-shrink-0">
                   <img
-                    class="w-8 h-8 rounded-full"
+                    className="w-8 h-8 rounded-full"
                     src={`http://localhost:3001${item.CountryImg}`}
                     alt="Neil image"
                   />
                 </div>
-                <div class="flex-1 min-w-0">
-                  <p class="text-sm font-medium text-gray-900 truncate dark:text-white">
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
                     {item.CountryName}
                   </p>
                 </div>
-                <div class="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                   {item.TotalProductsSold}
                 </div>
               </div>

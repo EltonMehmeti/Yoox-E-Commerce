@@ -149,11 +149,11 @@ const Cart = () => {
               </p>
               <hr className=" border-dashed m-2   border-2"></hr>
 
-              <div class="relative my-4">
+              <div className="relative my-4">
                 <input
                   type=""
                   id="search"
-                  class="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className="block w-full p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Pomocode "
                   required
                   value={couponCode}
@@ -161,7 +161,7 @@ const Cart = () => {
                 />
                 <button
                   type="submit"
-                  class=" text-gray-700 border  absolute right-2.5 bottom-2.5 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  className=" text-gray-700 border  absolute right-2.5 bottom-2.5 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   Apply
                 </button>

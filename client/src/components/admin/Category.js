@@ -131,12 +131,12 @@ const Category = () => {
                   </h3>
                   <button
                     type="button"
-                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-700 dark:hover:text-white"
+                    className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-700 dark:hover:text-white"
                     data-modal-toggle="add-user-modal"
                     onClick={close2}
                   >
                     <svg
-                      class="w-5 h-5"
+                      className="w-5 h-5"
                       fill="currentColor"
                       viewBox="0 0 20 20"
                       xmlns="http://www.w3.org/2000/svg"
@@ -160,11 +160,12 @@ const Category = () => {
                         >
                           Name
                         </label>
+
                         <input
                           type="text"
                           name="name"
                           id="first-name"
-                          class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Name"
                           required=""
                           onChange={(e) => {
@@ -173,10 +174,10 @@ const Category = () => {
                         />
                       </div>
 
-                      <div class="col-span-6 sm:col-span-3">
+                      <div className="col-span-6 sm:col-span-3">
                         <label
                           for="email"
-                          class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                         >
                           Img
                         </label>
@@ -184,7 +185,7 @@ const Category = () => {
                           type="file"
                           name="img"
                           id="email"
-                          class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                          className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                           placeholder="Password"
                           required=""
                           onChange={(e) => {
@@ -263,7 +264,7 @@ const Category = () => {
                   </form>
                 </div>
 
-                <div class="items-center p-6 border-t border-gray-200 rounded-b dark:border-gray-700">
+                <div className="items-center p-6 border-t border-gray-200 rounded-b dark:border-gray-700">
                   <button
                     className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
                     onClick={() => {
@@ -337,17 +338,17 @@ const Category = () => {
                       >
                         <AiOutlineEdit />
                       </button>
-                      <div class="relative bg-white rounded-lg shadow dark:bg-gray-800">
+                      <div className="relative bg-white rounded-lg shadow dark:bg-gray-800">
                         <Modal>
                           <div className=" bg-white p-14 rounded-xl">
                             <button
                               type="button"
-                              class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-700 dark:hover:text-white"
+                              className="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-700 dark:hover:text-white"
                               data-modal-toggle="add-user-modal"
                               onClick={close}
                             >
                               <svg
-                                class="w-5 h-5"
+                                className="w-5 h-5"
                                 fill="currentColor"
                                 viewBox="0 0 20 20"
                                 xmlns="http://www.w3.org/2000/svg"
@@ -406,15 +407,15 @@ const Category = () => {
                                         required=""
                                       />
                                     </div>
-                                    <div class="col-span-6 sm:col-span-3">
+                                    <div className="col-span-6 sm:col-span-3">
                                       <label
                                         for="variation"
-                                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                                       >
                                         Variation
                                       </label>
                                       <select
-                                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                         // Other attributes...
                                         onChange={(e) => {
                                           const selectedOption = e.target.value;

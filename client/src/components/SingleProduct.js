@@ -205,14 +205,14 @@ const SingleProduct = () => {
           </Swiper>
         </div>
         <div className="flex w-1/3   justify-center flex-col gap-4">
-          <h2 class="text-gray-500 font-semibold text-md mb-2">{brand}</h2>
-          <h1 class="text-gray-900 font-bold text-xl mb-2">{name}</h1>
+          <h2 className="text-gray-500 font-semibold text-md mb-2">{brand}</h2>
+          <h1 className="text-gray-900 font-bold text-xl mb-2">{name}</h1>
           <img
             src={`http://localhost:3001${countryImg}`}
             alt={countryImg}
             className="w-6 rounded-full h-6 mr-3"
           />
-          <h3 class="text-gray-700 text-base">{desc}</h3>
+          <h3 className="text-gray-700 text-base">{desc}</h3>
           <div className="grid grid-cols-2 gap-4">
             <div>
               {varNames?.map((vari, i) => (
@@ -231,7 +231,7 @@ const SingleProduct = () => {
           </div>
 
           <h1 className="font-bold">{price}$</h1>
-          <p class="text-gray-600">Stock: {stock}</p>
+          <p className="text-gray-600">Stock: {stock}</p>
           <h3>In Cart:{productQuantity}</h3>
           {productQuantity > 0 ? (
             <>
@@ -282,10 +282,10 @@ const SingleProduct = () => {
             <button
               onClick={submitRating}
               type="button"
-              class="text-white  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              className="text-white  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center  dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
               <svg
-                class="w-4 h-4"
+                className="w-4 h-4"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -299,7 +299,7 @@ const SingleProduct = () => {
                   d="M1 5h12m0 0L9 1m4 4L9 9"
                 />
               </svg>
-              <span class="sr-only"></span>
+              <span className="sr-only"></span>
             </button>
           </div>
         </div>

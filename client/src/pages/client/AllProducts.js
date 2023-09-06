@@ -73,14 +73,14 @@ const AllProducts = () => {
         <div className="p-10">
           <h1 className="text-[#24292F] text-[49px]"></h1>
 
-          <label for="voice-search" class="sr-only">
+          <label for="voice-search" className="sr-only">
             Search
           </label>
-          <div class="relative w-full">
-            <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+          <div className="relative w-full">
+            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
               <svg
                 aria-hidden="true"
-                class="w-5 h-5 text-gray-500 dark:text-gray-400"
+                className="w-5 h-5 text-gray-500 dark:text-gray-400"
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -98,7 +98,7 @@ const AllProducts = () => {
               }}
               type="text"
               id="voice-search"
-              class="bg-gray-50 border w-72 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              className="bg-gray-50 border w-72 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  pl-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
               placeholder="Search Products"
               required
             />
@@ -111,10 +111,10 @@ const AllProducts = () => {
               onClick={() => {
                 handleCar(category.Id);
               }}
-              class="flex flex-col cursor-pointer items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
+              className="flex flex-col cursor-pointer items-center bg-white border border-gray-200 rounded-lg shadow md:flex-row md:max-w-xl hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-700"
             >
-              <div class="flex flex-col justify-between p-4 leading-normal">
-                <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+              <div className="flex flex-col justify-between p-4 leading-normal">
+                <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                   {category.Name}
                 </h5>
               </div>
@@ -159,11 +159,11 @@ const AllProducts = () => {
           <ScrollToTop showUnder={160}>
             <button
               type="button"
-              class="text-gray-700 border rotate-[-90deg] border-gray-700 hover:bg-gray-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:focus:ring-gray-800 dark:hover:bg-gray-500"
+              className="text-gray-700 border rotate-[-90deg] border-gray-700 hover:bg-gray-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-gray-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:focus:ring-gray-800 dark:hover:bg-gray-500"
             >
               <svg
                 aria-hidden="true"
-                class="w-5 h-5 "
+                className="w-5 h-5 "
                 fill="currentColor"
                 viewBox="0 0 20 20"
                 xmlns="http://www.w3.org/2000/svg"
@@ -174,7 +174,7 @@ const AllProducts = () => {
                   clip-rule="evenodd"
                 ></path>
               </svg>
-              <span class="sr-only">Icon description</span>
+              <span className="sr-only">Icon description</span>
             </button>
           </ScrollToTop>
         </div>

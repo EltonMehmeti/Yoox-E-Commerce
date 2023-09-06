@@ -150,7 +150,7 @@ const Payments = () => {
 
         <div className="flex flex-row w-full justify-around items-center">
           <button
-            class="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mr-2 mb-2"
+            className="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mr-2 mb-2"
             onClick={() => {
               sort();
             }}
@@ -165,40 +165,40 @@ const Payments = () => {
               setSearch(e.target.value);
             }}
             id="default-search"
-            class=" w-1/5  h-[40px] mb-2  p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className=" w-1/5  h-[40px] mb-2  p-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="Search By Email"
             required
           />
           <button
-            class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
+            className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
             onClick={handleDelete}
           >
             Delete older orders
           </button>
         </div>
-        <div class="max-h-64 overflow-y-auto">
-          <table class="w-2/3 text-xs text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <div className="max-h-64 overflow-y-auto">
+          <table className="w-2/3 text-xs text-left text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th scope="col" class="px-2 py-2">
+                <th scope="col" className="px-2 py-2">
                   Customer
                 </th>
-                <th scope="col" class="px-2 py-2">
+                <th scope="col" className="px-2 py-2">
                   Order At
                 </th>
-                <th scope="col" class="px-2 py-2">
+                <th scope="col" className="px-2 py-2">
                   Product Names
                 </th>
-                <th scope="col" class="px-2 py-2">
+                <th scope="col" className="px-2 py-2">
                   Product Quantity
                 </th>
-                <th scope="col" class="px-2 py-2">
+                <th scope="col" className="px-2 py-2">
                   Total Quantity
                 </th>
-                <th scope="col" class="px-2 py-2">
+                <th scope="col" className="px-2 py-2">
                   Total Price
                 </th>
-                <th scope="col" class="px-2 py-2">
+                <th scope="col" className="px-2 py-2">
                   Shipping Status
                 </th>
               </tr>
@@ -219,15 +219,15 @@ const Payments = () => {
                 .map((order, i) => {
                   return (
                     <tr
-                      class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
+                      className="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700"
                       key={order.order_id}
                     >
-                      <td class="px-2 py-2">
-                        <span class="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
+                      <td className="px-2 py-2">
+                        <span className="bg-primary-100 text-primary-800 text-xs font-medium px-2 py-0.5 rounded dark:bg-primary-900 dark:text-primary-300">
                           {order.customer_email}
                         </span>
                       </td>
-                      <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      <td className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         <div className="flex items-center">
                           {new Date(order.order_date).toLocaleDateString([], {
                             year: "numeric",
@@ -246,10 +246,10 @@ const Payments = () => {
                       <td className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {order.item_quantity.join(", ")}
                       </td>
-                      <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      <td className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {order.total_quantity}
                       </td>
-                      <td class="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                      <td className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         ${order.total_price}
                       </td>
                       <td className="px-2 py-2 font-medium text-gray-900 whitespace-nowrap dark:text-white">

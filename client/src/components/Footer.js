@@ -8,8 +8,8 @@ const Footer = () => {
         <div className="grid grid-cols-12">
           <div className="pb-6 col-span-full md:pb-0 md:col-span-6">
             <div className="flex items-center justify-center w-12 h-12 rounded-full dark:bg-violet-400">
-              <a href="https://flowbite.com/" class="flex items-center">
-                <img src={Logo} class="h-8 mr-3" alt="Flowbite Logo" />
+              <a href="https://flowbite.com/" className="flex items-center">
+                <img src={Logo} className="h-8 mr-3" alt="Flowbite Logo" />
                 <span className="self-center text-2xl font-semibold">YOox</span>
               </a>
             </div>

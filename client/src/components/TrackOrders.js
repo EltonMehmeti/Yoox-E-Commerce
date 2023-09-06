@@ -130,7 +130,7 @@ const TrackOrders = () => {
             Delivered({deliveredOrders.length})
           </h1>
         </div>
-        <div class="flex flex-wrap flex-row p-10 items-center justify-center mt-20overflow-y-scroll gap-6 w-3/4">
+        <div className="flex flex-wrap flex-row p-10 items-center justify-center mt-20overflow-y-scroll gap-6 w-3/4">
           {orders?.map((order, i) => {
             return (
               <div

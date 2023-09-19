@@ -16,6 +16,7 @@ const Users = () => {
       .get("http://localhost:3001/api/users/getusers")
       .then((response) => {
         setUsersTable(response.data);
+        console.log(usersTable);
       })
       .catch((error) => {
         console.log(error);
@@ -46,7 +47,7 @@ const Users = () => {
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
-  const [userType, setuserType] = useState("");
+  const [country, setCountry] = useState(null);
 
   //
   const insertUser = () => {
@@ -58,7 +59,7 @@ const Users = () => {
         address: address,
         city: city,
         phone: phone,
-        userType: userType,
+        countryId: country,
       })
       .then(() => {
         Swal.fire({
@@ -79,7 +80,7 @@ const Users = () => {
   let [addressUpdated, setAddressUpdated] = useState("");
   let [cityUpdated, setCityUpdated] = useState("");
   let [phoneUpdated, setPhoneUpdated] = useState("");
-  let [usertTypeUpdated, setUsertTypeUpdated] = useState("");
+  let [countryU, setCountryU] = useState("");
   let Swal = require("sweetalert2");
   let updateUser = (id) => {
     axios
@@ -90,7 +91,7 @@ const Users = () => {
         addressU: addressUpdated,
         cityU: cityUpdated,
         phoneU: phoneUpdated,
-        usertypeU: usertTypeUpdated,
+        countryIdU: countryU,
       })
       .then(() => {
         Swal.fire({
@@ -132,7 +133,7 @@ const Users = () => {
     setUsersTable(sortedUsersTable);
   };
   const [search, setSearch] = useState("");
-  const [countryName, setCounryName] = useState("");
+  const [countryName, setCountryName] = useState("");
   const [countryImg, setCountryImg] = useState("");
   const insertCountry = () => {
     const formData = new FormData();
@@ -351,19 +352,23 @@ const Users = () => {
                         for="position"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                       >
-                        User Type
+                        Country
                       </label>
-                      <input
-                        type="text"
-                        name="userType"
-                        id="position"
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        placeholder="User Type"
-                        required=""
+                      <select
                         onChange={(e) => {
-                          setuserType(e.target.value);
+                          setCountry(e.target.value.split("-")[0]);
                         }}
-                      />
+                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                      >
+                        <opiton>Null</opiton>;
+                        {countries?.map((country) => {
+                          return (
+                            <option>
+                              {country.Id}-{country.Name}
+                            </option>
+                          );
+                        })}
+                      </select>
                     </div>
                   </div>
                 </form>
@@ -391,9 +396,7 @@ const Users = () => {
               <th scope="col" className="px-6 py-3">
                 Email
               </th>
-              <th scope="col" className="px-6 py-3">
-                Password
-              </th>
+
               <th scope="col" className="px-6 py-3">
                 Country
               </th>
@@ -406,9 +409,7 @@ const Users = () => {
               <th scope="col" className="px-6 py-3">
                 Phone
               </th>
-              <th scope="col" className="px-6 py-3">
-                User Type
-              </th>
+
               <th scope="col" className="px-6 py-3">
                 <span className="sr-only">Edit</span>
               </th>
@@ -438,14 +439,19 @@ const Users = () => {
                       {user.Name}
                     </th>
                     <td className="px-6 h-[70px] py-2">{user.Email}</td>
-                    <td className="px-2  h-[70px] truncate w-1/2 py-2">
-                      {user.Password.slice(0, 6)}
+
+                    <td className="px-4 py-2">
+                      <img
+                        src={`http://localhost:3001${user.countryImg}`}
+                        alt={user.countryImg}
+                        className="w-4 rounded-full h-4 mr-3"
+                      />
+                      {user.countryName}
                     </td>
-                    <td className="px-6 h-[70px] py-2">{user.CountryId}</td>
                     <td className="px-6 h-[70px] py-2">{user.Address}</td>
                     <td className="px-6 h-[70px] py-2">{user.City}</td>
                     <td className="px-6 h-[70px] py-2">{user.Phone}</td>
-                    <td className="px-6 h-[70px] py-2">{user.User_Type}</td>
+
                     <td className="px-6 h-[70px] py-2 text-right">
                       <button
                         onClick={() => {
@@ -467,9 +473,7 @@ const Users = () => {
                           setAddressUpdated((addressUpdated = user.Address));
                           setCityUpdated((cityUpdated = user.City));
                           setPhoneUpdated((phoneUpdated = user.Phone));
-                          setUsertTypeUpdated(
-                            (usertTypeUpdated = user.User_Type)
-                          );
+
                           setCityUpdated((cityUpdated = user.City));
                           // console.log(userId);
                           open();
@@ -586,24 +590,7 @@ const Users = () => {
                                         required=""
                                       />
                                     </div>
-                                    <div>
-                                      <label
-                                        for="category"
-                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                      >
-                                        User Type
-                                      </label>
-                                      <input
-                                        value={usertTypeUpdated}
-                                        onChange={(e) => {
-                                          setUsertTypeUpdated(e.target.value);
-                                        }}
-                                        name="usertypeU"
-                                        placeholder="User Type"
-                                        id="category"
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                      />
-                                    </div>
+
                                     <div>
                                       <label
                                         for="item-weight"
@@ -623,6 +610,31 @@ const Users = () => {
                                         placeholder="Phone"
                                         required=""
                                       />
+                                    </div>
+                                    <div>
+                                      <label
+                                        for="position"
+                                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                      >
+                                        Country
+                                      </label>
+                                      <select
+                                        onChange={(e) => {
+                                          setCountryU(
+                                            e.target.value.split("-")[0]
+                                          );
+                                        }}
+                                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                      >
+                                        <opiton>Null</opiton>;
+                                        {countries?.map((country) => {
+                                          return (
+                                            <option>
+                                              {country.Id}-{country.Name}
+                                            </option>
+                                          );
+                                        })}
+                                      </select>
                                     </div>
                                     <div className="">
                                       <label
@@ -746,7 +758,7 @@ const Users = () => {
                         placeholder="Name"
                         required=""
                         onChange={(e) => {
-                          setCounryName(e.target.value);
+                          setCountryName(e.target.value);
                         }}
                       />
                     </div>

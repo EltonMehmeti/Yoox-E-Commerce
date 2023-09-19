@@ -2,28 +2,31 @@ const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
 exports.fetchUsers = (req, res, db) => {
-  db.query("SELECT * FROM users", (err, result) => {
-    if (err) {
-      res.send({ err: err });
-    }
+  db.query(
+    "SELECT u.*,c.Name as countryName,c.Image as countryImg FROM users u left join country c on u.CountryId = c.Id;",
+    (err, result) => {
+      if (err) {
+        res.send({ err: err });
+      }
 
-    res.send(result);
-  });
+      res.send(result);
+    }
+  );
 };
 
 exports.insertUser = async (req, res, db) => {
   try {
-    const { name, email, password, address, city, phone, userType } = req.body;
+    const { name, email, password, address, city, phone, countryId } = req.body;
     const hash = await hashPassword(password);
 
     const sqlInsert = `
-      INSERT INTO Users (Name, Email, Password, Address, City, Phone, User_Type)
+      INSERT INTO Users (Name, Email, Password, Address, City, Phone,CountryId)
       VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
     db.query(
       sqlInsert,
-      [name, email, hash, address, city, phone, userType],
+      [name, email, hash, address, city, phone, countryId],
       (err, result) => {
         if (err) {
           console.error(err);
@@ -54,13 +57,13 @@ exports.deleteUser = (req, res, db) => {
 
 exports.updateUser = (req, res, db) => {
   const id = Number(req.params.id);
-  const { nameU, emailU, passwordU, addressU, cityU, phoneU, userTypeU } =
+  const { nameU, emailU, passwordU, addressU, cityU, phoneU, countryIdU } =
     req.body;
   hashPassword(passwordU)
     .then((hash) => {
       db.query(
-        "UPDATE Users SET Name=?, Email=?, Password=?, Address=?, City=?, Phone=?, User_Type=? WHERE Id=?;",
-        [nameU, emailU, hash, addressU, cityU, phoneU, userTypeU, id],
+        "UPDATE Users SET Name=?, Email=?, Password=?, Address=?, City=?, Phone=?, CountryId=?  WHERE Id=?;",
+        [nameU, emailU, hash, addressU, cityU, phoneU, countryIdU, id],
         (err, result) => {
           if (err) {
             console.error(err);

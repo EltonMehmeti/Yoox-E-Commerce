@@ -11,17 +11,17 @@ const ChatComponent = () => {
   const [singleRoom, setSingleRoom] = useState("");
   const [currentUser, setCurrentUser] = useState("");
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   axios.get("http://localhost:3001/api/loginStatus").then((response) => {
-  //     if (!response.data.loggedIn) {
-  //       navigate("/signin");
-  //     } else if (response.data.user[0].User_Type !== "CS") {
-  //       navigate("/");
-  //     } else {
-  //       setCurrentUser(response.data.user[0].Name);
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/api/agentAuth/loginStatus")
+      .then((response) => {
+        if (!response.data.loggedIn) {
+          navigate("/agentlogin");
+        } else {
+          setCurrentUser(response.data.agent[0].Name);
+        }
+      });
+  }, []);
   const handleJoinRoom = (room) => {
     setSingleRoom(room);
     setRoomStatus("Joined");
@@ -33,6 +33,7 @@ const ChatComponent = () => {
     socket.on("room_list", (rooms) => {
       console.log(rooms);
       setRooms(rooms);
+      console.log(rooms);
     });
   };
   // send message

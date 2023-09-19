@@ -18,14 +18,14 @@ const initializeSocket = require("./Middleware/socketManager");
 const adminCrudRoutes = require("./Routes/adminCrudRoutes");
 const postmanAuthRoutes = require("./Routes/postmanAuthRoutes");
 const postmanRoutes = require("./Routes/postmanRoutes");
+const agentAuthRoutes = require("./Routes/agentAuthRoutes");
 const categoryRoutes = require("./Routes/categoryRoutes");
 const productRoutes = require("./Routes/productRoutes");
 const countryRoutes = require("./Routes/countryRoutes");
 const widgetRoutes = require("./Routes/widgetRoutes");
 const productRatingController = require("./controllers/productRatingController");
 const variationRoutes = require("./Routes/variationRoutes");
-const bankaRoutes = require("./Routes/bankaRoutes");
-
+const agentsRoutes = require("./Routes/agentsRoutes");
 // Use middlewares
 app.use(middlewares.jsonParser);
 app.use(middlewares.corsMiddleware);
@@ -49,13 +49,17 @@ app.use("/api/users", usersRoutes);
 app.use("/api/admin", adminRoutes);
 
 // Admin Crud
-app.use("/api/crud/", adminCrudRoutes);
+app.use("/api/crud", adminCrudRoutes);
 
 // Postman Auth
 app.use("/api/postmanAuth", postmanAuthRoutes);
 
 // Postman Crud
 app.use("/api/postman", postmanRoutes);
+// Agent Auth
+app.use("/api/agentAuth", agentAuthRoutes);
+// Agent Crud
+app.use("/api/agent", agentsRoutes);
 
 // Category Crud
 app.use("/api/category", categoryRoutes);
@@ -93,7 +97,6 @@ app.use("/api/widgets", widgetRoutes);
 app.use("/product", productRatingController);
 app.use("/api/variation", variationRoutes);
 
-app.use("/banka", bankaRoutes);
 // Start the server
 app.listen(port, () => {
   console.log(`Server started on port ${port}`);

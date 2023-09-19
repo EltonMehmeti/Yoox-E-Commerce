@@ -27,8 +27,9 @@ import AdminTable from "./components/admin/AdminTable";
 import PMLogin from "./pages/postman/PMLogin";
 import PMSignup from "./pages/postman/PMSignup";
 import MapComponent from "./MapComponent";
-import Banka from "./components/Banka";
-import Personi from "./components/Personi";
+import AgentLogin from "./pages/cs/AgentLogin";
+import AgentSignUp from "./pages/cs/AgentSignup";
+import Agent from "./components/admin/Agent";
 
 function App() {
   return (
@@ -42,7 +43,8 @@ function App() {
             <Route path="/postman" element={<Postman />} />
             <Route path="/products" element={<Products />} />
             <Route path="/category" element={<Category />} />
-            <Route path="/costumerS" element={<ChatComponent />} />
+            <Route path="/agent" element={<Agent />} />
+            <Route path="/agentDash" element={<ChatComponent />} />
             <Route path="/admin" element={<Admin />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
@@ -50,6 +52,9 @@ function App() {
             <Route path="/adminregister" element={<AdminSignup />} />
             <Route path="/pmlogin" element={<PMLogin />} />
             <Route path="/pmregister" element={<PMSignup />} />
+            <Route path="/agentlogin" element={<AgentLogin />} />
+            <Route path="/agentsignup" element={<AgentSignUp />} />
+
             <Route path="/admintable" element={<AdminTable />} />
             <Route path="/aboutus" element={<AboutUs />} />
             <Route path="/contact" element={<Contact />} />
@@ -65,10 +70,6 @@ function App() {
         </Router>
       </CartProvider>
       <MapComponent />
-      {/* <div className="flex h-screen">
-        <Banka />
-        <Personi />
-      </div> */}
     </>
   );
 }

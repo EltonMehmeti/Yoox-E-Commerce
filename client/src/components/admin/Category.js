@@ -21,6 +21,7 @@ const Category = () => {
 
       .then((response) => {
         setCategoryTable(response.data);
+        console.log(categoryTable);
       })
       .catch((error) => {
         console.log(error);
@@ -59,6 +60,7 @@ const Category = () => {
       })
       .then(() => {
         // Handle the response if needed
+        window.location.reload();
       })
       .catch((error) => {
         console.error(error);
@@ -67,12 +69,12 @@ const Category = () => {
   };
 
   // update category function
-  const [nameU, setNameUpdated] = useState("");
-  const [imgU, setImgU] = useState("");
+  let [nameU, setNameUpdated] = useState("");
+  let [imgU, setImgU] = useState("");
   const Swal = require("sweetalert2");
 
   // Assuming you have the selected variation IDs stored in a state variable named selectedVariations
-  const [selectedVariationsU, setSelectedVariationsU] = useState([]);
+  let [selectedVariationsU, setSelectedVariationsU] = useState([]);
 
   const updateCategory = (id) => {
     axios
@@ -243,7 +245,6 @@ const Category = () => {
                         </select>
                       </div>
 
-                      {/* Display selected variations */}
                       <div>
                         <h3>Selected Variations:</h3>
                         <ul>
@@ -331,7 +332,21 @@ const Category = () => {
                       <button
                         className="bg-gradient-to-r text-white from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 w-14 h-25"
                         onClick={() => {
+                          console.log(category.variationNames);
                           setCategoryId((categoryId = category.Id));
+                          setNameUpdated((nameU = category.Name));
+                          let temp = category.variationNames.split(",");
+                          const filteredObjects = variationTable.filter((obj) =>
+                            temp.includes(obj.name)
+                          );
+                          const matchingIds = filteredObjects.map(
+                            (obj) => obj.Id
+                          );
+
+                          setSelectedVariationsU(
+                            (selectedVariationsU = matchingIds)
+                          );
+
                           // console.log(CategoryId);
                           open();
                         }}
@@ -378,6 +393,7 @@ const Category = () => {
                                         onChange={(e) => {
                                           setNameUpdated(e.target.value);
                                         }}
+                                        value={nameU}
                                         type="text"
                                         name="nameU"
                                         id="name"
@@ -447,7 +463,6 @@ const Category = () => {
                                               }
                                             }
                                           );
-                                          console.log(selectedVariationsU);
                                         }}
                                       >
                                         <option>Null</option>
@@ -463,12 +478,32 @@ const Category = () => {
                                         })}
                                       </select>
                                     </div>
+                                    <div>
+                                      <h3>Selected Variations:</h3>
+                                      <ul>
+                                        {selectedVariationsU?.map(
+                                          (variationId) => {
+                                            const variation =
+                                              variationTable.find(
+                                                (v) => v.Id === variationId
+                                              );
+                                            if (variation) {
+                                              return (
+                                                <li key={variation.Id}>
+                                                  {variation.name}
+                                                </li>
+                                              );
+                                            }
+                                            return null;
+                                          }
+                                        )}
+                                      </ul>
+                                    </div>
                                   </div>
                                   <br></br>
                                   <button
                                     onClick={(e) => {
                                       e.preventDefault();
-                                      console.log(categoryId);
                                       updateCategory(categoryId);
                                     }}
                                     type="submit"

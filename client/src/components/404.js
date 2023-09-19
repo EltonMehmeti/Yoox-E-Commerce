@@ -17,7 +17,7 @@ const Page404 = () => {
               <div className="text-center">
                 <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl animate-pulse">
                   <div className="h-3.5 bg-gray-500 rounded-full dark:bg-gray-700 max-w-[640px] mb-3.5 mx-auto"></div>
-                  <div class="h-2.5 mx-auto bg-gray-300 rounded-full dark:bg-gray-700 max-w-[540px]"></div>
+                  <div className="h-2.5 mx-auto bg-gray-300 rounded-full dark:bg-gray-700 max-w-[540px]"></div>
                 </h1>
                 <div role="status" className="mt-3.5 space-y-2.5 animate-pulse">
                   <div className="flex justify-center items-center w-full space-x-2">

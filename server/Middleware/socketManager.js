@@ -22,7 +22,7 @@ function initializeSocket(server) {
 
         // Send the updated room list to all connected clients
         io.emit("room_list", rooms);
-        console.log(rooms);
+        // console.log(rooms);
       }
       console.log(`User with ID: ${socket.id} joined room ${data}`);
     });

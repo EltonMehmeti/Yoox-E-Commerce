@@ -38,6 +38,7 @@ const Products = () => {
       .get("http://localhost:3001/api/products/getproducts")
       .then((response) => {
         setProductsTable(response.data);
+        console.log(productsTable);
       })
       .catch((error) => {
         console.log(error);

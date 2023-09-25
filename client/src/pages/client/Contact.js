@@ -13,7 +13,7 @@ const Contact = () => {
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const submitUser = (e) => {
+  const submitMessage = (e) => {
     e.preventDefault();
     axios
       .post("http://localhost:3001/api/contact", {
@@ -47,7 +47,10 @@ const Contact = () => {
                     <div className="relative mb-6" data-te-input-wrapper-init>
                       <input
                         type="text"
-                        className="grid grid-cols-1 md:grid-cols-2 m-auto text-s border border-transparent peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-wh dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                        onChange={(e) => {
+                          setName(e.target.value);
+                        }}
+                        className=" grid-cols-1 md:grid-cols-2 m-auto text-s  border-transparent peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-wh dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                         id="exampleInput90"
                         placeholder="Name"
                       />
@@ -61,9 +64,12 @@ const Contact = () => {
                     <div className="relative mb-6" data-te-input-wrapper-init>
                       <input
                         type="email"
-                        className="grid grid-cols-1 md:grid-cols-2 m-auto text-s border border-transparent peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
+                        className=" grid-cols-1 md:grid-cols-2 m-auto text-s  border-transparent peer block min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                         id="exampleInput91"
                         placeholder="Email address"
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                        }}
                       />
                       <label
                         className="grid grid-cols-1 md:grid-cols-2 m-auto pointer-events-none absolute top-0 left-3 mb-0 max-w-[90%] origin-[0_0] truncate pt-[0.37rem] leading-[1.6] text-neutral-500   peer-data-[te-input-state-active]:scale-[0.8] motion-reduce:transition-none dark:text-neutral-200 dark:peer-focus:text-primary"
@@ -74,6 +80,9 @@ const Contact = () => {
                     </div>
                     <div className="relative mb-6" data-te-input-wrapper-init>
                       <textarea
+                        onChange={(e) => {
+                          setMessage(e.target.value);
+                        }}
                         className="grid grid-cols-1 md:grid-cols-2 m-auto text-s  border-transparent peer  min-h-[auto] w-full rounded border-0 bg-transparent py-[0.32rem] px-3 leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 peer-focus:text-primary data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none dark:text-neutral-200 dark:placeholder:text-neutral-200 dark:peer-focus:text-primary [&:not([data-te-input-placeholder-active])]:placeholder:opacity-0"
                         id="exampleFormControlTextarea1"
                         rows="3"
@@ -102,6 +111,7 @@ const Contact = () => {
                       </label>
                     </div>
                     <button
+                      onClick={submitMessage}
                       type="button"
                       data-te-ripple-init
                       data-te-ripple-color="light"

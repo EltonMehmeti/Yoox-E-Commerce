@@ -90,6 +90,36 @@ router.get("/mostSold", (req, res) => {
     res.json(mostSoldProduct);
   });
 });
+router.get("/leastSold", (req, res) => {
+  const q = `
+    SELECT
+      oi.item_id,
+      p.Name AS product_name,
+      SUM(oi.quantity) AS total_sold
+    FROM
+      OrderItems oi
+      INNER JOIN Product p ON oi.item_id = p.Id
+    GROUP BY
+      oi.item_id, p.Name
+    ORDER BY
+      total_sold ASC;  -- Use ASC to get the least sold products
+  `;
+
+  db.query(q, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "An error occurred" });
+      return;
+    }
+
+    if (results.length === 0) {
+      res.status(404).json({ error: "No products found" });
+      return;
+    }
+
+    const leastSoldProduct = results[0]; // Assuming the first row has the least sales
+    res.json(leastSoldProduct);
+  });
+});
 
 // get categories statistics
 router.get("/categoriesStats", (req, res) => {
@@ -106,6 +136,29 @@ router.get("/categoriesStats", (req, res) => {
       c.Id, c.Name
     ORDER BY
       TotalSold DESC;
+  `;
+
+  db.query(q, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "An error occurred" });
+      return;
+    }
+    res.json(results);
+  });
+});
+router.get("/salesProg", (req, res) => {
+  const q = `
+  SELECT
+  DATE(order_date) AS order_date,
+  SUM(oi.quantity) AS total_sales
+FROM
+  orders o
+INNER JOIN
+  OrderItems oi ON o.id = oi.order_id
+GROUP BY
+  DATE(order_date)
+ORDER BY
+  DATE(order_date);
   `;
 
   db.query(q, (err, results) => {
@@ -181,6 +234,35 @@ ORDER BY
       };
     });
     res.send(withimages);
+  });
+});
+router.get("/userProgressData", (req, res) => {
+  const q = `SELECT DATE(createdAt) AS registration_date, COUNT(*) AS registration_count
+  FROM users
+  GROUP BY DATE(createdAt)
+  ORDER BY DATE(createdAt);`;
+
+  db.query(q, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "An error occurred" });
+      return;
+    }
+
+    res.send(results);
+  });
+});
+router.get("/totalEarnings", (req, res) => {
+  const q = `SELECT SUM(orderitems.price * orderitems.quantity) AS total_earnings
+  FROM orders
+  INNER JOIN orderitems ON orders.id = orderitems.order_id;`;
+
+  db.query(q, (err, results) => {
+    if (err) {
+      res.status(500).json({ error: "An error occurred" });
+      return;
+    }
+
+    res.send(results);
   });
 });
 

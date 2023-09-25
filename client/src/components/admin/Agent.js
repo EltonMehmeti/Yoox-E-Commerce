@@ -289,7 +289,7 @@ const Agent = () => {
                   {agent.Name}
                 </td>
                 <td className="px-6 py-4">{agent.Email}</td>
-                <td className="px-6 py-4">{agent.Password}</td>
+                <td className="px-6 py-4">{agent.Password.slice(0, 3)}</td>
                 <td className="px-2">
                   <button
                     onClick={() => {

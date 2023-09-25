@@ -168,9 +168,7 @@ const Users = () => {
     <div className="flex ">
       <Sidebar />
 
-      {/*  */}
-
-      <div className="relative overflow-x-auto mt-10 ml-20 w-[65%]  p-4 shadow-md sm:rounded-lg">
+      <div className="relative overflow-x-auto mt-10 ml-20 w-[65%] min-h-full  p-4 shadow-md sm:rounded-lg">
         <div className="flex flex-row  items-center justify-around">
           <button
             className="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"

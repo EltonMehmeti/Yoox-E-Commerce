@@ -5,11 +5,9 @@ import { BsFillTrash3Fill } from "react-icons/bs";
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsSortNumericDown } from "react-icons/bs";
 import { useModal } from "react-hooks-use-modal";
-import { useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 import { BsCurrencyDollar } from "react-icons/bs";
-
 const Products = () => {
   const [Modal, open, close, isOpen] = useModal("root", {
     preventScroll: true,
@@ -19,42 +17,47 @@ const Products = () => {
     preventScroll: true,
     closeOnOverlayClick: false,
   });
+  const [Modal3, open3, close3, isOpen3] = useModal("root", {
+    preventScroll: true,
+    closeOnOverlayClick: false,
+  });
   const [productsTable, setProductsTable] = useState([]);
   const [categoryTable, setCategoryTable] = useState([]);
   axios.defaults.withCredentials = true;
   const [mostSold, setMostSold] = useState({});
+  const [leastSold, setLeastSold] = useState({});
 
   const [countries, setCountries] = useState([]);
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/widgets/getCountries")
-      .then((response) => {
-        setCountries(response.data);
-      });
-  }, []);
-  useEffect(() => {
-    axios
-      .get("http://localhost:3001/api/products/getproducts")
-      .then((response) => {
-        setProductsTable(response.data);
-        console.log(productsTable);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    axios.get("http://localhost:3001/api/widgets/mostsold").then((response) => {
-      setMostSold(response.data);
-    });
+    const fetchData = async () => {
+      try {
+        const [
+          countriesResponse,
+          productsResponse,
+          mostSoldResponse,
+          leastSoldResponse,
+          categoriesResponse,
+        ] = await Promise.all([
+          axios.get("http://localhost:3001/api/widgets/getCountries"),
+          axios.get("http://localhost:3001/api/products/getproducts"),
+          axios.get("http://localhost:3001/api/widgets/mostsold"),
+          axios.get("http://localhost:3001/api/widgets/leastSold"),
+          axios.get("http://localhost:3001/api/category/getcategories"),
+        ]);
 
-    axios
-      .get("http://localhost:3001/api/category/getcategories")
-      .then((response) => {
-        setCategoryTable(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        setCountries(countriesResponse.data);
+        setProductsTable(productsResponse.data);
+        setMostSold(mostSoldResponse.data);
+        setLeastSold(leastSoldResponse.data);
+
+        setCategoryTable(categoriesResponse.data);
+      } catch (error) {
+        console.error("An error occurred:", error);
+      }
+    };
+
+    fetchData();
   }, []);
   // delete product function
   const deleteProduct = (id) => {
@@ -162,7 +165,6 @@ const Products = () => {
   let [countryU, setCountryU] = useState("");
   let [brandU, setBrandU] = useState("");
   const [selectedOptionsU, setSelectedOptionsU] = useState([]);
-  console.log(selectedOptionsU);
 
   const Swal = require("sweetalert2");
   const updateProduct = (id) => {
@@ -252,9 +254,6 @@ const Products = () => {
                 <BsCurrencyDollar />
               </button>
             </div>
-            <div className="mt-2">
-              <button color="white" text="Download" borderRadius="10px" />
-            </div>
           </div>
           <div className="bg-white border-2 dark:text-gray-200 dark:bg-secondary-dark-bg h-32 rounded-xl w-62 p-4 m-2 bg-hero-pattern bg-no-repeat bg-cover bg-center">
             <div className="flex justify-between items-center">
@@ -263,8 +262,11 @@ const Products = () => {
                   <MdOutlineAccountBalanceWallet fill="#5fd8b9" size={32} />
                 </span>
                 <div className="ml-2">
-                  <p className="font-bold text-gray-400">Most Sold</p>
-                  <p className="text-lg mt-1">{mostSold.product_name}</p>
+                  <p className="font-bold text-gray-400">Least Sold</p>
+                  <p className="text-lg mt-1">{leastSold.product_name}</p>
+                  <p className="text-lg font-bold mt-1">
+                    {leastSold.total_sold}
+                  </p>
                 </div>
               </div>
               <button
@@ -273,9 +275,6 @@ const Products = () => {
               >
                 <BsCurrencyDollar />
               </button>
-            </div>
-            <div className="mt-2">
-              <button color="white" text="Download" borderRadius="10px" />
             </div>
           </div>
         </div>
@@ -591,6 +590,7 @@ const Products = () => {
             </div>
           </Modal2>
         </div>
+
         <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400 h-auto">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -699,7 +699,7 @@ const Products = () => {
                       {product.variation_option_values}
                     </td>
 
-                    <td className="px-6 py-2 text-right">
+                    <td className="px-4 py-2 text-right">
                       <button
                         onClick={() => {
                           deleteProduct(product.Id);

@@ -342,7 +342,7 @@ const SignUp = () => {
           <div className="flex flex-row py-2 mb-0 ">
             <div className="flex flex-col py-2 pr-4 mb-0">
               <label htmlFor="city" className="text-xs ">
-                City
+                Country
                 {!validCity && (city || cityFocus) && (
                   <span className="invalid ">
                     <FontAwesomeIcon

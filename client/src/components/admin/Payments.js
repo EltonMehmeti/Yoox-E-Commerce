@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { ResponsiveBar } from "@nivo/bar";
 import Sidebar from "./Sidebar";
 import { useModal } from "react-hooks-use-modal";
 import Delivery from "./Delivery";
-import CanvasJSReact from "@canvasjs/react-charts";
 import { AiOutlineClose } from "react-icons/ai";
 import { AiTwotoneMail } from "react-icons/ai";
 import { IoMdMore } from "react-icons/io";
 import { BsSortNumericDown } from "react-icons/bs";
 import { BsCurrencyDollar } from "react-icons/bs";
 import { MdOutlineAccountBalanceWallet } from "react-icons/md";
-
-import Widgets from "./Widgets";
+import { LineChart, XAxis, YAxis, CartesianGrid, Line } from "recharts";
 
 const Payments = () => {
   const [orders, setOrders] = useState([]);
@@ -20,11 +17,32 @@ const Payments = () => {
     preventScroll: true,
     closeOnOverlayClick: false,
   });
+  const [Modal3, open3, close3, isOpen3] = useModal("root", {
+    preventScroll: true,
+    closeOnOverlayClick: false,
+  });
+  const [salesProg, setSalesProg] = useState([]);
+  const formatXAxisTick = (dateStr) => {
+    const date = new Date(dateStr);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
   useEffect(() => {
     axios
       .get("http://localhost:3001/api/orders")
       .then((response) => {
         setOrders(response.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    axios
+      .get("http://localhost:3001/api/widgets/salesProg")
+      .then((response) => {
+        setSalesProg(response.data);
       })
       .catch((error) => {
         console.error(error);
@@ -70,34 +88,7 @@ const Payments = () => {
       }
     });
   };
-  console.log(Img);
-  const options = {
-    theme: "",
-    animationEnabled: true,
-    exportFileName: "New Year Resolutions",
-    exportEnabled: true,
-    title: {
-      text: "Orders Shipping Status",
-    },
-    data: [
-      {
-        type: "pie",
-        showInLegend: true,
-        legendText: "{label}",
-        toolTipContent: "{label}: <strong>{y}%</strong>",
-        indexLabel: "{y}%",
-        // indexLabelPlacement: "inside",
-        dataPoints: [
-          { y: packingOrders.length, label: "Packing" },
-          { y: pendingOrders.length, label: "Pending" },
-          { y: deliveredOrders.length, label: "Delivered" },
-        ],
-      },
-    ],
-  };
 
-  var CanvasJS = CanvasJSReact.CanvasJS;
-  var CanvasJSChart = CanvasJSReact.CanvasJSChart;
   const sort = () => {
     const sortedByPrice = [...orders].sort(
       (a, b) => b.total_price - a.total_price
@@ -145,9 +136,39 @@ const Payments = () => {
                 <button color="white" text="Download" borderRadius="10px" />
               </div>
             </div>
+            <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-34 hover:bg-black cursor-pointer rounded-xl w-auto p-4 m-2 bg-hero-pattern bg-no-repeat bg-cover bg-center">
+              <p className="font-bold text-gray-400">Sales Progress</p>
+
+              <LineChart
+                onClick={open3}
+                width={230}
+                height={130}
+                data={salesProg}
+              >
+                <XAxis tickFormatter={formatXAxisTick} dataKey="order_date" />
+                <YAxis />
+                <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+                <Line type="monotone" dataKey="total_sales" stroke="#8884d8" />
+              </LineChart>
+            </div>
           </div>
         </div>
-
+        <Modal3>
+          <div className="bg-white">
+            <button onClick={close3}>X</button>
+            <LineChart
+              onClick={open3}
+              width={800}
+              height={300}
+              data={salesProg}
+            >
+              <XAxis tickFormatter={formatXAxisTick} dataKey="order_date" />
+              <YAxis />
+              <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+              <Line type="monotone" dataKey="total_sales" stroke="#8884d8" />
+            </LineChart>
+          </div>
+        </Modal3>
         <div className="flex flex-row w-full justify-around items-center">
           <button
             className="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#050708]/50 dark:hover:bg-[#050708]/30 mr-2 mb-2"

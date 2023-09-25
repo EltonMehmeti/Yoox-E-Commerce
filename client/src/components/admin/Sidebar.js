@@ -11,6 +11,7 @@ import { MdEmojiTransportation } from "react-icons/md";
 import { MdSupportAgent } from "react-icons/md";
 import { GiShoppingBag } from "react-icons/gi";
 import { MdOutlineAdminPanelSettings } from "react-icons/md";
+import { MdNotificationsActive } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -49,15 +50,18 @@ const Sidebar = (props) => {
 
   return (
     <div className="flex gap-6">
+      <span className=" absolute bg-transparent border-2 cursor-pointer flex items-center justify-center w-12 h-12 top-6 right-6 rounded-full">
+        <MdNotificationsActive fill="grey" size={30} />
+      </span>
       <div className="bg-blue-900 p-6 min-h-screen w-72 text-gray-100  px-4">
         <div className="flex gap-x-3 items-center">
-          <img className="flex items-center w-14 rounded-full" src={icon1} />
+          <img className="flex items-center w-14 rounded-xl" src={icon1} />
           <h2 className="font-bold text-white origin-left text-xl  ">
             Hi {props.username}
           </h2>
         </div>
 
-        <div className="mt-8 gap-10 flex flex-col  relative">
+        <div className="mt-8 gap-6 flex flex-col  relative">
           <h1>{props.name}</h1>
           {menus?.map((menu, i) => (
             <ul

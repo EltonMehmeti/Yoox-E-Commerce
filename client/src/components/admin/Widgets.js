@@ -1,9 +1,9 @@
 import React from "react";
 import { IoBagHandle, IoPieChart, IoPeople, IoCart } from "react-icons/io5";
-
+import { MdOutlineAccountBalanceWallet } from "react-icons/md";
 export default function Widgets(props) {
   return (
-    <div className="flex h-28 mt-5 ml-6 gap-4">
+    <div className="flex h-28 mt-5 ml-6 gap-20">
       <BoxWrapper>
         <div className="rounded-full h-12 w-12 flex items-center justify-center bg-sky-500">
           <IoBagHandle className="text-2xl text-white" />
@@ -154,5 +154,21 @@ export const CountryW = ({ items }) => {
         })
         .slice(0, 5)}
     </ul>
+  );
+};
+
+export const MidWidgets = ({ title, value, icon }) => {
+  return (
+    <div className="bg-white dark:text-gray-200 dark:bg-secondary-dark-bg h-32 rounded-xl w-52 p-4 m-2 bg-hero-pattern bg-no-repeat bg-cover bg-center">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center">
+          <span className="p-2 rounded-full bg-[#ebfaf2] border">{icon}</span>
+          <div className="ml-2">
+            <p className="font-bold text-gray-400">{title}</p>
+            <p className="text-lg mt-1">{value}</p>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
